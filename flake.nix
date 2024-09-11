@@ -1,25 +1,29 @@
 {
-  description = "My system configuration";
+  description = "Home Manager configuration of Jane Doe";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    darwin = {
-      url = "github:LnL7/nix-darwin";
+    # Specify the source of Home Manager and Nixpkgs.
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, darwin, nixpkgs }: {
-    darwinConfigurations."MacBook-Pro-13.local" = darwin.lib.darwinSystem {
+  outputs = { nixpkgs, home-manager, ... }:
+    let
       system = "aarch64-darwin";
-      modules = [
-        ({ pkgs, ... }: {
-          users.users.maurelian = {
-            name = "maurelian";
-            home = "/Users/maurelian";
-          };
-        })
-      ];
+      pkgs = nixpkgs.legacyPackages.${system};
+    in {
+      homeConfigurations.maurelian = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+
+        # Specify your home configuration modules here, for example,
+        # the path to your home.nix.
+        modules = [ ./home.nix ];
+
+        # Optionally use extraSpecialArgs
+        # to pass through arguments to home.nix
+      };
     };
-  };
 }
