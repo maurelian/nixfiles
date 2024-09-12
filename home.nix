@@ -9,9 +9,17 @@
 
   home.packages = with pkgs; [
     # Add your desired packages here
-    git
-    # vim
+    # git
+    vim
   ];
 
-  # Add more configuration as needed
+  home = {
+    file = {
+        ".vimrc" = {
+            source = ./vim_configuration;
+        };
+        # test file, not showing up
+        ".home-manager-test.txt".text = "Hello from Home Manager!";
+    };
+  };
 }
