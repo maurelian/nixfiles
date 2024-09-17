@@ -5,6 +5,7 @@ with pkgs; [
   bat
   cloc
   cowsay
+  diff-so-fancy
   gh
   go
   gotestsum
