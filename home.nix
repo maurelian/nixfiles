@@ -7,19 +7,19 @@
 
   programs.home-manager.enable = true;
 
-  home.packages = with pkgs; [
-    # Add your desired packages here
-    # git
-    vim
-  ];
-
   home = {
     file = {
         ".vimrc" = {
             source = ./vim_configuration;
         };
-        # test file, not showing up
+
+        ".ackrc" = {
+            source = ./ackrc;
+        };
+
         ".home-manager-test.txt".text = "Hello from Home Manager!";
     };
   };
+
+  home.packages = import ./packages.nix { inherit pkgs; };
 }

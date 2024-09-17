@@ -1,0 +1,34 @@
+#ack is a tool like grep, designed for programmers with large trees of heterogeneous source code
+
+#to install ack, see http://betterthangrep.com/
+#to use ack, launch terminal (mac osx) and type 'ack <some_keywords>'
+#ack will search all files in the current directory & sub-directories
+
+#here's how I have my config file setup. this file is located on mac osx here
+# ~/.ackrc
+
+# Always sort the files
+#--sort−files
+
+# ignore case
+--ignore-case
+
+# Ignore case in the search strings if PATTERN contains no uppercase characters.
+# --smart-case
+
+# Always color, even if piping to a another program
+--color
+
+# Use "less −r" as my pager
+--pager=less
+
+--ignore-dir=.idea/
+--ignore-dir=node_modules/
+--ignore-file=ext:json
+--type-add=sol=.sol
+
+#make sure ack knows how to search common filetypes used in node.js projects
+--type-set=coffee=.coffee
+--type-set=jade=.jade
+--type-set=feature=.feature
+--type-set=json=.json
