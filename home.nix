@@ -10,11 +10,11 @@
   home = {
     file = {
         ".vimrc" = {
-            source = ./vim_configuration;
+            source = ./program_configs/vim_configuration;
         };
 
         ".ackrc" = {
-            source = ./ackrc;
+            source = ./program_configs/ackrc;
         };
 
         ".home-manager-test.txt".text = "Hello from Home Manager!";
