@@ -13,7 +13,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, ... }:
     let
       system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
