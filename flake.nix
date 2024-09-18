@@ -15,7 +15,7 @@
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, ... }:
     let
       system = "aarch64-darwin";
-      system.stateVersion = 5;
+      # system.stateVersion = 5;
       pkgs = nixpkgs.legacyPackages.${system};
       configuration = { pkgs, ... }: {
         services.nix-daemon.enable = true;
@@ -24,6 +24,7 @@
           name = "maurelian";
           home = "/Users/maurelian";
         };
+        system.stateVersion = 5;
       };
     in {
       homeConfigurations.maurelian = home-manager.lib.homeManagerConfiguration {
@@ -35,7 +36,6 @@
 
       darwinConfigurations."MacBook-Pro-13" = nix-darwin.lib.darwinSystem {
         inherit system;
-        # system.stateVersion = 5;
         modules = [
           configuration
           home-manager.darwinModules.home-manager
