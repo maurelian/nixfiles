@@ -3,7 +3,7 @@
 {
   home.username = "maurelian";
   home.homeDirectory = "/Users/maurelian";
-  home.stateVersion = "23.11";
+  home.stateVersion = "23.11"; # Use the version of Home Manager you initially installed
 
   programs.home-manager.enable = true;
 
