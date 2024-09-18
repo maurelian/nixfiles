@@ -25,6 +25,11 @@
           home = "/Users/maurelian";
         };
         system.stateVersion = 5;
+
+        # Add this section to enable flakes and nix-command
+        nix.settings = {
+          experimental-features = [ "nix-command" "flakes" ];
+        };
       };
     in {
       homeConfigurations.maurelian = home-manager.lib.homeManagerConfiguration {
