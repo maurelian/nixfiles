@@ -12,10 +12,13 @@ with pkgs; [
   lazygit
   fzf
   just
+  jq
   kustomize
+  neovim
   peco
   ripgrep
   tree
   tig
   vim
+  yq
 ]
