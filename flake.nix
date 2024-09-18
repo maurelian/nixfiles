@@ -20,6 +20,7 @@
       configuration = { pkgs, ... }: {
         # Auto upgrade nix package and the daemon service.
         services.nix-daemon.enable = true;
+        nixpkgs.hostPlatform = system;
         # nix.package = pkgs.nix;
       };
     in {
@@ -31,15 +32,21 @@
         modules = [ ./home.nix ];
       };
       # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#MacBook-Pro-13.system
-      darwinConfigurations."MacBook-Pro-13.system" = nix-darwin.lib.darwinSystem {
-        modules = [ configuration ];
+      # $ darwin-rebuild build --flake .#MacBook-Pro-13
+      darwinConfigurations."MacBook-Pro-13" = nix-darwin.lib.darwinSystem {
+        inherit system;
+        modules = [
+          configuration
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.maurelian = import ./home.nix;
+          }
+        ];
       };
-      # darwinConfigurations."MacBook-Pro-13" = nix-darwin.lib.darwinSystem {
-      #   modules = [ configuration ];
-      # };
 
       # Expose the package set, including overlays, for convenience.
-      darwinPackages = self.darwinConfigurations."MacBook-Pro-13.system".pkgs;
+      darwinPackages = self.darwinConfigurations."MacBook-Pro-13".pkgs;
     };
 }
