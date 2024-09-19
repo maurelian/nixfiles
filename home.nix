@@ -24,6 +24,9 @@
         ".zshenv" = {
             source = ./program_configs/zshenv;
         };
+        ".gitconfig" = {
+            source = ./program_configs/gitconfig;
+        };
     };
   };
 

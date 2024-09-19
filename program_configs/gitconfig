@@ -1,0 +1,53 @@
+[core]
+	excludesfile = /Users/maurelian/.gitignore_global
+  # hooksPath = ~/.githooks
+	ignorecase = false
+	editor = vi
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[user]
+	name = Maurelian
+	email = maurelian@protonmail.ch
+	signingkey = B04ED68D
+[pull]
+	rebase = true
+[diff]
+    tool = vscode
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+[merge]
+	tool = vscode
+[mergetool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+[url "git@github.com:"]
+    insteadOf = https://github.com/
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[hub]
+	protocol = ssh
+[alias]
+	amend-to = "!f() { SHA=`git rev-parse \"$1\"`; git commit --fixup \"$SHA\" && GIT_SEQUENCE_EDITOR=true git rebase --interactive --autosquash \"$SHA^\"; }; f"
+	drop = "!f() { for c in \"$@\"; do sha1=$(git rev-parse --short $1); [ -n \"$sha1\" ] && git -c rebase.abbreviateCommands=false -c sequence.editor=\"printf \\\"%s\\n\\\" \\\"g/^pick $sha1 /s//drop $sha1 /\\\" w \\\"g/^#/d\\\" \\\"g/^$/d\\\" \\\"%p\\\" Q | ed -s\" rebase -i --autostash; done }; f"
+[interactive]
+	diffFilter = diff-so-fancy --patch
+[color]
+	ui = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	func = 146 bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[init]
+	defaultBranch = main
+[commit]
+	gpgsign = true
