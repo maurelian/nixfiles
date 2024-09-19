@@ -47,7 +47,6 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.maurelian = import ./home.nix;
           }
         ];
       };
