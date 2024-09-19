@@ -1,6 +1,6 @@
 #!/bin/zsh
 # Debugging: uncomment the DEBUG_ZSH_STARTUP export and customize the functions to print a lot of
-# output at the start and end of zshenv, zprofile, zshrc, zprezto and zlogin (which is also the
+# output at the start and end of zshenv, zprofile, zshrc, and zprezto (which is also the
 # order they run in)
 # export DEBUG_ZSH_STARTUP="1"
 my_debug_start() {
@@ -24,69 +24,25 @@ my_debug_end() {
 
 my_debug_start
 
-#
-# Defines environment variables.
-#
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
-
 # This file is sourced by all instances of Zsh, and thus, it should be kept as
 # small as possible and should only define environment variables.
 #
 
-# Ensure that a non-login, non-interactive shell has a defined environment.
-if [[ ("$SHLVL" -eq 1 && ! -o LOGIN) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprofile"
-fi
-
-#$HOME/.pyenv/shims:\
-#$HOME/.pyenv/bin:\
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:=$HOME/.config}"
 
 # Source my secrets file.
 if [[ -s "${ZDOTDIR:-$HOME}/.secrets" ]]; then
   source "${ZDOTDIR:-$HOME}/.secrets"
 fi
-# Source sethrc
-if [[ -s "${ZDOTDIR:-$HOME}/.sethrc" ]]; then
-  source "${ZDOTDIR:-$HOME}/.sethrc"
-fi
 
-export ZEPP_MAP="openzeppelin-solidity/=$(pwd)/node_modules/openzeppelin-solidity/"
-export ZEPP="@openzeppelin/=/Users/maurelian/Projects/O/monorepo-one/node_modules/@openzeppelin/"
-export CHAINL_MAP="@chainlink/=$(pwd)/node_modules/@chainlink/"
-export ANYSOLC="../,./,."
-export HOMEBREW_PREFIX=/opt/homebrew
 
-# Make less show more context when search.
-# Also FYI, you can type `k` to expand the `...skipping...` text
-# https://unix.stackexchange.com/questions/21741/how-to-make-less-show-the-previous-lines-when-searching?rq=1
-# That will put the pattern you searched for on line 4 of the terminal.
+# Make less show more context when searching
 export LESS=j5
 
-# use default python3 virtualenv named 'shells'
-# eval "$(pyenv init - --no-rehash zsh)"
-
-# Docker shit
-export COMPOSE_DOCKER_CLI_BUILD=1
-export DOCKER_BUILDKIT=1
-
-# docui shit (https://github.com/skanehira/docui)
-export LC_CTYPE=en_US.UTF-8
 export TERM=xterm-256color
-
-# Ansible
-# https://www.notion.so/oplabs/On-Call-Onboarding-aef864b9497041ff8e05cd2322606e36#bd50579035c240dab640fb2867a37303
-# ANSIBLE_VAULT_PASSWORD_FILE=~/.ANSIBLE_VAULT_PASSWORD_FILE
-# ANSIBLE_PIPELINING=true
-# ANSIBLE_SSH_TIMEOUT=60
-# ANSIBLE_SSH_PRIVATE_KEY_FILE=google_compute_engine
-# DEFAULT_TIMEOUT=180
-# ANSIBLE_REMOTE_USER=john_optimism_io
-# ANSIBLE_SSH_EXTRA_ARGS="-o StrictHostKeyChecking=accept-new"
-
 export GOPATH=$HOME
 
+export HOMEBREW_PREFIX=/opt/homebrew
 # only run this on my optimism machine.
 # it makes homebrew work with Apple Silicon somehow.
 if [[ -d "/Users/maurelian" ]]; then

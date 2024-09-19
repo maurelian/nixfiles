@@ -101,9 +101,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.aliases" ]]; then
   source "${ZDOTDIR:-$HOME}/.aliases"
 fi
 
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nv
-
 export iterm2_hostname=MacBook-Pro-13.local
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -130,12 +127,15 @@ export SPACESHIP_TIME_COLOR='#005fff'
 export SPACESHIP_EXEC_TIME_SHOW=true
 export SPACESHIP_EXEC_TIME_ELAPSED=5
 export SPACESHIP_CONDA_SHOW=false
-# export SPACESHIP_DOCKER_SHOW=false
-# export SPACESHIP_KUBECONTEXT_SHOW=false
-
-
-# Let me set the title from the command line
-DISABLE_AUTO_TITLE="true"
+export SPACESHIP_PROMPT_ASYNC=FALSE
+export SPACESHIP_TIME_SHOW=true
+export SPACESHIP_TIME_COLOR='#005fff'
+export SPACESHIP_EXEC_TIME_SHOW=true
+export SPACESHIP_EXEC_TIME_ELAPSED=5
+export SPACESHIP_GCLOUD_SHOW=false
+export SPACESHIP_PACKAGE_SHOW=false
+export SPACESHIP_GOLANG_SHOW=false
+export SPACESHIP_NODE_SHOW=false
 
 # make help menu available for zsh-builtins
 # https://stackoverflow.com/questions/4405382/how-can-i-read-documentation-about-built-in-zsh-commands
@@ -158,7 +158,6 @@ export TENDERLY_USERNAME=oplabs; export TENDERLY_PROJECT=op-mainnet
 
 # monorepo requirement
 export DEPLOY_CONFIG_PATH=./deploy-config/hardhat.json
-
 
 #compdef gt
 ###-begin-gt-completions-###
