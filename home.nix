@@ -17,9 +17,51 @@
             source = ./program_configs/ackrc;
         };
 
-        ".home-manager-test.txt".text = "Hello from Home Manager!";
+        ".zshrc" = {
+            source = ./program_configs/zshrc;
+        };
+
+        ".zshenv" = {
+            source = ./program_configs/zshenv;
+        };
     };
   };
 
   home.packages = import ./packages.nix { inherit pkgs; };
+
+  programs.zsh = {
+    enable = true;
+    prezto = {
+      enable = true;
+      pmodules = [
+        "terminal"
+        "editor"
+        "directory"
+        "spectrum"
+        "utility"
+        "completion"
+        "contrib-prompt"
+        "prompt"
+        "history-substring-search"
+        "history"
+        "git"
+        "node"
+        "ssh"
+        "tmux"
+        "environment"
+      ];
+      extraConfig = ''
+        # Auto convert .... to ../..
+        zstyle ':prezto:module:editor' dot-expansion 'yes'
+      '';
+    };
+  };
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+  programs.lazygit = {
+    enable = true;
+    settings = (builtins.readFile ./program_configs/lazygit-config.yml);
+  };
 }

@@ -1,0 +1,190 @@
+#!/bin/zsh
+my_debug_start
+# zmodload zsh/zprof
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+
+# This file is sourced by interactive shells. It should define aliases,
+# functions, shell options, and key bindings.
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/zprezto/init.zsh"
+fi
+
+# export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Projects
+
+# expands autocomplete to include dirs in these dirs, from anywhere!
+# FYI, entries in cdpath aren't available in CDPATH, it's their child directories.
+setopt auto_cd
+cdpath=(
+  $HOME/
+  $HOME/Projects\
+  $HOME/Projects/O\
+  $HOME/Projects/Hunting\
+  $HOME/Projects/Tools\
+  $HOME/Projects/Scoping\
+  $HOME/Projects/ReferenceCodebases\
+  $HOME/Projects/Miscellaneous\
+  $HOME/Projects/various-repos\
+)
+
+# Browser
+#
+
+if [[ "$OSTYPE" == darwin* ]]; then
+  export BROWSER='open'
+fi
+
+#
+# Editors
+#
+
+export EDITOR='code'
+export VISUAL='vim'
+export PAGER='less -isj 5'
+export MANPAGER=$PAGER
+
+#
+# Language
+#
+
+if [[ -z "$LANG" ]]; then
+  export LANG='en_US.UTF-8'
+fi
+
+#
+# Paths
+#
+
+# Ensure path arrays do not contain duplicates.
+typeset -gU cdpath fpath mailpath path
+
+#
+# Less
+#
+
+# Set the default Less options.
+# Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
+# Remove -X and -F (exit if the content fits on one screen) to enable it.
+export LESS='-F -g -i -M -R -S -w -X -z-4'
+
+# Set the Less input preprocessor.
+# Try both `lesspipe` and `lesspipe.sh` as either might exist on a system.
+if (( $#commands[(i)lesspipe(|.sh)] )); then
+  export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
+fi
+
+#
+# Temporary Files
+#
+TMPPREFIX="$(mktemp -d)/zsh"
+
+# should make brew installed completions work
+fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
+
+## PIPx
+# enable completions https://pipxproject.github.io/pipx/installation/#shell-completion
+autoload -U bashcompinit
+bashcompinit
+
+# source functions
+if [[ -s "${ZDOTDIR:-$HOME}/.functions" ]]; then
+  source "${ZDOTDIR:-$HOME}/.functions"
+fi
+
+# source aliases
+if [[ -s "${ZDOTDIR:-$HOME}/.aliases" ]]; then
+  source "${ZDOTDIR:-$HOME}/.aliases"
+fi
+
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nv
+
+export iterm2_hostname=MacBook-Pro-13.local
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+precmd() {
+  # sets the tab title to current dir
+  echo -ne "\e]1;${PWD##*/}\a"
+}
+
+# Set Spaceship ZSH as a prompt
+autoload -U promptinit; promptinit
+local PROMPT_THEME="$(prompt -c | tail -1)"
+
+# if current prompt theme is not spaceship, then make it so
+if [[ $PROMPT_THEME != *spaceship* ]]; then
+  prompt spaceship
+fi
+
+
+# prompt spaceship
+
+# https://denysdovhan.com/spaceship-prompt/docs/Options.html
+export SPACESHIP_TIME_SHOW=true
+export SPACESHIP_TIME_COLOR='#005fff'
+export SPACESHIP_EXEC_TIME_SHOW=true
+export SPACESHIP_EXEC_TIME_ELAPSED=5
+export SPACESHIP_CONDA_SHOW=false
+# export SPACESHIP_DOCKER_SHOW=false
+# export SPACESHIP_KUBECONTEXT_SHOW=false
+
+
+# Let me set the title from the command line
+DISABLE_AUTO_TITLE="true"
+
+# make help menu available for zsh-builtins
+# https://stackoverflow.com/questions/4405382/how-can-i-read-documentation-about-built-in-zsh-commands
+# unalias run-help
+autoload run-help
+HELPDIR=$(command brew --prefix)/share/zsh/help
+alias help=run-help
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/maurelian/bin/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/maurelian/bin/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/maurelian/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/maurelian/bin/google-cloud-sdk/completion.zsh.inc'; fi
+
+source <(kubectl completion zsh)
+
+# set the rpc url to mainnet
+rpu main > /dev/null 2>&1
+export TENDERLY_USERNAME=oplabs; export TENDERLY_PROJECT=op-mainnet
+
+# monorepo requirement
+export DEPLOY_CONFIG_PATH=./deploy-config/hardhat.json
+
+
+#compdef gt
+###-begin-gt-completions-###
+_gt_yargs_completions()
+{
+  local reply
+  local si=$IFS
+  IFS=$'
+' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" gt --get-yargs-completions "${words[@]}"))
+  IFS=$si
+  _describe 'values' reply
+}
+compdef _gt_yargs_completions gt
+###-end-gt-completions-###
+
+
+# pnpm
+export PNPM_HOME="/Users/maurelian/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+my_debug_end
+# zprof
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
