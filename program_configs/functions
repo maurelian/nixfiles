@@ -1,0 +1,569 @@
+#!/bin/zsh
+my_debug_start
+# FileSearch
+function ff() { find . -iname "*$1*" ${@:2} }
+function fd() { find . -type d -iname "*$1*" ${@:2} }
+function r() { grep "$1" ${@:2} -R . }
+
+#mkdir and cd
+function mkcd() { mkdir -p "$@" && cd "$_"; }
+
+# search in dash
+function ds() { open "dash://$*" }
+
+# alias search
+function ag() { alias | grep "$*" }
+# tmux key-binding search
+function tg() { tmux list-keys | grep "$*" }
+function hgrep() { history "$1" | grep ${@:2} }
+
+# easy grep: this _should_ search for the first arg, and run the second.
+function eg() {
+    echo ${@:2}
+    ${@:2} | grep "$1"
+}
+
+# ls + which: this finds executables and shows symbolic links
+# "which -as" does this just fine
+function lw() {
+  $(which -as "$*") #
+}
+
+# Runs a utility in the background, and hides all output
+function mute() {
+  eval "nohup $* > /dev/null&"
+}
+
+
+# run ls whenever the current working directory is changed
+function chpwd() {
+  ls
+}
+
+# hex to decimal
+function dec() { echo $((16# $1)) }
+
+# decimal to hex
+function hex() { printf '%x\n' "$1" }
+
+# print ls output with numeric chmod permissions
+function 7s() {
+  ls -al $1 | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/) \
+  *2^(8-i));if(k)printf("%0o ",k);print}'
+}
+
+function newalias() {
+  NAME=$1
+  COMMAND=$2
+  NEWENTRY="alias $NAME='$COMMAND'"
+  echo "\n$NEWENTRY" >> $HOME/zprezto/runcoms/aliases
+}
+
+function takehome_eval() {
+  NAME=$1
+  ZIPFILE=$2
+  DEST="$HOME/temp/$NAME"
+  mkdir $DEST
+  unzip $ZIPFILE -d $DEST
+  echo "takehome extraced to $HOME/temp/$NAME"
+  cd $DEST
+  subl -n "$DEST $DEST/test/attack_hackable_token.js $DEST/contracts/Attacker.sol $DEST/Vulnerability.md"
+  # npm i
+  echo "run ganache in another terminal, then run npm run test"
+}
+
+function appendtask() {
+  echo "\n- [ ] $*" >> "$HOME/Documents/TODOS/this_week.org"
+}
+
+function xo() {
+  xdg-open $* &disown
+}
+
+function onlast() {
+  # fc -ln -1 | awk
+  echo "Just use alt-."
+}
+
+# pretty print the PATH
+function ppup() {
+  echo ${PATH//:/$'\n'}
+}
+
+function mvscop() {
+  mv $* /Users/primary/Projects/Scoping/scoping-reports
+}
+
+function controlSelf() {
+  eval "defaults write org.eyebeam.SelfControl BlockDuration -int $1"
+  extras=""
+  if [ "$2" = "nuke" ]; then
+      extras="inbox.google.com slack.com"
+  fi
+  blacklist="facebook.com news.ycombinator.com reddit.com twitter.com $extras"
+  eval "defaults write org.eyebeam.SelfControl HostBlacklist -array $blacklist"
+  defaults read org.eyebeam.SelfControl
+  sudo /Applications/SelfControl.app/Contents/MacOS/org.eyebeam.SelfControl $(id -u $(whoami)) --install > /dev/null 2>&1
+}
+
+#/****************************************|
+#  Dir Switcher                           |
+# _______________________________________*/
+# https://github.com/peco/peco/wiki/Sample-Usage#insert-recent-directory-at-cursor-position-on-zsh-command-line
+if [[ -z "$ZSH_CDR_DIR" ]]; then
+  ZSH_CDR_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/cdr"
+fi
+mkdir -p "$ZSH_CDR_DIR" # creates dir in /Users/primary/.local/share/zsh/cdr
+
+# What autoload does is to mark that name as being a function rather than an external program. The function has to be in a file on its own, with the filename the same as the function name.
+# The -U means mark the function vcs_info for autoloading and suppress alias expansion.
+# The -z means use zsh (rather than ksh) sqtyle. See also the functions command.
+autoload -Uz chpwd_recent_dirs cdr #import and alias
+autoload -U add-zsh-hook
+# ensure that one of these runs whenever the other does (not sure which order)
+add-zsh-hook chpwd chpwd_recent_dirs
+
+
+zstyle ':chpwd:*' recent-dirs-file "$ZSH_CDR_DIR"/recent-dirs
+zstyle ':chpwd:*' recent-dirs-max 1000
+# fall through to cd
+zstyle ':chpwd:*' recent-dirs-default yes
+
+# Aliased to cr
+# color and keymap configs in /Users/primary/.config/peco/config.json
+function peco-cdr() {
+  local current_lbuffer="$LBUFFER"
+  local current_rbuffer="$RBUFFER"
+  if [ -z $1] # -z: length of string is zero
+    then
+      local selected=$(cdr -l | peco --prompt 'cdr >')
+    else
+      local selected=$(cdr -l | peco --prompt 'cdr >' --query $1)
+  fi
+  echo "$selected"
+  if [ -n "$selected" ]; then # -n: length of string is non-zero
+    local tokens=("${(z)selected}")
+    local dir=${tokens[2]}
+    local BUFFER="${current_lbuffer}${dir}${current_rbuffer}"
+    local CURSOR=$#BUFFER
+  fi
+  # in case of future debugging:
+    echo "tokens $tokens"
+    echo "selected $selected"
+    echo "dir $dir"
+    echo "BUFFER $BUFFER"
+    echo "CURSOR $CURSOR"
+  # `cd ~/path` doesn't seem to work here, so we need to replace ~ with $HOME
+  cd ${${dir/~/$HOME}/\~/~}
+}
+
+# git stuff: number on files, and add by number
+gsn() { git status -s | grep -n "" }
+gan() { git add $(git status -s | sed "$1q;d" | cut -c4-) }
+grn() { git restore $(git status -s | sed "$1q;d" | cut -c4-) }
+gpsu() { git push --set-upstream $1 "$(git-branch-current 2> /dev/null)" }
+
+gdd() {
+  local root=$(git rev-parse --show-toplevel)
+  git restore --worktree -- $root
+  git restore --staged -- $root
+  git clean -fd -- $root
+}
+
+# -----------#
+# terminal utilities
+# -----------#
+# Set terminal window titles - used to clarify the purpose and how to organize thinking in terminals
+windowTitle() {
+  TITLE=$1
+  echo -ne "\033]0;"$TITLE"\007"
+}
+
+# cb (as in cd-back): cd to a dir, do a command, then cd back
+function cb() {
+  echo "cd $1"
+  cd $1
+  echo "doing $2"
+  eval $2
+  cd -
+}
+
+cw() {
+  # get the path passed in
+  DIR=$1
+  GITDIR=$(git rev-parse --show-toplevel)
+  # If something was passed in, open it
+  if [[ -n $DIR ]]; then
+    echo "opening directory $DIR"
+    $EDITOR -n $DIR
+  elif [[ -n $GITDIR ]]; then
+    # if nothing was passed in, see if we're in a git repo
+    echo "opening git repo in $GITDIR, on branch $(git branch --show-current)"
+    $EDITOR -n $GITDIR
+  else
+    # if we're not in a git repo, set DIR to cwd
+    $EDITOR -n $(pwd)
+  fi
+}
+
+# go to the root of the git repo
+cdrt() {
+  # get the path passed in
+  GITDIR=$(git rev-parse --show-toplevel)
+  if [[ -n $GITDIR ]]; then
+    # if not in a git repo, do nothing
+    cd $GITDIR
+  else
+    echo "not in a git repo"
+  fi
+}
+
+Y() {
+  COMMAND=$@
+  # $COMMAND | lessY
+  eval "$COMMAND" | yank
+}
+
+################
+#  Docker things
+################
+
+doc-rebuild() {
+  local service=$1
+  docker-compose stop $service
+  docker-compose build builder $service
+  docker-compose start $service
+  docker-compose ps
+}
+
+pg(){
+  COMMAND=$@
+  # $COMMAND | less
+  eval "$COMMAND" | less
+
+}
+
+fh() {
+  # $1 is the query
+  if [ -z $1] # -z: length of string is zero
+    then
+      history 0 | cut -c 8- | fzf | pbc #fuzzy search command history and copy to clipboard
+    else
+      history 0 | cut -c 8- | fzf -q $1 | pbc #fuzzy search command history and copy to clipboard
+  fi
+}
+
+viewci() {
+  local branch=$(git rev-parse --abbrev-ref HEAD)
+  local repo=$(gh repo view --json owner,name | jq -r .name)
+  local org=$(gh repo view --json owner,name | jq -r .owner.login)
+  open "https://app.circleci.com/pipelines/github/${org}/${repo}?branch=${branch/\//%2F}"
+}
+
+scratch() {
+  cd $HOME/Projects/SandBoxes/solidity-sandbox
+
+  bash newTest.sh $1
+}
+
+# git worktree add and cd into it
+gwka() {
+  local wrktree_name=$1
+  local basepath=$(git rev-parse --show-toplevel)
+  basepath=$(echo $basepath | cut -d'.' -f1)
+  git worktree add $basepath.wk/${wrktree_name} ${wrktree_name}
+  gwks $wrktree_name
+}
+
+function zsh_stats() {
+  fc -l 1 \
+    | awk '{ CMD[$2]++; count++; } END { for (a in CMD) print CMD[a] " " CMD[a]*100/count "% " a }' \
+    | grep -v "./" | sort -nr | head -n 20 | column -c3 -s " " -t | nl
+}
+
+# git worktree switch
+gwks() {
+  local wrktree_name=$1
+  # get path of worktree for branch
+  local wrktree_path=$(git worktree list | grep $wrktree_name | cut -d' ' -f1)
+  cd $wrktree_path
+}
+
+# Define a function to clone a GitHub repo and open it in VSCode
+# doesn't work. fix later.
+function vrepo() {
+  # Check if the user provided a URL or org/repo-name
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: vRepo <github URL or org/repo-name>"
+    return 1
+  fi
+
+  # Check if the input is a URL or org/repo-name
+  if [[ $1 == *"github.com"* ]]; then
+    # remove everything up to the end of github.com
+    urlPath=$(echo $1 | sed 's/.*github.com\///')
+    org=$(echo $urlPath | cut -d '/' -f1)
+    repo=$(echo $urlPath | cut -d '/' -f2)
+  else
+    # Assume it's just provided as org/repo-name
+    # Split the org/repo-name input into its parts
+    org=$(echo $1 | cut -d '/' -f1)
+    repo=$(echo $1 | cut -d '/' -f2)
+  fi
+
+
+  dest_dir="$HOME/Projects/various-repos/$org-$repo"
+  echo "cloning $org/$repo into $dest_dir"
+
+  # Clone the repository to a temporary directory
+  gh clone "https://github.com/$org/$repo" "$dest_dir"
+  cd "$dest_dir"
+  # Open the repository in VSCode
+  code "$dest_dir"
+
+}
+
+function mainOpAddrs() {
+  declare -A addrs=(
+    ["L1CrossDomainMessengerProxy"]="0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1"
+    ["L1ERC721BridgeProxy"]="0x5a7749f83b81B301cAb5f48EB8516B986DAef23D"
+    ["L1StandardBridgeProxy"]="0x99C9fc46f92E8a1c0deC1b1747d010903E884bE1"
+    ["L2OutputOracleProxy"]="0xdfe97868233d1aa22e815a266982f2cf17685a27"
+    ["Lib_AddressManager"]="0xdE1FCfB0851916CA5101820A69b13a4E276bd81F"
+    ["OptimismMintableERC20FactoryProxy"]="0x75505a97BD334E7BD3C476893285569C4136Fa0F"
+    ["OptimismPortalProxy"]="0xbEb5Fc579115071764c7423A4f12eDde41f106Ed"
+    ["ProxyAdmin"]="0x543bA4AADBAb8f9025686Bd03993043599c6fB04"
+    ["SystemConfigProxy"]="0x229047fed2591dbec1eF1118d64F7aF3dB9EB290"
+    ["SystemDictatorProxy"]="0xB4453CEb33d2e67FA244A24acf2E50CEF31F53cB"
+  )
+
+  for key in "${(@k)addrs}"; do
+    echo "$key: ${addrs[$key]}"
+  done
+}
+
+delhist() {
+    local num_lines="$1"
+    local file="$HOME/.zsh_history"
+
+    if [[ ! "$num_lines" =~ ^[0-9]+$ ]]; then
+        echo "Invalid number of lines: $num_lines"
+        return 1
+    fi
+
+    local total_lines=$(wc -l < "$file")
+    local lines_to_keep=$((total_lines - num_lines))
+
+    if [[ "$lines_to_keep" -lt 0 ]]; then
+        echo "The file has fewer lines than the specified number."
+        return 1
+    fi
+
+    head -n "$lines_to_keep" "$file" >! "$file.tmp"
+    # copy over the contents so we keep the .tmp file as a back up just in case
+    cp -f "$file.tmp" "$file"
+
+    echo "Deleted $num_lines line(s) from '$file'."
+}
+
+chainAddrs() {
+  local REGISTRY_URL=https://raw.githubusercontent.com/ethereum-optimism/superchain-registry/main/superchain/configs
+  local L1="$1"
+  local L2="$2"
+  local Contract="$3"
+  if [[ -z "$Contract" ]]; then
+    curl --silent "$REGISTRY_URL/$L1/$L2.toml" | yq --input-format=toml ''
+  else
+    local fuzzyMatch=$(curl --silent "$REGISTRY_URL/$L1/$L2.toml" | yq --input-format=toml ".addresses | to_entries[] | select(.key | match(\"(?i)$Contract\")) | \"\(.key): \(.value)\"")
+    if [[ -n "$fuzzyMatch" ]]; then
+      local matchCount=$(echo "$fuzzyMatch" | wc -l)
+
+      if [[ $matchCount -eq 1 ]]; then
+        echo "$fuzzyMatch" | cut -d ':' -f 2 | tr -d ' '
+      else
+        echo "$fuzzyMatch"
+      fi
+    else
+      echo "No matching contract found for '$Contract'" >&2
+      return 1
+    fi
+  fi
+}
+
+chainConfig() {
+  local REGISTRY_URL=https://raw.githubusercontent.com/ethereum-optimism/superchain-registry/main/superchain/configs
+  local L1="$1"
+  local L2="$2"
+  local Contract="$3"
+  local URL="$REGISTRY_URL/$L1/$L2.toml"
+  curl --silent $URL | yq --input-format=toml ''
+}
+
+superAddrs() {
+  local REGISTRY_URL=https://raw.githubusercontent.com/ethereum-optimism/superchain-registry/main/superchain/configs
+  local L1="$1"
+  local URL="$REGISTRY_URL/$L1/superchain.toml"
+
+  curl --silent $URL | yq --input-format=toml ''
+}
+
+# MDS eth helpers
+
+# Aliases to local foundry binaries .
+alias forgel="~/Projects/Tools/foundry/target/debug/forge"
+alias castl="~/Projects/Tools/foundry/target/debug/cast"
+alias anvill="~/Projects/Tools/foundry/target/debug/anvil"
+alias chisell="~/Projects/Tools/foundry/target/debug/chisel"
+alias scopelintl="~/prj/scopelint/target/debug/scopelint"
+alias bulloakl="~/prj/bulloak/target/debug/bulloak"
+
+# Update foundry and install shell completions:
+#   - https://book.getfoundry.sh/config/shell-autocompletion
+#   - https://twitter.com/0xyyy_/status/1562091599731228672
+# We use a function then alias `gm` to it so we can override the
+# `alias gm="git merge"` that exists in the ohmyzsh git plugin.
+FOUNDRY_PLUGIN_DIR=${ZDOTDIR:-$HOME}}/completions/foundry
+updateFoundry() {
+  foundryup "$@"
+  # mkdir -p $FOUNDRY_PLUGIN_DIR
+  anvil completions zsh > $FOUNDRY_PLUGIN_DIR/_anvil
+  cast completions zsh > $FOUNDRY_PLUGIN_DIR/_cast
+  forge completions zsh > $FOUNDRY_PLUGIN_DIR/_forge
+}
+
+# --- Prices / gas ---
+# Returns the price in USD of the specified token
+# https://www.coingecko.com/en/api/documentation
+# example: `price eth`
+# example: `price $gtc`
+# example: `price <token>`
+price() {
+  if [[ $1 = 'eth' ]]; then
+    echo $(curl -s https://api.coingecko.com/api/v3/simple/price\?ids\=ethereum\&vs_currencies\=usd | jq '.ethereum.usd')
+  else
+    echo $(curl -s https://api.coingecko.com/api/v3/coins/ethereum/contract/$1 | jq '.market_data.current_price.usd')
+  fi
+}
+
+# prints the basefee in gwei, and the cost in USD of sending transactions based on current basefee and no priority fee
+gas() {
+  wad=1000000000000000000 # 1e18
+  price_eth=$(price eth)
+  price_gas=$(cast base-fee)
+  price_gas_gwei=$(cast --to-fix 9 "$price_gas")
+
+  # Calculating costs in USD
+  cost_transfer_usd=$(echo "scale=10;$price_eth*$price_gas*21000/$wad" | bc) # ETH transfer cost in USD
+  cost_swap_usd=$(echo "scale=10;$price_eth*$price_gas*130000/$wad" | bc) # Uniswap V3 swap cost in USD
+  cost_deploy_usd=$(echo "scale=10;$price_eth*$price_gas*1000000/$wad" | bc) # Contract deployment cost in USD
+
+  # Calculating costs in ETH
+  cost_transfer_eth=$(echo "scale=10;$price_gas*21000/$wad" | bc) # ETH transfer cost in ETH
+  cost_swap_eth=$(echo "scale=10;$price_gas*130000/$wad" | bc) # Uniswap V3 swap cost in ETH
+  cost_deploy_eth=$(echo "scale=10;$price_gas*1000000/$wad" | bc) # Contract deployment cost in ETH
+
+  printf 'ETH price  \t%1.3f USD\n' "$price_eth"
+  printf 'Basefee    \t%1.3f gwei\n' "$price_gas_gwei"
+  echo ""
+  printf 'Transfer \t21k gas  \t $%1.3f \t%1.5f ETH\n' "$cost_transfer_usd" "$cost_transfer_eth"
+  printf 'Swap     \t130k gas \t $%1.3f \t%1.5f ETH\n' "$cost_swap_usd" "$cost_swap_eth"
+  printf 'Deploy   \t1M gas   \t $%1.3f \t%1.5f ETH\n' "$cost_deploy_usd" "$cost_deploy_eth"
+}
+
+
+interface() {
+  if [[ $1 == 0x* ]]; then
+    cast interface "$1" -c "${2:-mainnet}" --etherscan-api-key "${3:-$ETHERSCAN_API_KEY}"
+  else
+    cast interface <(forge inspect "$1" abi)
+  fi
+}
+
+# --- Seth/Cast helpers ---
+# checksums the address
+checksum() {
+  cast --to-checksum-address "$1"
+}
+
+# returns the basefee in gwei
+alias basefee='cast --from-wei $(cast basefee) gwei'
+
+# example: `tracetx <txhash>` (`trace` is a builtin command)
+tracetx() {
+  cast run $1 --trace-printer
+}
+
+# example: `debug <txhash>`
+debug() {
+  seth bundle-source $(seth tx $1 to) > tmp.json && \ # often might need to bundle other sources
+  seth run-tx $1 --source=tmp.json --debug && \
+  rm tmp.json # <toContractName>.sol is often leftover, so delete that manually afterwards
+}
+
+# Usage `getSafeDetails <safe-address> [cast call options]`
+# All `cast call` options are passed to `cast call` commands. The one
+# exception is when we do ENS lookups, in which case we ignore cast flags
+# and always use the latest block with a mainnet RPC URL. This is done by
+# assuming a `MAINNET_RPC_URL` env var is set.
+getSafeDetails() {
+  local safe=$1
+  shift # Shift the first argument off so "$@" contains any additional arguments
+
+  local threshold owners nonce
+
+  # Ensure compatibility with both bash and zsh for arrays.
+  # In zsh, arrays start at 1 by default and it handles word splitting differently.
+  # Setting KSH_ARRAYS makes array indexing start at 0 in zsh, similar to bash,
+  # and we disable it at the end of the function.
+  if [[ -n "$ZSH_VERSION" ]]; then
+    setopt localoptions ksharrays
+  fi
+
+  nonce=$(cast call "$safe" "nonce()(uint256)" "$@")
+  threshold=$(cast call "$safe" "getThreshold()(uint256)" "$@")
+  owners=$(cast call "$safe" "getOwners()(address[])" "$@" | tr -d '[]' | tr ',' '\n')
+
+  # Convert string to array.
+  # This works in both bash and zsh without needing to change IFS.
+  local ownersArray=()
+  while IFS= read -r line; do
+    ownersArray+=("$line")
+  done <<< "$owners"
+
+  echo "Current Nonce:    $nonce"
+  echo "Threshold:        $threshold"
+  echo "Number of Owners: ${#ownersArray[@]}"
+
+  # Lookup each owner address
+  for address in "${ownersArray[@]}"; do
+    address="${address#"${address%%[![:space:]]*}"}"  # remove leading whitespace
+    ownerName=$(cast lookup-address "$address" -r "$MAINNET_RPC_URL" 2>/dev/null)
+    if [[ -n $ownerName ]]; then
+      echo "  $address $ownerName"
+    else
+      echo "  $address"
+    fi
+  done
+
+  # If previously set KSH_ARRAYS for zsh, unset it to revert back to normal zsh behavior
+  if [[ -n "$ZSH_VERSION" ]]; then
+    unsetopt ksharrays
+  fi
+}
+
+pasteToFile() {
+  file_name=$1
+  pbpaste > "$file_name"
+}
+alias ptf=pasteToFile
+
+wchks() {
+  NUMBER=$(gh pr view --json number --jq .number)
+  FAIL_MATCH="fail"
+  SUCCESS_MATCH="main.*pass"
+  watch --chgexit  "gh pr checks $NUMBER | grep -E  -e '$FAIL_MATCH' -e '$SUCCESS_MATCH'" \
+    && echo "ring a bell" \
+    && gh pr checks "$NUMBER"
+}
+
+my_debug_end

@@ -3,6 +3,7 @@
 with pkgs; [
   ack
   bat
+  btop
   cloc
   cowsay
   diff-so-fancy
