@@ -9,42 +9,17 @@
 
   home = {
     file = {
-        ".vimrc" = {
-            source = ./program_configs/vim_configuration;
-        };
-
-        ".ackrc" = {
-            source = ./program_configs/ackrc;
-        };
-
-        ".zshrc" = {
-            source = ./program_configs/zshrc;
-        };
-
-        ".zshenv" = {
-            source = ./program_configs/zshenv;
-        };
-        ".aliases" = {
-            source = ./program_configs/aliases;
-        };
-        ".functions" = {
-            source = ./program_configs/functions;
-        };
-        ".gitconfig" = {
-            source = ./program_configs/gitconfig;
-        };
-        ".config/lazygit/config.yml" = {
-            source = ./program_configs/lazygit-config.yml;
-        };
-        ".config/gh/config.yml" = {
-            source = ./program_configs/gh/config.yml;
-        };
-        ".config/gh/hosts.yml" = {
-            source = ./program_configs/gh/hosts.yml;
-        };
-        ".config/gh/state.yml" = {
-            source = ./program_configs/gh/state.yml;
-        };
+      ".vimrc".source = ./program_configs/vim_configuration;
+      ".ackrc".source = ./program_configs/ackrc;
+      ".zshrc".source = ./program_configs/zshrc;
+      ".zshenv".source = ./program_configs/zshenv;
+      ".aliases".source = ./program_configs/aliases;
+      ".functions".source = ./program_configs/functions;
+      ".gitconfig".source = ./program_configs/gitconfig;
+      ".config/lazygit/config.yml".source = ./program_configs/lazygit-config.yml;
+      ".config/gh/config.yml".source = ./program_configs/gh/config.yml;
+      ".config/gh/hosts.yml".source = ./program_configs/gh/hosts.yml;
+      ".config/gh/state.yml".source = ./program_configs/gh/state.yml;
     };
   };
 
