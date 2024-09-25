@@ -285,8 +285,6 @@ alias brewup='brew update && brew upgrade'
 
 alias nv='nvim'
 
-# alias code='cursor'
-
 alias p='pnpm'
 
 alias f='forge'
@@ -320,3 +318,5 @@ alias gch='git rev-parse HEAD'
 alias nu='nvm use'
 
 alias gtst='gt pr --stack'
+
+alias hm="(cd ~/.config/nix && home-manager switch --flake '.#maurelian')"
