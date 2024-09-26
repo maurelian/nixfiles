@@ -25,6 +25,7 @@
     # Additional packages can be added here
     pkgs.fishPlugins.foreign-env
     pkgs.zsh-history-to-fish
+    pkgs.starship
   ];
 
   programs.fish = {
@@ -36,6 +37,7 @@
 
     shellInitLast = ''
       fenv source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+      starship init fish | source
     '';
   };
   programs.fzf = {
