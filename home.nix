@@ -21,7 +21,10 @@
     };
   };
 
-  home.packages = import ./packages.nix { inherit pkgs; };
+  home.packages = import ./packages.nix { inherit pkgs; } ++ [
+    # Additional packages can be added here
+    pkgs.fishPlugins.foreign-env
+  ];
 
   programs.fish = {
     enable = true;
@@ -31,23 +34,8 @@
       '';
 
     shellInitLast = ''
-      . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+      fenv source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
     '';
-    plugins = [
-      # oh-my-fish plugins are stored in their own repositories, which
-      # makes them simple to import into home-manager.
-      # https://mjhart.netlify.app/posts/2020-03-14-nix-and-fish.html
-      {
-
-        name = "foreign-env";
-        src = pkgs.fetchFromGitHub {
-          owner = "oh-my-fish";
-          repo = "plugin-foreign-env";
-          rev = "7f0cf099ae1e1e4ab38f46350ed6757d54471de7";
-          sha256 = "sha256-4+k5rSoxkTtYFh/lEjhRkVYa2S4KEzJ/IJbyJl+rJjQ=";
-        };
-      }
-    ];
   };
   programs.fzf = {
     enable = true;
