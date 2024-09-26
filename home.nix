@@ -30,6 +30,10 @@
 
   programs.fish = {
     enable = true;
+    shellAliases = {
+      hm = "home-manager switch --flake $HOME/.config/nix#maurelian";
+      lg = "lazygit --ucd ~/.config/lazygit/";
+    };
     shellInit = ''
       fish_add_path $HOME/bin /usr/bin /usr/local/go
       fish_add_path --append /bin /usr/sbin /sbin /etc/paths.d $GOPATH/bin $HOME/.nvm $HOME/.foundry/bin $HOME/.cargo/bin $HOME/.local/bin
