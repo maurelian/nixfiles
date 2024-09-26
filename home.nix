@@ -11,8 +11,6 @@
     file = {
       ".vimrc".source = ./program_configs/vim_configuration;
       ".ackrc".source = ./program_configs/ackrc;
-      ".zshrc".source = ./program_configs/zshrc;
-      ".zshenv".source = ./program_configs/zshenv;
       ".aliases".source = ./program_configs/aliases;
       ".functions".source = ./program_configs/functions;
       ".gitconfig".source = ./program_configs/gitconfig;
@@ -25,32 +23,31 @@
 
   home.packages = import ./packages.nix { inherit pkgs; };
 
-  programs.zsh = {
+  programs.fish = {
     enable = true;
-    prezto = {
-      enable = true;
-      pmodules = [
-        "terminal"
-        "editor"
-        "directory"
-        "spectrum"
-        "utility"
-        "completion"
-        "contrib-prompt"
-        "prompt"
-        "history-substring-search"
-        "history"
-        "git"
-        "node"
-        "ssh"
-        "tmux"
-        "environment"
-      ];
-      extraConfig = ''
-        # Auto convert .... to ../..
-        zstyle ':prezto:module:editor' dot-expansion 'yes'
+    shellInit = ''
+      fish_add_path $HOME/bin /usr/bin /usr/local/go
+      fish_add_path --append /bin /usr/sbin /sbin /etc/paths.d $GOPATH/bin $HOME/.nvm $HOME/.foundry/bin $HOME/.cargo/bin $HOME/.local/bin
       '';
-    };
+
+    shellInitLast = ''
+      . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+    '';
+    plugins = [
+      # oh-my-fish plugins are stored in their own repositories, which
+      # makes them simple to import into home-manager.
+      # https://mjhart.netlify.app/posts/2020-03-14-nix-and-fish.html
+      {
+
+        name = "foreign-env";
+        src = pkgs.fetchFromGitHub {
+          owner = "oh-my-fish";
+          repo = "plugin-foreign-env";
+          rev = "7f0cf099ae1e1e4ab38f46350ed6757d54471de7";
+          sha256 = "sha256-4+k5rSoxkTtYFh/lEjhRkVYa2S4KEzJ/IJbyJl+rJjQ=";
+        };
+      }
+    ];
   };
   programs.fzf = {
     enable = true;

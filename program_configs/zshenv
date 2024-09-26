@@ -52,9 +52,7 @@ fi
 # prepend cargo to path
 # Wrap the existing path in the desired order
 # The default should be to put things you want access to in ~/bin
-export PATH="$HOME/bin:\
-/usr/bin:\
-/usr/local/go:\
+export PATH=
 $PATH:\
 /bin:\
 /usr/sbin:\
