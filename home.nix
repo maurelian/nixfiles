@@ -24,6 +24,7 @@
   home.packages = import ./packages.nix { inherit pkgs; } ++ [
     # Additional packages can be added here
     pkgs.fishPlugins.foreign-env
+    pkgs.zsh-history-to-fish
   ];
 
   programs.fish = {
