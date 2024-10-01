@@ -15,8 +15,8 @@ in
       ".vimrc".source = ./program_configs/vim_configuration;
       ".ackrc".source = ./program_configs/ackrc;
       ".aliases".source = ./program_configs/aliases;
-      ".iterm2_shell_integration.zsh".source = ./program_configs/iterm2_shell_integration.zsh;
-      ".iterm2_shell_integration.fish".source = ./program_configs/iterm2_shell_integration.fish;
+      ".iterm2_shell_integration.zsh".source = ./program_configs/iterm2_shell_integrations.zsh;
+      ".iterm2_shell_integration.fish".source = ./program_configs/iterm2_shell_integrations.fish;
       ".functions".source = ./program_configs/functions;
       ".gitconfig".source = ./program_configs/gitconfig;
       ".config/lazygit/config.yml".source = ./program_configs/lazygit-config.yml;
