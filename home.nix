@@ -1,9 +1,12 @@
 { config, pkgs, ... }:
 
+let
+  abbreviations = import ./abbreviations.nix;
+in
 {
   home.username = "maurelian";
   home.homeDirectory = "/Users/maurelian";
-  home.stateVersion = "23.11"; # Use the version of Home Manager you initially installed
+  home.stateVersion = "23.11";
 
   programs.home-manager.enable = true;
 
@@ -47,14 +50,11 @@
 
   programs.fish = {
     enable = true;
-    shellAliases = {
-      hm = "home-manager switch --flake $HOME/.config/nix#maurelian";
-      lg = "lazygit --ucd ~/.config/lazygit/";
-    };
+    shellAbbrs = abbreviations;
     shellInit = ''
       fish_add_path $HOME/bin /usr/bin /usr/local/go
       fish_add_path --append /bin /usr/sbin /sbin /etc/paths.d $GOPATH/bin $HOME/.nvm $HOME/.foundry/bin $HOME/.cargo/bin $HOME/.local/bin
-      '';
+    '';
 
     shellInitLast = ''
       fenv source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
@@ -62,12 +62,13 @@
       starship init fish | source
       source $HOME/.iterm2_shell_integration.fish
     '';
-
   };
+
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
   };
+
   programs.lazygit = {
     enable = true;
     settings = (builtins.readFile ./program_configs/lazygit-config.yml);
