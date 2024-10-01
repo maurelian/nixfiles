@@ -36,7 +36,6 @@
 # --------------------------------- #
 #  Git stuff #
 # --------------------------------- #
-  gt = "/opt/homebrew/bin/gt";
   # git log..
   glog = "git log --oneline --decorate --graph";
   glv = "git log"; # verbose logging
