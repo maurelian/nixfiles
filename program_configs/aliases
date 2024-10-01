@@ -1,8 +1,6 @@
 #!/bin/zsh
 # Aliases
 
-alias cppcompile='c++ -std=c++11 -stdlib=libc++'
-alias Chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 alias srz="source ~/.zshrc"
 
 ## Aliases NVM
@@ -18,90 +16,6 @@ alias play="cd $HOME/Projects/sandbox"
 alias cdteam="cd $HOME/Projects/O/monorepo-team"
 alias cdpriv="cd $HOME/Projects/O/monorepo-priv"
 
-# --------------------------------- #
-#  Git stuff #
-# --------------------------------- #
-# leave this for graphite
-alias gt='/opt/homebrew/bin/gt'
-# git log..
-alias glog='git log --oneline --decorate --graph'
-alias glv='git log' # verbose logging
-alias glob='glog  --pretty=format:"${_git_log_brief_format}"'
-alias gl='glob' # preferred log
-
-# git commit
-alias gcn='git commit --amend --no-edit'
-alias gcan='git commit --all --amend --no-edit'
-# git cherry-pick
-alias gcp='git cherry-pick'
-
-# git restore
-alias gors='git restore --staged'
-alias gor='git restore'
-
-#  branch management
-alias gbc='git branch --show-current'
-alias gbM='git branch --merged | egrep -v "(^\*|master|main|dev)"'
-alias gbl='git describe --all $(git rev-parse @{-1})'
-
-# quickly create a WIP commit
-alias gwip='git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign -m "--wip--"'
-
-# other git
-alias gwS='git status --ignore-submodules=${_git_status_ignore_submodules} --show-stash'
-alias gRS='git submodule foreach --recursive git reset --hard'
-
-# this overrides g='git', but I wasn't using it anyways.
-alias g='gws'
-alias gq='git show --quiet'
-alias gcss='git show --stat'
-alias gci='git check-ignore -v *'
-alias gsamscp='git am --show-current-patch'
-
-# branch aliases
-alias gmain='git branch | grep -o -m1 "\b\(master\|main\)\b"' # print main or master
-alias gmbl='git rev-parse --abbrev-ref HEAD'                  # print main branch local
-alias gmbr='git rev-parse --abbrev-ref origin/HEAD'           # print main branch remote
-alias gcur='git branch --show-current'
-alias gcuru='git rev-parse --abbrev-ref ${gcur}@{u}'
-
-# inspired by Kelvins stuff
-# alias gf='git fetch'
-# alias gp='git push origin $(gcur)'
-# alias gpf='git push -f origin $(gcur)'
-alias grd='gf && git rebase -i $(gmbr)'
-alias grr='gf && gco $(gmbl) && git reset --hard $(gmbr)' #  change to the primary branch, wipe all changes, and match the remote
-alias grt='gf && git reset --hard $(gcuru)'               #  wipe all changes, and match the remote branch
-alias glau='glog `gcuru` `gcur`'                          # git log current branch against upstream
-
-alias gfo='git fetch origin'
-alias gfodd='gfo develop:develop' # get changes from origin into develop without switching branches
-alias grmain='git rebase `gmain`'
-alias grd='git rebase develop'
-
-alias gfmoc='git pull origin'
-alias gfmod='git pull origin develop:develop'
-alias gfmom='gfo `gmain`:`gmain`' # get changes from origin into main/master without switching branches
-
-# pull and rebase on the main branch
-alias gfdr='gfmod && git rebase develop'
-alias gfmr='gfmom && git rebase `gmain`'
-
-alias gbsu='git branch --set-upstream-to=origin/$(gcur) $(gcur)'
-alias gifl='git status -s | sed "$1q;d" | cut -c4-' # list files in the index that are different from the HEAD commit
-alias gcod='gco develop'
-
-# git notes (but not actually using `git note`)
-alias gnote='git branch --edit-description'
-alias gread='git config "branch.$(git-branch-current).description"'
-alias lg='lazygit'
-
-# git worktree aliases
-alias gwk='git worktree'
-alias gwkl='git worktree list'
-
-# git branchless aliases
-alias bl='git-branchless'
 
 # --------------------------------- #
 # npm/stuff  #
@@ -123,13 +37,6 @@ alias pas='pyenv activate shell'
 alias paa='pyenv activate analyze'
 alias p3='python3'
 
-# rbenv
-alias rinit='eval "$(rbenv init -)"  && ruby -v'
-
-### Auditing utilities
-# load the tools I use in node and python
-alias lenv='node -v && pinit && pyenv activate analyze'
-alias soliumsec='solium --no-soliumignore --no-soliumrc --plugin security'
 
 alias today='date --iso-8601'
 
@@ -147,13 +54,11 @@ alias gconf="$EDITOR -n $HOME/.gitconfig \
 # --------------------------------- #
 alias foreach="tr '\n' '\0' | xargs -0 -n1"
 alias stripxterm='perl -pe s/e([^[]]|[.*?[a-zA-Z]|].*?a)//g | col -b'
-# alias cat='bat'
 
 # putting things into the clipboard
 alias cpwd='pwd | pbcopy'
 alias cplast='fc -ln -1 | pbcopy'
 alias cpl='cplast'
-alias yankl='$(fc -ln -1) | yank'
 
 # ls things
 alias al="ls -al"
@@ -186,134 +91,3 @@ alias fxnm='find . -path **/node_modules -prune -false -o -name'
 # --------------------------------- #
 # alias init-pyenv=`eval "$(pyenv init -)"` # && eval "$(pyenv virtualenv-init -)"
 alias sba='source venv/bin/activate'
-
-# --------------------------------- #
-# Ethereum related things
-# --------------------------------- #
-
-# get common strings
-alias b20='echo 0x0000000000000000000000000000000000000000'
-alias b32='echo 0x0000000000000000000000000000000000000000000000000000000000000000'
-
-# --------------------------------- #
-# ack (is awesome)
-# --------------------------------- #
-
-# See also ~/.ackrc, which defines custom types
-alias acksol='ack --type=sol'
-
-# --------------------------------- #
-# Docker
-# --------------------------------- #
-alias doc='docker-compose'
-alias dd='docker-compose down'
-alias db='docker-compose build'
-alias dud='docker-compose up -d'
-alias dp='docker-compose ps'
-alias dd-du='docker-compose down \
-  && docker-compose up -d \
-  && docker-compose ps'
-alias db-du='docker-compose build \
-  && docker-compose up -d \
-  && docker-compose ps'
-
-# --------------------------------- #
-# solc aliases
-# --------------------------------- #
-alias solca='solc --allow-paths=$(pwd)'
-alias solcs='$HOME/.local/bin/solc-select' # uses the version of solidity set by solc-select
-
-# --------------------------------- #
-# Optimism things aliases
-# --------------------------------- #
-alias cdpc='cd packages/contracts'
-alias cdpb='cd packages/contracts-bedrock'
-
-# --------------------------------- #
-# pnpm stuff
-# --------------------------------- #
-
-alias y='pnpm'
-alias yc='pnpm clean'
-alias yb='pnpm build'
-alias yt='pnpm test'
-alias ys='pnpm start'
-alias yd='pnpm dev'
-alias ybyt='yb && yt'
-alias yyb='pnpm && pnpm build'
-alias yybyt='pnpm && pnpm build && pnpm test'
-alias yybi='pnpm && pnpm build:integration'
-alias yti='pnpm test:integration'
-alias ycb='pnpm clean && pnpm && pnpm build'
-alias ycbt='pnpm clean && pnpm && pnpm build && pnpm test'
-alias ybi='pnpm build:integration'
-alias ylyt='pnpm lint; pnpm test'
-alias ychg='pnpm changeset'
-alias yh='pnpm help'
-alias yf='pnpm format'
-alias ych='pnpm changeset'
-
-# --------------------------------- #
-# Foundry stuff
-# --------------------------------- #
-alias ft='forge test'
-alias ftmt='forge test -vvvv --match-test'
-alias ftmc='forge test -vvvv --match-contract'
-alias fs='forge snapshot'
-alias fb='forge build'
-
-# --------------------------------- #
-# Misc Utils
-# --------------------------------- #
-alias mfp='make -f ../Prepare'
-alias beep="osascript -e 'display notification \"beep\" with title \"BEEP\"'"
-alias beep2='echo "ring a bell"'
-alias dsf='diff-so-fancy'
-
-# --------------------------------- #
-# Misc Utils
-# --------------------------------- #
-alias rpu='source ~/zprezto/runcoms/rpc-urls'
-alias secret='source ~/zprezto/runcoms/secrets'
-
-alias was='which -as'
-
-alias brewup='brew update && brew upgrade'
-
-alias nv='nvim'
-
-alias p='pnpm'
-
-alias f='forge'
-
-alias prurl='gh pv --json url -q .url | pbc'
-
-alias lft='FOUNDRY_PROFILE=lite forge test'
-
-alias lfb='FOUNDRY_PROFILE=lite forge build'
-
-alias lfb='FOUNDRY_PROFILE=lite forge build'
-
-alias gg='/Users/maurelian/.local/bin/gpt'
-
-alias lfd='FOUNDRY_PROFILE=lite forge script scripts/Deploy.s.sol:Deploy -vvv'
-
-alias fd='forge script scripts/Deploy.s.sol:Deploy -vvv'
-
-alias gdau='git diff `gcuru` `gcur`'
-
-alias fd='forge script scripts/Deploy.s.sol:Deploy -vvv'
-
-# run locally built foundry tools
-alias forgel="~/Projects/Tools/foundry/target/debug/forge"
-alias castl="~/Projects/Tools/foundry/target/debug/cast"
-alias anvill="~/Projects/Tools/foundry/target/debug/anvil"
-alias chisell="~/Projects/Tools/foundry/target/debug/chisel"
-
-alias gch='git rev-parse HEAD'
-
-alias nu='nvm use'
-
-alias gtst='gt pr --stack'
-
-alias hm="(cd ~/.config/nix && home-manager switch --flake '.#maurelian')"
