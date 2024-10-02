@@ -1,7 +1,9 @@
 { config, pkgs, ... }:
 
 let
-  abbreviations = import ./abbreviations.nix;
+  aliasesAndAbbreviations = import ./abbreviations.nix;
+  aliases = aliasesAndAbbreviations.aliases;
+  abbreviations = aliasesAndAbbreviations.abbreviations;
 in
 {
   home.username = "maurelian";
@@ -46,14 +48,17 @@ in
     pkgs.fishPlugins.puffer
     pkgs.fishPlugins.fifc
     pkgs.fishPlugins.bass
+    pkgs.fishPlugins.git-abbr
   ];
 
   programs.fish = {
     enable = true;
+    shellAliases = aliases;
     shellAbbrs = abbreviations;
     shellInit = ''
       fish_add_path $HOME/bin /usr/bin /usr/local/go /opt/homebrew/bin
       fish_add_path --append /bin /usr/sbin /sbin /etc/paths.d $GOPATH/bin $HOME/.nvm $HOME/.foundry/bin $HOME/.cargo/bin $HOME/.local/bin
+      abbr -e gt
     '';
 
     shellInitLast = ''
