@@ -91,9 +91,11 @@
     b32 = "echo 0x0000000000000000000000000000000000000000000000000000000000000000";
 
     lg = "lazygit --ucd ~/.config/lazygit/";
+
   };
 
   abbreviations = {
+    g = "git status";
     hm = "home-manager switch --flake $HOME/.config/nix#maurelian";
   };
 }
