@@ -1,5 +1,15 @@
+# https://starship.rs/config/
 [character] # The name of the module we are configuring is 'character'
 success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
 
 [gcloud]
 disabled = true
+
+[git_commit]
+only_detached = false
+
+[git_status]
+staged = '[++\($count\)](green)'
+ahead = '⇡${count}'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+behind = '⇣${count}'
