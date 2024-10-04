@@ -4,6 +4,7 @@ let
   aliasesAndAbbreviations = import ./abbreviations.nix;
   aliases = aliasesAndAbbreviations.aliases;
   abbreviations = aliasesAndAbbreviations.abbreviations;
+  functions = aliasesAndAbbreviations.functions;
 in
 {
   home.username = "maurelian";
@@ -25,6 +26,7 @@ in
       ".config/gh/config.yml".source = ./program_configs/gh/config.yml;
       ".config/gh/hosts.yml".source = ./program_configs/gh/hosts.yml;
       ".config/gh/state.yml".source = ./program_configs/gh/state.yml;
+      ".config/starship.toml".source = ./program_configs/starship.toml;
     };
   };
 
@@ -55,7 +57,11 @@ in
     enable = true;
     shellAliases = aliases;
     shellAbbrs = abbreviations;
+    functions = functions;
     shellInit = ''
+      export EDITOR=code
+      export VISUAL=nvim
+      export GIT_EDITOR=nvim
       fish_add_path $HOME/bin /usr/bin /usr/local/go /opt/homebrew/bin
       fish_add_path --append /bin /usr/sbin /sbin /etc/paths.d $GOPATH/bin $HOME/.nvm $HOME/.foundry/bin $HOME/.cargo/bin $HOME/.local/bin
       abbr -e gt

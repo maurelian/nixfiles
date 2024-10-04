@@ -40,11 +40,11 @@ function chpwd() {
   ls
 }
 
-# hex to decimal
-function dec() { echo $((16# $1)) }
+# # hex to decimal
+# function dec() { echo $((16# $1)) }
 
-# decimal to hex
-function hex() { printf '%x\n' "$1" }
+# # decimal to hex
+# function hex() { printf '%x\n' "$1" }
 
 # print ls output with numeric chmod permissions
 function 7s() {
@@ -92,18 +92,6 @@ function ppup() {
 
 function mvscop() {
   mv $* /Users/primary/Projects/Scoping/scoping-reports
-}
-
-function controlSelf() {
-  eval "defaults write org.eyebeam.SelfControl BlockDuration -int $1"
-  extras=""
-  if [ "$2" = "nuke" ]; then
-      extras="inbox.google.com slack.com"
-  fi
-  blacklist="facebook.com news.ycombinator.com reddit.com twitter.com $extras"
-  eval "defaults write org.eyebeam.SelfControl HostBlacklist -array $blacklist"
-  defaults read org.eyebeam.SelfControl
-  sudo /Applications/SelfControl.app/Contents/MacOS/org.eyebeam.SelfControl $(id -u $(whoami)) --install > /dev/null 2>&1
 }
 
 #/****************************************|
