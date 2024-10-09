@@ -73,10 +73,14 @@
     b20 = "echo 0x0000000000000000000000000000000000000000";
     b32 = "echo 0x0000000000000000000000000000000000000000000000000000000000000000";
     lg = "lazygit --ucd ~/.config/lazygit/";
+
+    gs = "git stash";
+    gsp = "git stash pop";
     gdd = "git restore --worktree -- $(git rev-parse --show-toplevel) && git restore --staged -- $(git rev-parse --show-toplevel) && git clean -fd -- $(git rev-parse --show-toplevel)";
   };
 
   abbreviations = {
+    g = "git status";
     srf = "source ~/.config/fish/config.fish";
     hm = "home-manager switch --flake $HOME/.config/nix#maurelian";
     gp = "git push origin $gcur";
@@ -87,7 +91,6 @@
 
     gcur = "git branch --show-current";
     gcuru = "git rev-parse --abbrev-ref @{upstream}";
-    gdau = "git diff $gcuru $gcur";
     gfo = "git fetch origin";
     gfodd = "gfo develop:develop";
     grmain = "git rebase $gmain";
@@ -99,6 +102,10 @@
     gfmr = "gfmom && git rebase $gmain";
     gbsu = "git branch --set-upstream-to=origin/$gcur $gcur";
     gifl = "git status -s | sed \"$1q;d\" | cut -c4-";
+
+    lgl = "lg log";
+    lgs = "lg status";
+    lgd = "lg diff";
   };
 
   functions = {
@@ -108,6 +115,13 @@
         set -l current (git rev-parse --abbrev-ref HEAD)
         echo "current: $current"
         glog $upstream $current
+      '';
+      gdau = ''
+        set -l upstream (git rev-parse --abbrev-ref @{upstream})
+        echo "upstream: $upstream"
+        set -l current (git rev-parse --abbrev-ref HEAD)
+        echo "current: $current"
+        git diff $upstream $current
       '';
       ff = "find . -iname \"*$argv[1]*\" $argv[2..-1]";
       cw = ''
@@ -131,7 +145,32 @@
         set -l branch (git rev-parse --abbrev-ref HEAD | string collect; or echo)
         set -l repo (gh repo view --json owner,name | jq -r .name | string collect; or echo)
         set -l org (gh repo view --json owner,name | jq -r .owner.login | string collect; or echo)
-        open 'https://app.circleci.com/pipelines/github/'"$org"'/'"$repo"'?branch='(string replace '/' '%2F' "$branch")
+        set -l url "https://app.circleci.com/pipelines/github/$org/$repo?branch=$branch"
+        echo "Opening $url"
+        open "$url"
+      '';
+      cdrt = ''
+        set GITDIR (git rev-parse --show-toplevel | string collect; or echo)
+        if test -n "$GITDIR"
+          # if not in a git repo, do nothing
+          cd $GITDIR
+        else
+          echo 'not in a git repo'
+        end
+      '';
+      cdi = ''
+        set -l dir (z -l | sort -rn | sed 's/^[0-9.]* *//' | peco --prompt "Choose directory: ")
+        if test -n "$dir"
+            cd $dir
+        end
+      '';
+      wchks = ''
+        set -l NUMBER (gh pr view --json number --jq .number)
+        set -l FAIL_MATCH "fail"
+        set -l SUCCESS_MATCH "main.*pass"
+        watch --chgexit  "gh pr checks $NUMBER | grep -E  -e $FAIL_MATCH -e $SUCCESS_MATCH" \
+          && echo "ring a bell" \
+          && gh pr checks $NUMBER
       '';
     };
 }

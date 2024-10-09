@@ -68,8 +68,6 @@ alias lw='ls -al'
 alias lsd='ls -ald */'
 
 # Looking around
-alias cr='peco-cdr'
-alias dirs='dirs -p | grep -n ""'
 
 alias rh='run-help' # another way of running `man` I kind of forget what this does.
 

@@ -73,8 +73,9 @@ gui:
 #   parseEmoji: false
 #   diffContextSize: 3 # how many lines of context are shown around a change in diffs
 os:
-  edit: "code" # see 'Configuring File Editing' section
-  open: "code"
+  editInTerminal: true
+  edit: "code -g {{filename}}" # see 'Configuring File Editing' section
+  open: "code -g {{filename}}"
   editAtLine: "code -g {{filename}}:{{line}}"
 refresher:
   refreshInterval: 5 # file/submodule refresh interval in seconds
