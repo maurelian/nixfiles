@@ -8,6 +8,7 @@ with pkgs; [
   cowsay
   diff-so-fancy
   gh
+  grc
   go
   gotestsum
   lazygit

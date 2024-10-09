@@ -51,6 +51,7 @@ in
     pkgs.fishPlugins.fifc
     pkgs.fishPlugins.bass
     pkgs.fishPlugins.git-abbr
+    pkgs.fishPlugins.z
   ];
 
   programs.fish = {
