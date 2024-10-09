@@ -43,8 +43,6 @@ in
     pkgs.fishPlugins.done
     # use babelfish than foreign-env
     pkgs.fishPlugins.foreign-env
-    # https://github.com/wfxr/forgit
-    pkgs.fishPlugins.forgit
     # Paired symbols in the command line
     pkgs.fishPlugins.pisces
     pkgs.fishPlugins.puffer
