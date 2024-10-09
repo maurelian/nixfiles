@@ -85,6 +85,7 @@ in
       starship init fish | source
       source $HOME/.iterm2_shell_integration.fish
       set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/O" "$HOME/Projects/Hunting" "$HOME/Projects/Tools" "$HOME/Projects/Scoping" "$HOME/Projects/ReferenceCodebases" "$HOME/Projects/Miscellaneous" "$HOME/Projects/various-repos"
+      set -U pisces_only_insert_at_eol 1 # quote/bracket completion setting
     '';
   };
 
