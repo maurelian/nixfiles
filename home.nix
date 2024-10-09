@@ -27,6 +27,10 @@ in
       ".config/gh/hosts.yml".source = ./program_configs/gh/hosts.yml;
       ".config/gh/state.yml".source = ./program_configs/gh/state.yml;
       ".config/starship.toml".source = ./program_configs/starship.toml;
+      ".nix-fish-wrapper.zsh" = {
+        source = ./program_configs/nix-fish-wrapper.zsh;
+        executable = true;
+      };
     };
   };
 
@@ -80,12 +84,14 @@ in
     '';
 
     shellInitLast = ''
-      fenv source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
       babelfish < $HOME/.aliases | source
       starship init fish | source
       source $HOME/.iterm2_shell_integration.fish
       set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/O" "$HOME/Projects/Hunting" "$HOME/Projects/Tools" "$HOME/Projects/Scoping" "$HOME/Projects/ReferenceCodebases" "$HOME/Projects/Miscellaneous" "$HOME/Projects/various-repos"
       set -U pisces_only_insert_at_eol 1 # quote/bracket completion setting
+      if not set -q NIX_PROFILES
+        echo "Warning: Nix environment doesn't seem to be properly sourced"
+      end
     '';
   };
 
