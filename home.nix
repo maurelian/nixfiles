@@ -80,6 +80,7 @@ in
       export GIT_EDITOR=nvim
       fish_add_path $HOME/bin /usr/bin /usr/local/go /opt/homebrew/bin
       fish_add_path --append /bin /usr/sbin /sbin /etc/paths.d $GOPATH/bin $HOME/.nvm $HOME/.foundry/bin $HOME/.cargo/bin $HOME/.local/bin
+      set GPG_TTY $(tty)
       abbr -e gt
     '';
 

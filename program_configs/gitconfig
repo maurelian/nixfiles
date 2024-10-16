@@ -7,7 +7,7 @@
 [user]
 	name = Maurelian
 	email = maurelian@protonmail.ch
-	signingkey = B04ED68D
+	signingkey = DC750394B04ED68D
 [pull]
 	rebase = true
 [diff]
@@ -51,3 +51,5 @@
 	defaultBranch = main
 [commit]
 	gpgsign = true
+[gpg]
+	program = /usr/local/bin/gpg

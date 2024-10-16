@@ -18,6 +18,7 @@ with pkgs; [
   kustomize
   neovim
   peco
+  pinentry-tty
   ripgrep
   tree
   tig
