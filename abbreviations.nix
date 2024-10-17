@@ -34,7 +34,7 @@
     g = "git status";
     glog = "git log --oneline --decorate --graph";
     glv = "git log";
-    glob = "glog --pretty=format:\"$_git_log_brief_format\"";
+    glob = "glog --pretty=format:$_git_log_brief_format";
     gl = "glob";
     gcn = "git commit --amend --no-edit";
     gcan = "git commit --all --amend --no-edit";
@@ -81,31 +81,36 @@
 
   abbreviations = {
     g = "git status";
-    srf = "source ~/.config/fish/config.fish";
-    hm = "home-manager switch --flake $HOME/.config/nix#maurelian";
+    gcs = "git show";
+    gcss = "git show --stat";
     gp = "git push origin $gcur";
     gpf = "git push --force-with-lease origin $gcur";
-    grd = "gf && git rebase -i $gmbr";
-    grr = "gf && gco $gmbl && git reset --hard $gmbr";
-    grt = "gf && git reset --hard $gcuru";
+    grd = "git fetch && git rebase -i $gmbr";
+    grr = "git fetch && gco $gmbl && git reset --hard $gmbr";
+    grt = "git fetch && git reset --hard $gcuru";
 
     gcur = "git branch --show-current";
     gcuru = "git rev-parse --abbrev-ref @{upstream}";
     gfo = "git fetch origin";
-    gfodd = "gfo develop:develop";
+    gfodd = "git fetch origin develop:develop";
     grmain = "git rebase $gmain";
     gfm = "git pull ";
     gfmoc = "git pull origin";
     gfmod = "git pull origin develop:develop";
-    gfmom = "gfo $gmain:$gmain";
-    gfdr = "gfmod && git rebase develop";
-    gfmr = "gfmom && git rebase $gmain";
+    gfmom = "git fetch origin $gmain:$gmain";
+    gfdr = "git pull origin develop:develop && git rebase develop";
+    gfmr = "git fetch origin $gmain:$gmain && git rebase $gmain";
     gbsu = "git branch --set-upstream-to=origin/$gcur $gcur";
     gifl = "git status -s | sed \"$1q;d\" | cut -c4-";
 
     lgl = "lg log";
     lgs = "lg status";
     lgd = "lg diff";
+    lgb = "lg branch";
+
+    srf = "source ~/.config/fish/config.fish";
+    histm = "history merge";
+    hm = "home-manager switch --flake $HOME/.config/nix#maurelian";
   };
 
   functions = {
@@ -179,6 +184,15 @@
           commandline $cmd
       end
       commandline -f repaint
+    '';
+    cleanStash = ''
+      set -l days $argv[1]
+      if test -z "$days"
+          set days 30
+      end
+      echo "Cleaning stash entries older than $days days..."
+      git stash list | awk -v days=$days '$0 ~ /.*\((.*)\)/ {split($0,a,":"); split(a[1],b,"stash@{"); split(b[2],c,"}"); cmd="date -v-"days"d +%s"; cmd | getline cutoff; close(cmd); cmd="date -j -f \"%a %b %d %H:%M:%S %Y\" \""$0"\" +%s"; cmd | getline timestamp; close(cmd); if (timestamp < cutoff) {print "Dropping stash@{"c[1]"}"; system("git stash drop stash@{"c[1]"}")}}'
+      echo "Stash cleaning complete."
     '';
     };
 }
