@@ -56,24 +56,12 @@ in
     pkgs.fishPlugins.z
     pkgs.fishPlugins.grc
 
-  # Derivation examples, just in case that's ever needed
-  #   {
-  #     name = "z";
-  #     src = pkgs.fetchFromGitHub {
-  #       owner = "jethrokuan";
-  #       repo = "z";
-  #       rev = "e0e1b9dfdba362f8ab1ae8c1afc7ccf62b89f7eb";
-  #       sha256 = "0dbnir6jbwjpjalz14snzd3cgdysgcs3raznsijd6savad3qhijc";
-  #    };
-  #  }
-  #  { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-
     (pkgs.stdenv.mkDerivation {
       name = "git-push-fork-to-upstream-branch";
       version = "1.0.0";
       src = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/jklukas/git-push-fork-to-upstream-branch/master/git-push-fork-to-upstream-branch";
-        sha256 = "sha256-lBzih1POpb6qmiL1uOb+k7ffThINSU8cvmGlZgBD/g8=";
+        url = "https://raw.githubusercontent.com/maurelian/git-push-fork-to-upstream-branch/master/git-push-fork-to-upstream-branch";
+        sha256 = "sha256-ZCcqdSHdqDu/DTkRVw2HEEzbPTDQJ9hNta9oOfb1QJU";
       };
       dontUnpack = true;
       installPhase = ''
