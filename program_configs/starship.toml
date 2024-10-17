@@ -13,3 +13,13 @@ staged = '[++\($count\)](green)'
 ahead = '⇡${count}'
 diverged = '⇕⇡${ahead_count}⇣${behind_count}'
 behind = '⇣${count}'
+
+[time]
+disabled = false
+time_format = '%T'
+utc_time_offset = '-5'
+format = '[\($time\) ]($style)'
+style = 'yellow'
+
+[directory]
+truncation_length = 3
