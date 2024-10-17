@@ -67,7 +67,23 @@ in
   #    };
   #  }
   #  { name = "grc"; src = pkgs.fishPlugins.grc.src; }
+
+    (pkgs.stdenv.mkDerivation {
+      name = "git-push-fork-to-upstream-branch";
+      version = "1.0.0";
+      src = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/jklukas/git-push-fork-to-upstream-branch/master/git-push-fork-to-upstream-branch";
+        sha256 = "sha256-lBzih1POpb6qmiL1uOb+k7ffThINSU8cvmGlZgBD/g8=";
+      };
+      dontUnpack = true;
+      installPhase = ''
+        mkdir -p $out/bin
+        cp $src $out/bin/git-push-fork-to-upstream-branch
+        chmod 755 $out/bin/git-push-fork-to-upstream-branch
+      '';
+    })
   ];
+
 
   programs.fish = {
     enable = true;
