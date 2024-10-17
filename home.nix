@@ -78,15 +78,17 @@ in
       export EDITOR=code
       export VISUAL=nvim
       export GIT_EDITOR=nvim
-      fish_add_path $HOME/bin /usr/bin /usr/local/go /opt/homebrew/bin
-      fish_add_path --append /bin /usr/sbin /sbin /etc/paths.d $GOPATH/bin $HOME/.nvm $HOME/.foundry/bin $HOME/.cargo/bin $HOME/.local/bin
       set GPG_TTY $(tty)
+      fish_add_path $HOME/bin /usr/bin /usr/local/bin $HOME/go/bin
+      fish_add_path --append /opt/homebrew/bin /bin /usr/sbin /sbin /etc/paths.d
+      fish_add_path --append $GOPATH/bin $HOME/.nvm $HOME/.foundry/bin $HOME/.cargo/bin $HOME/.local/bin
       abbr -e gt
     '';
 
     shellInitLast = ''
       babelfish < $HOME/.aliases | source
       starship init fish | source
+      babelfish < /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
       source $HOME/.iterm2_shell_integration.fish
       set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/O" "$HOME/Projects/Hunting" "$HOME/Projects/Tools" "$HOME/Projects/Scoping" "$HOME/Projects/ReferenceCodebases" "$HOME/Projects/Miscellaneous" "$HOME/Projects/various-repos"
       set -U pisces_only_insert_at_eol 1 # quote/bracket completion setting
