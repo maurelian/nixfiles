@@ -196,5 +196,5 @@
       '';
     };
 
-  aliases.gpftub = "git push fork to upstream branch";
+  aliases.gpftub = "git-push-fork-to-upstream-branch";
 }
