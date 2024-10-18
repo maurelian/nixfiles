@@ -37,6 +37,7 @@
     glob = "glog --pretty=format:$_git_log_brief_format";
     gl = "glob";
     gcn = "git commit --amend --no-edit";
+    gce = "git commit --amend";
     gcan = "git commit --all --amend --no-edit";
     gcp = "git cherry-pick";
     gors = "git restore --staged";
@@ -153,11 +154,6 @@
       nw = ''
         set -l L_EDITOR (which nvim)
         cw $argv[1]
-      '';
-      eeee = ''
-        set -l EDITOR (which nvim)
-        eeee $argv[1]
-        echo "nv"
       '';
       viewci = ''
         set -l branch (git rev-parse --abbrev-ref HEAD | string collect; or echo)
