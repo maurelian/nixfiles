@@ -130,22 +130,35 @@
       '';
       ff = "find . -iname \"*$argv[1]*\" $argv[2..-1]";
       cw = ''
+          if test -z "$L_EDITOR"
+              set L_EDITOR $EDITOR
+          end
+          set -l L_EDITOR (which nvim)
           # get the path passed in
           set DIR $argv[1]
           set GITDIR (git rev-parse --show-toplevel | string collect; or echo)
           # If something was passed in, open it
           if test -n "$DIR"
             echo 'opening directory '"$DIR"
-            $EDITOR -n $DIR
+            $L_EDITOR -n $DIR
           else if test -n "$GITDIR"
             # if nothing was passed in, see if we're in a git repo
             echo 'opening git repo in '"$GITDIR"', on branch '(git branch --show-current | string collect; or echo)
-            $EDITOR -n $GITDIR
+            $L_EDITOR -n $GITDIR
           else
             # if we're not in a git repo, set DIR to cwd
-            $EDITOR -n (pwd)
+            $L_EDITOR -n (pwd)
           end
         '';
+      nw = ''
+        set -l L_EDITOR (which nvim)
+        cw $argv[1]
+      '';
+      eeee = ''
+        set -l EDITOR (which nvim)
+        eeee $argv[1]
+        echo "nv"
+      '';
       viewci = ''
         set -l branch (git rev-parse --abbrev-ref HEAD | string collect; or echo)
         set -l repo (gh repo view --json owner,name | jq -r .name | string collect; or echo)
@@ -197,4 +210,5 @@
     };
 
   aliases.gpftub = "git-push-fork-to-upstream-branch";
+  abbreviations.nconf = "code ~/.config/nix";
 }

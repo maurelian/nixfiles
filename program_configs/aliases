@@ -3,9 +3,6 @@
 
 alias srz="source ~/.zshrc"
 
-## Aliases NVM
-alias nw="nvm which"
-
 # ---------------------- #
 # important directories
 # ---------------------- #
