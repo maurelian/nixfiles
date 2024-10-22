@@ -61,7 +61,7 @@ in
       version = "1.0.0";
       src = pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/maurelian/git-push-fork-to-upstream-branch/master/git-push-fork-to-upstream-branch";
-        sha256 = "sha256-ZCcqdSHdqDu/DTkRVw2HEEzbPTDQJ9hNta9oOfb1QJU";
+        sha256 = "sha256-rgkvv03NbG0jZprlkzAmhEp/ehs3mq9kyAoJOAu6YzU";
       };
       dontUnpack = true;
       installPhase = ''
