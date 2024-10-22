@@ -1,6 +1,7 @@
 # https://starship.rs/config/
-[character] # The name of the module we are configuring is 'character'
-success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+[character]
+success_symbol = '[➜](bold green)'
+error_symbol = '[➜](bold red)'
 
 [gcloud]
 disabled = true
@@ -17,7 +18,6 @@ behind = '⇣${count}'
 [time]
 disabled = false
 time_format = '%T'
-utc_time_offset = '-5'
 format = '[\($time\) ]($style)'
 style = 'yellow'
 
