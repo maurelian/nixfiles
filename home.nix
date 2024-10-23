@@ -15,22 +15,25 @@ in
 
   home = {
     file = {
-      ".vimrc".source = ./program_configs/vim_configuration;
-      ".ackrc".source = ./program_configs/ackrc;
-      ".aliases".source = ./program_configs/aliases;
-      ".iterm2_shell_integration.zsh".source = ./program_configs/iterm2_shell_integrations.zsh;
-      ".iterm2_shell_integration.fish".source = ./program_configs/iterm2_shell_integrations.fish;
-      ".functions".source = ./program_configs/functions;
-      ".gitconfig".source = ./program_configs/gitconfig;
-      ".config/lazygit/config.yml".source = ./program_configs/lazygit-config.yml;
-      ".config/gh/config.yml".source = ./program_configs/gh/config.yml;
-      ".config/gh/hosts.yml".source = ./program_configs/gh/hosts.yml;
-      ".config/gh/state.yml".source = ./program_configs/gh/state.yml;
-      ".config/starship.toml".source = ./program_configs/starship.toml;
+      # source dotfiles into home directory
+      ".vimrc".source = ./dotfiles/vimrc;
+      ".ackrc".source = ./dotfiles/ackrc;
+      ".aliases".source = ./dotfiles/aliases;
+      ".iterm2_shell_integration.zsh".source = ./dotfiles/iterm2_shell_integrations.zsh;
+      ".iterm2_shell_integration.fish".source = ./dotfiles/iterm2_shell_integrations.fish;
+      ".functions".source = ./dotfiles/functions;
+      ".gitconfig".source = ./dotfiles/gitconfig;
       ".nix-fish-wrapper.zsh" = {
-        source = ./program_configs/nix-fish-wrapper.zsh;
+        source = ./dotfiles/nix-fish-wrapper.zsh;
         executable = true;
       };
+
+      # source dotfiles $home/.config/
+      ".config/lazygit/config.yml".source = ./dotfiles/config/lazygit-config.yml;
+      ".config/gh/config.yml".source = ./dotfiles/config/gh/config.yml;
+      ".config/gh/hosts.yml".source = ./dotfiles/config/gh/hosts.yml;
+      ".config/gh/state.yml".source = ./dotfiles/config/gh/state.yml;
+      ".config/starship.toml".source = ./dotfiles/config/starship.toml;
     };
   };
 
@@ -117,6 +120,6 @@ in
 
   programs.lazygit = {
     enable = true;
-    settings = (builtins.readFile ./program_configs/lazygit-config.yml);
+    settings = (builtins.readFile ./dotfiles/config/lazygit-config.yml);
   };
 }
