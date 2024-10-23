@@ -94,8 +94,16 @@ in
       starship init fish | source
       babelfish < /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
       source $HOME/.iterm2_shell_integration.fish
+
       set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/O" "$HOME/Projects/Hunting" "$HOME/Projects/Tools" "$HOME/Projects/Scoping" "$HOME/Projects/ReferenceCodebases" "$HOME/Projects/Miscellaneous" "$HOME/Projects/various-repos"
       set -U pisces_only_insert_at_eol 1 # quote/bracket completion setting
+
+      # only run this on my optimism machine.
+      # it makes homebrew work with Apple Silicon somehow.
+      set -x HOMEBREW_PREFIX /opt/homebrew
+      if test -d "/Users/maurelian"
+        eval $(/opt/homebrew/bin/brew shellenv)
+      end
       if not set -q NIX_PROFILES
         echo "Warning: Nix environment doesn't seem to be properly sourced"
       end
