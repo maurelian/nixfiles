@@ -79,9 +79,9 @@ in
     shellAbbrs = abbreviations;
     functions = functions;
     shellInit = ''
-      export EDITOR=code
-      export VISUAL=nvim
-      export GIT_EDITOR=nvim
+      set -x EDITOR code
+      set -x VISUAL nvim
+      set -x GIT_EDITOR nvim
       set GPG_TTY $(tty)
       fish_add_path $HOME/bin /usr/bin /usr/local/bin $HOME/go/bin
       fish_add_path --append /opt/homebrew/bin /bin /usr/sbin /sbin /etc/paths.d
