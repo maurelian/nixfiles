@@ -119,6 +119,5 @@ in
 
   programs.lazygit = {
     enable = true;
-    settings = (builtins.readFile ./dotfiles/config/lazygit-config.yml);
   };
 }
