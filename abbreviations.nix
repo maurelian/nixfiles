@@ -130,25 +130,68 @@
         git diff $upstream $current
       '';
       ff = "find . -iname \"*$argv[1]*\" $argv[2..-1]";
+      __path_complete = ''
+        set -l tokens (commandline -poc)
+        set -l current_token (commandline -t)
+
+        # Get all directories from CDPATH
+        set -l dirs
+        set -l descriptions
+
+        # Add current directory contents first
+        for entry in ./*
+            if test -d $entry -o -f $entry
+                set -a dirs (realpath $entry)
+                set -a descriptions (basename $entry)
+            end
+        end
+
+        # Then add CDPATH entries
+        for cdpath in $CDPATH
+            if test -d $cdpath
+                for dir in $cdpath/*/
+                    set -l full_path (realpath $dir)
+                    set -l base (basename $dir)
+                    if string match -q "$current_token*" $base
+                        set -a dirs $full_path
+                        set -a descriptions $base
+                    end
+                end
+            end
+        end
+
+        # Output in the format that fish completion expects:
+        # full_path\tdescription
+        for i in (seq (count $dirs))
+            # Only show entries matching current token
+            if string match -q "$current_token*" $descriptions[$i]
+                printf "%s\t%s\n" $dirs[$i] $descriptions[$i]
+            end
+        end
+      '';
       cw = ''
-          set -l L_EDITOR $EDITOR
-          # get the path passed in
-          set DIR $argv[1]
-          set GITDIR (git rev-parse --show-toplevel | string collect; or echo)
-          # If something was passed in, open it
-          if test -n "$DIR"
-            echo 'opening directory '"$DIR"
-            $L_EDITOR -n $DIR
-          else if test -n "$GITDIR"
-            # if nothing was passed in, see if we're in a git repo
-            echo 'opening git repo in '"$GITDIR"', on branch '(git branch --show-current | string collect; or echo)
-            $L_EDITOR -n $GITDIR
-          else
-            # if we're not in a git repo, set DIR to cwd
-            $L_EDITOR -n (pwd)
-          end
-        '';
+        complete -c cw -f
+        complete -c cw -a '(__path_complete)'
+        set -l L_EDITOR $EDITOR
+        # get the path passed in
+        set DIR $argv[1]
+        set GITDIR (git rev-parse --show-toplevel | string collect; or echo)
+        # If something was passed in, open it
+        if test -n "$DIR"
+          echo 'opening directory '"$DIR"
+          $L_EDITOR -n $DIR
+        else if test -n "$GITDIR"
+          # if nothing was passed in, see if we're in a git repo
+          echo 'opening git repo in '"$GITDIR"', on branch '(git branch --show-current | string collect; or echo)
+          $L_EDITOR -n $GITDIR
+        else
+          # if we're not in a git repo, set DIR to cwd
+          $L_EDITOR -n (pwd)
+        end
+      '';
       nw = ''
+        complete -c nw -f
+        complete -c nw -a '(__path_complete)'
         set -l L_EDITOR (which nvim)
         # get the path passed in
         set DIR $argv[1]
