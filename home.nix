@@ -29,11 +29,10 @@ in
       };
 
       # source dotfiles $home/.config/
-      ".config/lazygit/config.yml".source = ./dotfiles/config/lazygit-config.yml;
-      ".config/gh/config.yml".source = ./dotfiles/config/gh/config.yml;
-      ".config/gh/hosts.yml".source = ./dotfiles/config/gh/hosts.yml;
-      ".config/gh/state.yml".source = ./dotfiles/config/gh/state.yml;
-      ".config/starship.toml".source = ./dotfiles/config/starship.toml;
+      ".config" = {
+        source = ./dotfiles/config;
+        recursive = true;
+      };
     };
   };
 
