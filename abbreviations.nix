@@ -115,66 +115,86 @@
   };
 
   functions = {
-      glau = ''
-        set -l upstream (git rev-parse --abbrev-ref @{upstream})
-        echo "upstream: $upstream"
-        set -l current (git rev-parse --abbrev-ref HEAD)
-        echo "current: $current"
-        glog $upstream $current
-      '';
-      gdau = ''
-        set -l upstream (git rev-parse --abbrev-ref @{upstream})
-        echo "upstream: $upstream"
-        set -l current (git rev-parse --abbrev-ref HEAD)
-        echo "current: $current"
-        git diff $upstream $current
-      '';
-      ff = "find . -iname \"*$argv[1]*\" $argv[2..-1]";
-      __path_complete = ''
-        set -l tokens (commandline -poc)
-        set -l current_token (commandline -t)
+    glau = ''
+      set -l upstream (git rev-parse --abbrev-ref @{upstream})
+      echo "upstream: $upstream"
+      set -l current (git rev-parse --abbrev-ref HEAD)
+      echo "current: $current"
+      glog $upstream $current
+    '';
+    gdau = ''
+      set -l upstream (git rev-parse --abbrev-ref @{upstream})
+      echo "upstream: $upstream"
+      set -l current (git rev-parse --abbrev-ref HEAD)
+      echo "current: $current"
+      git diff $upstream $current
+    '';
+    ff = "find . -iname \"*$argv[1]*\" $argv[2..-1]";
+    __path_complete = ''
+      set -l tokens (commandline -poc)
+      set -l current_token (commandline -t)
 
-        # Get all directories from CDPATH
-        set -l dirs
-        set -l descriptions
+      # Get all directories from CDPATH
+      set -l dirs
+      set -l descriptions
 
-        # Add current directory contents first
-        for entry in ./*
-            if test -d $entry -o -f $entry
-                set -a dirs (realpath $entry)
-                set -a descriptions (basename $entry)
-            end
-        end
+      # Add current directory contents first
+      for entry in ./*
+          if test -d $entry -o -f $entry
+              set -a dirs (realpath $entry)
+              set -a descriptions (basename $entry)
+          end
+      end
 
-        # Then add CDPATH entries
-        for cdpath in $CDPATH
-            if test -d $cdpath
-                for dir in $cdpath/*/
-                    set -l full_path (realpath $dir)
-                    set -l base (basename $dir)
-                    if string match -q "$current_token*" $base
-                        set -a dirs $full_path
-                        set -a descriptions $base
-                    end
-                end
-            end
-        end
+      # Then add CDPATH entries
+      for cdpath in $CDPATH
+          if test -d $cdpath
+              for dir in $cdpath/*/
+                  set -l full_path (realpath $dir)
+                  set -l base (basename $dir)
+                  if string match -q "$current_token*" $base
+                      set -a dirs $full_path
+                      set -a descriptions $base
+                  end
+              end
+          end
+      end
 
-        # Output in the format that fish completion expects:
-        # full_path\tdescription
-        for i in (seq (count $dirs))
-            # Only show entries matching current token
-            if string match -q "$current_token*" $descriptions[$i]
-                printf "%s\t%s\n" $dirs[$i] $descriptions[$i]
-            end
-        end
-      '';
-      cw = ''
-        complete -c cw -f
-        complete -c cw -a '(__path_complete)'
-        set -l L_EDITOR $EDITOR
-        # get the path passed in
-        set DIR $argv[1]
+      # Output in the format that fish completion expects:
+      # full_path\tdescription
+      for i in (seq (count $dirs))
+          # Only show entries matching current token
+          if string match -q "$current_token*" $descriptions[$i]
+              printf "%s\t%s\n" $dirs[$i] $descriptions[$i]
+          end
+      end
+    '';
+    cw = ''
+      complete -c cw -f
+      complete -c cw -a '(__path_complete)'
+      set -l L_EDITOR $EDITOR
+      # get the path passed in
+      set DIR $argv[1]
+      set GITDIR (git rev-parse --show-toplevel | string collect; or echo)
+      # If something was passed in, open it
+      if test -n "$DIR"
+        echo 'opening directory '"$DIR"
+        $L_EDITOR -n $DIR
+      else if test -n "$GITDIR"
+        # if nothing was passed in, see if we're in a git repo
+        echo 'opening git repo in '"$GITDIR"', on branch '(git branch --show-current | string collect; or echo)
+        $L_EDITOR -n $GITDIR
+      else
+        # if we're not in a git repo, set DIR to cwd
+        $L_EDITOR -n (pwd)
+      end
+    '';
+    nw = ''
+      complete -c nw -f
+      complete -c nw -a '(__path_complete)'
+      set -l L_EDITOR (which nvim)
+      # get the path passed in
+      set DIR $argv[1]
         set GITDIR (git rev-parse --show-toplevel | string collect; or echo)
         # If something was passed in, open it
         if test -n "$DIR"
@@ -188,58 +208,38 @@
           # if we're not in a git repo, set DIR to cwd
           $L_EDITOR -n (pwd)
         end
-      '';
-      nw = ''
-        complete -c nw -f
-        complete -c nw -a '(__path_complete)'
-        set -l L_EDITOR (which nvim)
-        # get the path passed in
-        set DIR $argv[1]
-          set GITDIR (git rev-parse --show-toplevel | string collect; or echo)
-          # If something was passed in, open it
-          if test -n "$DIR"
-            echo 'opening directory '"$DIR"
-            $L_EDITOR -n $DIR
-          else if test -n "$GITDIR"
-            # if nothing was passed in, see if we're in a git repo
-            echo 'opening git repo in '"$GITDIR"', on branch '(git branch --show-current | string collect; or echo)
-            $L_EDITOR -n $GITDIR
-          else
-            # if we're not in a git repo, set DIR to cwd
-            $L_EDITOR -n (pwd)
-          end
-      '';
-      viewci = ''
-        set -l branch (git rev-parse --abbrev-ref HEAD | string collect; or echo)
-        set -l repo (gh repo view --json owner,name | jq -r .name | string collect; or echo)
-        set -l org (gh repo view --json owner,name | jq -r .owner.login | string collect; or echo)
-        set -l url "https://app.circleci.com/pipelines/github/$org/$repo?branch=$branch"
-        echo "Opening $url"
-        open "$url"
-      '';
-      cdrt = ''
-        set GITDIR (git rev-parse --show-toplevel | string collect; or echo)
-        if test -n "$GITDIR"
-          # if not in a git repo, do nothing
-          cd $GITDIR
-        else
-          echo 'not in a git repo'
-        end
-      '';
-      cdi = ''
-        set -l dir (z -l | sort -rn | sed 's/^[0-9.]* *//' | peco --prompt "Choose directory: ")
-        if test -n "$dir"
-            cd $dir
-        end
-      '';
-      wchks = ''
-        set -l NUMBER (gh pr view --json number --jq .number)
-        set -l FAIL_MATCH "fail"
-        set -l SUCCESS_MATCH "main.*pass"
-        watch --chgexit  "gh pr checks $NUMBER | grep -E  -e $FAIL_MATCH -e $SUCCESS_MATCH" \
-          && echo "ring a bell" \
-          && gh pr checks $NUMBER
-      '';
+    '';
+    viewci = ''
+      set -l branch (git rev-parse --abbrev-ref HEAD | string collect; or echo)
+      set -l repo (gh repo view --json owner,name | jq -r .name | string collect; or echo)
+      set -l org (gh repo view --json owner,name | jq -r .owner.login | string collect; or echo)
+      set -l url "https://app.circleci.com/pipelines/github/$org/$repo?branch=$branch"
+      echo "Opening $url"
+      open "$url"
+    '';
+    cdrt = ''
+      set GITDIR (git rev-parse --show-toplevel | string collect; or echo)
+      if test -n "$GITDIR"
+        # if not in a git repo, do nothing
+        cd $GITDIR
+      else
+        echo 'not in a git repo'
+      end
+    '';
+    cdi = ''
+      set -l dir (z -l | sort -rn | sed 's/^[0-9.]* *//' | peco --prompt "Choose directory: ")
+      if test -n "$dir"
+          cd $dir
+      end
+    '';
+    wchks = ''
+      set -l NUMBER (gh pr view --json number --jq .number)
+      set -l FAIL_MATCH "fail"
+      set -l SUCCESS_MATCH "main.*pass"
+      watch --chgexit  "gh pr checks $NUMBER | grep -E  -e $FAIL_MATCH -e $SUCCESS_MATCH" \
+        && echo "ring a bell" \
+        && gh pr checks $NUMBER
+    '';
     fh = ''
       history merge  # Merge history from all active sessions
       set cmd (history | fzf --tac --no-sort --height 40% --layout=reverse --border --inline-info --query=(commandline))
@@ -256,8 +256,8 @@
       echo "Cleaning stash entries older than $days days..."
       git stash list | awk -v days=$days '$0 ~ /.*\((.*)\)/ {split($0,a,":"); split(a[1],b,"stash@{"); split(b[2],c,"}"); cmd="date -v-"days"d +%s"; cmd | getline cutoff; close(cmd); cmd="date -j -f \"%a %b %d %H:%M:%S %Y\" \""$0"\" +%s"; cmd | getline timestamp; close(cmd); if (timestamp < cutoff) {print "Dropping stash@{"c[1]"}"; system("git stash drop stash@{"c[1]"}")}}'
       echo "Stash cleaning complete."
-      '';
-    };
+    '';
+  };
 
   aliases.gpftub = "git-push-fork-to-upstream-branch";
   abbreviations.nconf = "code ~/.config/nix";

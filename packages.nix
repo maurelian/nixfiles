@@ -1,6 +1,7 @@
 { pkgs }:
 
-with pkgs; [
+with pkgs;
+[
   ack
   bat
   btop
@@ -17,6 +18,7 @@ with pkgs; [
   jq
   kustomize
   neovim
+  nixfmt-rfc-style
   peco
   pinentry-tty
   ripgrep

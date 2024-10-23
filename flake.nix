@@ -12,26 +12,39 @@
     };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, ... }:
+  outputs =
+    inputs@{
+      self,
+      nix-darwin,
+      nixpkgs,
+      home-manager,
+      ...
+    }:
     let
       system = "aarch64-darwin";
       # system.stateVersion = 5;
       pkgs = nixpkgs.legacyPackages.${system};
-      configuration = { pkgs, ... }: {
-        services.nix-daemon.enable = true;
-        nixpkgs.hostPlatform = system;
-        users.users.maurelian = {
-          name = "maurelian";
-          home = "/Users/maurelian";
-        };
-        system.stateVersion = 5;
+      configuration =
+        { pkgs, ... }:
+        {
+          services.nix-daemon.enable = true;
+          nixpkgs.hostPlatform = system;
+          users.users.maurelian = {
+            name = "maurelian";
+            home = "/Users/maurelian";
+          };
+          system.stateVersion = 5;
 
-        # Add this section to enable flakes and nix-command
-        nix.settings = {
-          experimental-features = [ "nix-command" "flakes" ];
+          # Add this section to enable flakes and nix-command
+          nix.settings = {
+            experimental-features = [
+              "nix-command"
+              "flakes"
+            ];
+          };
         };
-      };
-    in {
+    in
+    {
       homeConfigurations.maurelian = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [

@@ -74,7 +74,6 @@ in
     })
   ];
 
-
   programs.fish = {
     enable = true;
     shellAliases = aliases;
