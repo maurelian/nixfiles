@@ -5,6 +5,7 @@ let
   aliases = aliasesAndAbbreviations.aliases;
   abbreviations = aliasesAndAbbreviations.abbreviations;
   functions = aliasesAndAbbreviations.functions;
+  gitConfig = import ./git.nix { inherit pkgs; };
 in
 {
   home.username = "maurelian";
@@ -73,6 +74,7 @@ in
       '';
     })
   ];
+  imports = [ ./git.nix ];
 
   programs.fish = {
     enable = true;
