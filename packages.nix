@@ -7,8 +7,10 @@ with pkgs;
   btop
   cloc
   cowsay
+  difftastic
   diff-so-fancy
   gh
+  gnupg
   grc
   go
   gotestsum

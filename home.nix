@@ -58,22 +58,8 @@ in
     pkgs.fishPlugins.git-abbr
     pkgs.fishPlugins.z
     pkgs.fishPlugins.grc
+  ] ++ gitConfig.home.packages;
 
-    (pkgs.stdenv.mkDerivation {
-      name = "git-push-fork-to-upstream-branch";
-      version = "1.0.0";
-      src = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/maurelian/git-push-fork-to-upstream-branch/master/git-push-fork-to-upstream-branch";
-        sha256 = "sha256-rgkvv03NbG0jZprlkzAmhEp/ehs3mq9kyAoJOAu6YzU";
-      };
-      dontUnpack = true;
-      installPhase = ''
-        mkdir -p $out/bin
-        cp $src $out/bin/git-push-fork-to-upstream-branch
-        chmod 755 $out/bin/git-push-fork-to-upstream-branch
-      '';
-    })
-  ];
   imports = [ ./git.nix ];
 
   programs.fish = {
@@ -93,6 +79,13 @@ in
     '';
 
     shellInitLast = ''
+      # only run this on my optimism machine.
+      # it makes homebrew work with Apple Silicon somehow.
+      set -x HOMEBREW_PREFIX /opt/homebrew
+      if test -d "/Users/maurelian"
+        eval $(/opt/homebrew/bin/brew shellenv)
+      end
+
       babelfish < $HOME/.aliases | source
       starship init fish | source
       babelfish < /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
@@ -101,12 +94,6 @@ in
       set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/O" "$HOME/Projects/Hunting" "$HOME/Projects/Tools" "$HOME/Projects/Scoping" "$HOME/Projects/ReferenceCodebases" "$HOME/Projects/Miscellaneous" "$HOME/Projects/various-repos"
       set -U pisces_only_insert_at_eol 1 # quote/bracket completion setting
 
-      # only run this on my optimism machine.
-      # it makes homebrew work with Apple Silicon somehow.
-      set -x HOMEBREW_PREFIX /opt/homebrew
-      if test -d "/Users/maurelian"
-        eval $(/opt/homebrew/bin/brew shellenv)
-      end
       if not set -q NIX_PROFILES
         echo "Warning: Nix environment doesn't seem to be properly sourced"
       end
@@ -115,10 +102,12 @@ in
 
   programs.fzf = {
     enable = true;
-    enableZshIntegration = true;
+    enableFishIntegration = true;
   };
 
   programs.lazygit = {
     enable = true;
   };
+
+  # programs.gnupg.agent.enable = true;
 }
