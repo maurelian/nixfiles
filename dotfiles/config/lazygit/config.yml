@@ -4,7 +4,7 @@ git:
     # Feels like a bug, but it's not.
     # https://github.com/jesseduffield/lazygit/discussions/1335
     colorArg: always
-    pager: diff-so-fancy
+    pager: difft
     # pager: delta --dark --paging=never
 
 ## Defaults:
