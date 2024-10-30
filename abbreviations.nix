@@ -28,7 +28,7 @@
     brewup = "brew update && brew upgrade";
     nv = "nvim";
     f = "forge";
-    prurl = "gh pv --json url -q .url | pbc";
+    ghu = "gh pr view --json url -q .url | pbcopy";
 
     # Git stuff
     g = "git status";
@@ -84,6 +84,9 @@
     g = "git status";
     gcs = "git show";
     gcss = "git show --stat";
+    gdw = "git diff";
+    gds = "git diff --staged";
+
     gp = "git push origin $gcur";
     gpf = "git push --force-with-lease origin $gcur";
     grd = "git fetch && git rebase -i $gmbr";
@@ -95,6 +98,7 @@
     gfo = "git fetch origin";
     gfodd = "git fetch origin develop:develop";
     grmain = "git rebase $gmain";
+    gra = "git rebase --abort";
     gfm = "git pull ";
     gfmoc = "git pull origin";
     gfmod = "git pull origin develop:develop";
