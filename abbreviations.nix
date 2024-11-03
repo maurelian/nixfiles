@@ -265,4 +265,5 @@
 
   aliases.gpftub = "git-push-fork-to-upstream-branch";
   abbreviations.nconf = "code ~/.config/nix";
+  abbreviations.vc = "viewci";
 }
