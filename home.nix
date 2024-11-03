@@ -6,39 +6,48 @@ let
   abbreviations = aliasesAndAbbreviations.abbreviations;
   functions = aliasesAndAbbreviations.functions;
   gitConfig = import ./git.nix { inherit pkgs; };
+
+  # Detect platform
+  isDarwin = pkgs.stdenv.isDarwin;
+  isLinux = pkgs.stdenv.isLinux;
+
+  # Platform-specific home directory
+  homeDirectory = if isDarwin then "/Users/maurelian" else "/home/maurelian";
 in
 {
   home.username = "maurelian";
-  home.homeDirectory = "/Users/maurelian";
+  home.homeDirectory = homeDirectory;
   home.stateVersion = "23.11";
 
   programs.home-manager.enable = true;
 
   home = {
     file = {
-      # source dotfiles into home directory
+      # Common dotfiles for both platforms
       ".vimrc".source = ./dotfiles/vimrc;
       ".ackrc".source = ./dotfiles/ackrc;
       ".aliases".source = ./dotfiles/aliases;
-      ".iterm2_shell_integration.zsh".source = ./dotfiles/iterm2_shell_integrations.zsh;
-      ".iterm2_shell_integration.fish".source = ./dotfiles/iterm2_shell_integrations.fish;
       ".functions".source = ./dotfiles/functions;
       ".gitconfig".source = ./dotfiles/gitconfig;
-      ".nix-fish-wrapper.zsh" = {
-        source = ./dotfiles/nix-fish-wrapper.zsh;
-        executable = true;
-      };
 
-      # source dotfiles $home/.config/
+      # Config directory for both platforms
       ".config" = {
         source = ./dotfiles/config;
         recursive = true;
       };
-    };
+    } // (if isDarwin then {
+      # Darwin-specific files
+      ".iterm2_shell_integration.zsh".source = ./dotfiles/iterm2_shell_integrations.zsh;
+      ".iterm2_shell_integration.fish".source = ./dotfiles/iterm2_shell_integrations.fish;
+      ".nix-fish-wrapper.zsh" = {
+        source = ./dotfiles/nix-fish-wrapper.zsh;
+        executable = true;
+      };
+    } else {});
   };
 
   home.packages = import ./packages.nix { inherit pkgs; } ++ [
-    # Additional packages can be added here
+    # Common packages for both platforms
     pkgs.fishPlugins.foreign-env
     pkgs.zsh-history-to-fish
     pkgs.starship
@@ -73,23 +82,28 @@ in
       set -x GIT_EDITOR nvim
       set GPG_TTY $(tty)
       fish_add_path $HOME/bin /usr/bin /usr/local/bin $HOME/go/bin
-      fish_add_path --append /opt/homebrew/bin /bin /usr/sbin /sbin /etc/paths.d
+      ${if isDarwin then ''
+        fish_add_path --append /opt/homebrew/bin /bin /usr/sbin /sbin /etc/paths.d
+      '' else ''
+        fish_add_path --append /bin /usr/sbin /sbin
+      ''}
       fish_add_path --append $GOPATH/bin $HOME/.nvm $HOME/.foundry/bin $HOME/.cargo/bin $HOME/.local/bin
       abbr -e gt
     '';
 
     shellInitLast = ''
-      # only run this on my optimism machine.
-      # it makes homebrew work with Apple Silicon somehow.
-      set -x HOMEBREW_PREFIX /opt/homebrew
-      if test -d "/Users/maurelian"
-        eval $(/opt/homebrew/bin/brew shellenv)
-      end
+      ${if isDarwin then ''
+        # Darwin-specific initialization
+        set -x HOMEBREW_PREFIX /opt/homebrew
+        if test -d "/Users/maurelian"
+          eval $(/opt/homebrew/bin/brew shellenv)
+        end
+        source $HOME/.iterm2_shell_integration.fish
+      '' else ""}
 
       babelfish < $HOME/.aliases | source
       starship init fish | source
       babelfish < /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
-      source $HOME/.iterm2_shell_integration.fish
 
       set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/O" "$HOME/Projects/Hunting" "$HOME/Projects/Tools" "$HOME/Projects/Scoping" "$HOME/Projects/ReferenceCodebases" "$HOME/Projects/Miscellaneous" "$HOME/Projects/various-repos"
       set -U pisces_only_insert_at_eol 1 # quote/bracket completion setting
