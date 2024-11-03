@@ -21,19 +21,21 @@
       ...
     }:
     let
-      # Define systems and configurations
-      systems = {
-        darwin = "aarch64-darwin";
-        linux = "x86_64-linux";  # or "aarch64-linux" if on ARM
-      };
+      # Define supported systems
+      supportedSystems = [
+        "aarch64-darwin"
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
 
-      # Function to get pkgs for a system
+      # Function to get pkgs for each system
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       pkgsFor = system: nixpkgs.legacyPackages.${system};
 
       # Your existing darwin configuration
       darwinConfig = { pkgs, ... }: {
         services.nix-daemon.enable = true;
-        nixpkgs.hostPlatform = systems.darwin;
+        nixpkgs.hostPlatform = "aarch64-darwin";
         users.users.maurelian = {
           name = "maurelian";
           home = "/Users/maurelian";
@@ -49,21 +51,24 @@
       };
     in
     {
-      # Keep your existing configuration
-      homeConfigurations.maurelian = home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgsFor systems.darwin;
-        modules = [ ./home.nix ];
+      # Home Manager configurations for each platform
+      homeConfigurations = {
+        # Darwin configuration
+        maurelian = home-manager.lib.homeManagerConfiguration {
+          pkgs = pkgsFor "aarch64-darwin";
+          modules = [ ./home.nix ];
+        };
+
+        # Linux configuration
+        "maurelian-linux" = home-manager.lib.homeManagerConfiguration {
+          pkgs = pkgsFor "x86_64-linux";
+          modules = [ ./home.nix ];
+        };
       };
 
-      # Add Linux configuration
-      homeConfigurations."maurelian-linux" = home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgsFor systems.linux;
-        modules = [ ./home.nix ];
-      };
-
-      # Keep your existing Darwin configuration
+      # Darwin-specific configuration
       darwinConfigurations."MacBook-Pro-13" = nix-darwin.lib.darwinSystem {
-        system = systems.darwin;
+        system = "aarch64-darwin";
         modules = [
           darwinConfig
         ];
