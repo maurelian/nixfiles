@@ -21,41 +21,51 @@
       ...
     }:
     let
-      system = "aarch64-darwin";
-      # system.stateVersion = 5;
-      pkgs = nixpkgs.legacyPackages.${system};
-      configuration =
-        { pkgs, ... }:
-        {
-          services.nix-daemon.enable = true;
-          nixpkgs.hostPlatform = system;
-          users.users.maurelian = {
-            name = "maurelian";
-            home = "/Users/maurelian";
-          };
-          system.stateVersion = 5;
-
-          # Add this section to enable flakes and nix-command
-          nix.settings = {
-            experimental-features = [
-              "nix-command"
-              "flakes"
-            ];
-          };
-        };
-    in
-    {
-      homeConfigurations.maurelian = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          ./home.nix
-        ];
+      # Define systems and configurations
+      systems = {
+        darwin = "aarch64-darwin";
+        linux = "x86_64-linux";  # or "aarch64-linux" if on ARM
       };
 
+      # Function to get pkgs for a system
+      pkgsFor = system: nixpkgs.legacyPackages.${system};
+
+      # Your existing darwin configuration
+      darwinConfig = { pkgs, ... }: {
+        services.nix-daemon.enable = true;
+        nixpkgs.hostPlatform = systems.darwin;
+        users.users.maurelian = {
+          name = "maurelian";
+          home = "/Users/maurelian";
+        };
+        system.stateVersion = 5;
+
+        nix.settings = {
+          experimental-features = [
+            "nix-command"
+            "flakes"
+          ];
+        };
+      };
+    in
+    {
+      # Keep your existing configuration
+      homeConfigurations.maurelian = home-manager.lib.homeManagerConfiguration {
+        pkgs = pkgsFor systems.darwin;
+        modules = [ ./home.nix ];
+      };
+
+      # Add Linux configuration
+      homeConfigurations."maurelian-linux" = home-manager.lib.homeManagerConfiguration {
+        pkgs = pkgsFor systems.linux;
+        modules = [ ./home.nix ];
+      };
+
+      # Keep your existing Darwin configuration
       darwinConfigurations."MacBook-Pro-13" = nix-darwin.lib.darwinSystem {
-        inherit system;
+        system = systems.darwin;
         modules = [
-          configuration
+          darwinConfig
         ];
       };
 
