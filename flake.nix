@@ -22,7 +22,6 @@
     }:
     let
       system = "aarch64-darwin";
-      # system.stateVersion = 5;
       pkgs = nixpkgs.legacyPackages.${system};
       configuration =
         { pkgs, ... }:
@@ -34,14 +33,21 @@
             home = "/Users/maurelian";
           };
           system.stateVersion = 5;
+          nix.settings.experimental-features = "nix-command flakes";
 
-          # Add this section to enable flakes and nix-command
-          nix.settings = {
-            experimental-features = [
-              "nix-command"
-              "flakes"
+          # List packages installed in system profile. To search by name, run:
+          # $ nix-env -qaP | grep wget
+          environment.systemPackages =
+            [
+              pkgs.vim
             ];
-          };
+
+            security.pam.enableSudoTouchIdAuth = true;
+            system.defaults = {
+              dock.autohide = true;
+              finder.AppleShowAllExtensions = true;
+            };
+            programs.fish.enable = true;
         };
     in
     {
