@@ -11,6 +11,7 @@
     ft = "forge test";
     ftmt = "forge test -vvvv --match-test";
     ftmc = "forge test -vvvv --match-contract";
+    ftfs = "forge test --fail-fast --show-progress";
     fs = "forge snapshot";
     fb = "forge build";
     fd = "forge script scripts/deploy/Deploy.s.sol:Deploy -vvv";
@@ -91,7 +92,7 @@
     gpf = "git push --force-with-lease origin $gcur";
     grd = "git fetch && git rebase -i $gmbr";
     grr = "git fetch && gco $gmbl && git reset --hard $gmbr";
-    grt = "git fetch && git reset --hard $gcuru";
+    grt = "git fetch && git reset --hard $(git rev-parse --abbrev-ref @{upstream})";
 
     gcur = "git branch --show-current";
     gcuru = "git rev-parse --abbrev-ref @{upstream}";
@@ -112,7 +113,7 @@
     lgs = "lg status";
     lgd = "lg diff";
     lgb = "lg branch";
-
+    p = "echo $PATH | tr \":\" \"\n\"";
     srf = "source ~/.config/fish/config.fish";
     histm = "history merge";
     hm = "home-manager switch --flake $HOME/.config/nix#maurelian";

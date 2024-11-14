@@ -25,6 +25,7 @@ with pkgs;
   pinentry-tty
   ripgrep
   tree
+  tailscale
   tig
   vim
   yq
