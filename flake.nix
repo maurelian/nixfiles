@@ -25,6 +25,9 @@
       pkgs = nixpkgs.legacyPackages.${system};
       configuration =
         { pkgs, ... }:
+        let
+          packages = import ./packages.nix { inherit pkgs; };
+        in
         {
           services.nix-daemon.enable = true;
           nixpkgs.hostPlatform = system;
@@ -35,19 +38,17 @@
           system.stateVersion = 5;
           nix.settings.experimental-features = "nix-command flakes";
 
-          # List packages installed in system profile. To search by name, run:
-          # $ nix-env -qaP | grep wget
-          environment.systemPackages =
-            [
-              pkgs.vim
-            ];
+          environment.systemPackages = packages.nixPackages;
 
-            security.pam.enableSudoTouchIdAuth = true;
-            system.defaults = {
-              dock.autohide = true;
-              finder.AppleShowAllExtensions = true;
-            };
-            programs.fish.enable = true;
+          security.pam.enableSudoTouchIdAuth = true;
+          system.defaults = {
+            dock.autohide = true;
+            finder.AppleShowAllExtensions = true;
+          };
+          programs.fish.enable = true;
+
+          # Import homebrew configuration from packages.nix
+          homebrew = packages.homebrew;
         };
     in
     {

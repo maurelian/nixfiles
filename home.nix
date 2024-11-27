@@ -6,6 +6,7 @@ let
   abbreviations = aliasesAndAbbreviations.abbreviations;
   functions = aliasesAndAbbreviations.functions;
   gitConfig = import ./git.nix { inherit pkgs; };
+  packages = import ./packages.nix { inherit pkgs; };
 in
 {
   home.username = "maurelian";
@@ -37,7 +38,7 @@ in
     };
   };
 
-  home.packages = import ./packages.nix { inherit pkgs; } ++ [
+  home.packages = packages.nixPackages ++ [
     # Additional packages can be added here
     pkgs.fishPlugins.foreign-env
     pkgs.zsh-history-to-fish
