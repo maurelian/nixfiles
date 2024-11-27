@@ -67,7 +67,6 @@
     gia = "git add --all";
     giu = "git add --update";
     gtst = "gt pr --stack";
-    beep = "osascript -e 'display notification \"beep\" with title \"BEEP\"'";
     beep2 = "echo \"ring a bell\"";
     dsf = "diff-so-fancy";
 
@@ -75,10 +74,6 @@
     b20 = "echo 0x0000000000000000000000000000000000000000";
     b32 = "echo 0x0000000000000000000000000000000000000000000000000000000000000000";
     lg = "lazygit --ucd ~/.config/lazygit/";
-
-    gs = "git stash";
-    gsp = "git stash pop";
-    gdd = "git restore --worktree -- $(git rev-parse --show-toplevel) && git restore --staged -- $(git rev-parse --show-toplevel) && git clean -fd -- $(git rev-parse --show-toplevel)";
   };
 
   abbreviations = {
@@ -108,6 +103,9 @@
     gfmr = "git fetch origin $gmain:$gmain && git rebase $gmain";
     gbsu = "git branch --set-upstream-to=origin/$gcur $gcur";
     gifl = "git status -s | sed \"$1q;d\" | cut -c4-";
+
+    gdd = "git restore --worktree -- $(git rev-parse --show-toplevel) && git restore --staged -- $(git rev-parse --show-toplevel) && git clean -fd -- $(git rev-parse --show-toplevel)";
+    gnuke = "git reset --hard HEAD && git clean -fd";
 
     lgl = "lg log";
     lgs = "lg status";
