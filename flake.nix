@@ -44,7 +44,16 @@
           system.defaults = {
             dock.autohide = true;
             finder.AppleShowAllExtensions = true;
+            NSGlobalDomain = {
+              # allow key repeat
+              ApplePressAndHoldEnabled = false;
+              # delay before repeating keystrokes
+              InitialKeyRepeat = 20;
+              # delay between repeated keystrokes upon holding a key
+              KeyRepeat = 2;
+            };
           };
+
           programs.fish.enable = true;
 
           # Import homebrew configuration from packages.nix
