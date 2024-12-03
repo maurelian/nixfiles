@@ -47,6 +47,6 @@
       "rg"
     ];
 
-    casks = [ "jordanbaird-ice" ];
+    casks = [ "jordanbaird-ice" "nikitabobko/tap/aerospace" ];
   };
 }
