@@ -1,4 +1,6 @@
-
+let
+  ethUtils = import ./ethUtils.nix;
+in
 {
   aliases = {
     # --------------------------------- #
@@ -118,7 +120,7 @@
     hm = "home-manager switch --flake $HOME/.config/nix#maurelian";
   };
 
-  functions = {
+  functions = ethUtils // {
     glau = ''
       set -l upstream (git rev-parse --abbrev-ref @{upstream})
       echo "upstream: $upstream"
