@@ -1,12 +1,12 @@
 { config, pkgs, ... }:
 
 let
-  aliasesAndAbbreviations = import ./abbreviations.nix;
+  aliasesAndAbbreviations = import ./modules/abbreviations.nix;
   aliases = aliasesAndAbbreviations.aliases;
   abbreviations = aliasesAndAbbreviations.abbreviations;
   functions = aliasesAndAbbreviations.functions;
-  gitConfig = import ./git.nix { inherit pkgs; };
-  packages = import ./packages.nix { inherit pkgs; };
+  gitConfig = import ./modules/git.nix { inherit pkgs; };
+  packages = import ./modules/packages.nix { inherit pkgs; };
 in
 {
   home.username = "maurelian";
@@ -61,7 +61,7 @@ in
     pkgs.fishPlugins.grc
   ] ++ gitConfig.home.packages;
 
-  imports = [ ./git.nix ];
+  imports = [ ./modules/git.nix ];
 
   programs.fish = {
     enable = true;
