@@ -35,6 +35,10 @@ in
         source = ./dotfiles/config;
         recursive = true;
       };
+      ".scripts" = {
+        source = ./scripts;
+        recursive = true;
+      };
     };
   };
 
