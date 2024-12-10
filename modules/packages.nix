@@ -25,6 +25,7 @@
     peco
     pinentry-tty
     ripgrep
+    rustup
     tree
     tailscale
     tig
