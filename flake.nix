@@ -26,7 +26,7 @@
       configuration =
         { pkgs, ... }:
         let
-          packages = import ./packages.nix { inherit pkgs; };
+          packages = import ./modules/packages.nix { inherit pkgs; };
         in
         {
           services.nix-daemon.enable = true;
