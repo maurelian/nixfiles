@@ -81,6 +81,7 @@ in
 
   abbreviations = {
     g = "git status";
+    gcap = "git commit --all --amend --no-edit && git push --force-with-lease origin $gcur";
     gcs = "git show";
     gcss = "git show --stat";
     gdw = "git diff";
