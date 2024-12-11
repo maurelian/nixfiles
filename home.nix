@@ -100,7 +100,7 @@ in
       set -U pisces_only_insert_at_eol 1 # quote/bracket completion setting
 
       # set RPC URLs
-      rpu eth
+      rpu eth > /dev/null
 
       if not set -q NIX_PROFILES
         echo "Warning: Nix environment doesn't seem to be properly sourced"

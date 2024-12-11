@@ -122,6 +122,7 @@ in
   };
 
   functions = ethUtils // {
+    fish_greeting = "";
     glau = ''
       set -l upstream (git rev-parse --abbrev-ref @{upstream})
       echo "upstream: $upstream"
