@@ -119,6 +119,7 @@ in
     srf = "source ~/.config/fish/config.fish";
     histm = "history merge";
     hm = "home-manager switch --flake $HOME/.config/nix#maurelian";
+    nds = "nix run nix-darwin -- switch --flake ~/.config/nix";
   };
 
   functions = ethUtils // {
