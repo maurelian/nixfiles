@@ -34,11 +34,13 @@
           users.users.maurelian = {
             name = "maurelian";
             home = "/Users/maurelian";
+            shell = pkgs.fish;
           };
           system.stateVersion = 5;
           nix.settings.experimental-features = "nix-command flakes";
 
           environment.systemPackages = packages.nixPackages;
+          environment.shells = [ pkgs.fish ];
 
           security.pam.enableSudoTouchIdAuth = true;
           system.defaults = {
