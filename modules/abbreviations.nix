@@ -73,6 +73,8 @@ in
     beep2 = "echo \"ring a bell\"";
     dsf = "diff-so-fancy";
 
+    strip-escapes = ''sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,3})*)?[mGK]//g"'';
+
     # get common strings
     b20 = "echo 0x0000000000000000000000000000000000000000";
     b32 = "echo 0x0000000000000000000000000000000000000000000000000000000000000000";
@@ -120,6 +122,13 @@ in
     histm = "history merge";
     hm = "home-manager switch --flake $HOME/.config/nix#maurelian";
     nds = "nix run nix-darwin -- switch --flake ~/.config/nix";
+
+    sfv = "set -x FOUNDRY_VERBOSITY";
+    L = {
+      position = "anywhere";
+      setCursor = "%";
+      expansion = "% | less";
+    };
   };
 
   functions = ethUtils // {
@@ -244,7 +253,7 @@ in
     wchks = ''
       set -l NUMBER (gh pr view --json number --jq .number)
       set -l FAIL_MATCH "fail"
-      set -l SUCCESS_MATCH "main.*pass"
+      set -l SUCCESS_MATCH "All\ checks\ were\ successful"
       watch --chgexit  "gh pr checks $NUMBER | grep -E  -e $FAIL_MATCH -e $SUCCESS_MATCH" \
         && echo "ring a bell" \
         && gh pr checks $NUMBER
@@ -265,6 +274,9 @@ in
       echo "Cleaning stash entries older than $days days..."
       git stash list | awk -v days=$days '$0 ~ /.*\((.*)\)/ {split($0,a,":"); split(a[1],b,"stash@{"); split(b[2],c,"}"); cmd="date -v-"days"d +%s"; cmd | getline cutoff; close(cmd); cmd="date -j -f \"%a %b %d %H:%M:%S %Y\" \""$0"\" +%s"; cmd | getline timestamp; close(cmd); if (timestamp < cutoff) {print "Dropping stash@{"c[1]"}"; system("git stash drop stash@{"c[1]"}")}}'
       echo "Stash cleaning complete."
+    '';
+    gb-clean = ''
+      git branch --merged | egrep -v "(^\\*|master|main|dev)" | xargs git branch -d
     '';
   };
 
