@@ -19,6 +19,7 @@
     just
     jq
     kustomize
+    mise
     neovim
     nodejs_22
     nixfmt-rfc-style

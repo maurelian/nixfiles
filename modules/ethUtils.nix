@@ -8,7 +8,7 @@
         cast interface (forge inspect "$argv[1]" abi | psub)
     end
   '';
-  checksum =''
+  checksumAddr =''
     cast --to-checksum-address "$1"
   '';
 }

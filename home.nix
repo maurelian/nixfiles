@@ -38,6 +38,7 @@ in
       ".scripts" = {
         source = ./scripts;
         recursive = true;
+        executable = true;
       };
     };
   };
@@ -77,7 +78,7 @@ in
       set -x VISUAL nvim
       set -x GIT_EDITOR nvim
       set GPG_TTY $(tty)
-      fish_add_path $HOME/bin /usr/bin /usr/local/bin $HOME/go/bin
+      fish_add_path $HOME/bin /usr/bin /usr/local/bin $HOME/go/bin $HOME/.scripts
       fish_add_path --append /opt/homebrew/bin /bin /usr/sbin /sbin /etc/paths.d
       fish_add_path --append $GOPATH/bin $HOME/.nvm $HOME/.foundry/bin $HOME/.cargo/bin $HOME/.local/bin
       abbr -e gt
