@@ -8,17 +8,6 @@ in
     # --------------------------------- #
     cdpb = "cd packages/contracts-bedrock";
 
-    # --------------------------------- #
-    # Foundry stuff
-    # --------------------------------- #
-    ft = "forge test";
-    ftmt = "forge test -vvvv --match-test";
-    ftmc = "forge test -vvvv --match-contract";
-    ftfs = "forge test --fail-fast --show-progress";
-    fs = "forge snapshot";
-    fb = "forge build";
-    fd = "forge script scripts/deploy/Deploy.s.sol:Deploy -vvv";
-
     # run locally built foundry tools
     forgel = "~/Projects/Tools/foundry/target/debug/forge";
     castl = "~/Projects/Tools/foundry/target/debug/cast";
@@ -108,6 +97,7 @@ in
     gfdr = "git pull origin develop:develop && git rebase develop";
     gfmr = "git fetch origin $gmain:$gmain && git rebase $gmain";
     gbsu = "git branch --set-upstream-to=origin/$gcur $gcur";
+    gpc = "git push --set-upstream origin $gcur";
     gifl = "git status -s | sed \"$1q;d\" | cut -c4-";
 
     gdd = "git restore --worktree -- $(git rev-parse --show-toplevel) && git restore --staged -- $(git rev-parse --show-toplevel) && git clean -fd -- $(git rev-parse --show-toplevel)";
@@ -123,7 +113,20 @@ in
     hm = "home-manager switch --flake $HOME/.config/nix#maurelian";
     nds = "nix run nix-darwin -- switch --flake ~/.config/nix";
 
+    # --------------------------------- #
+    # Foundry stuff
+    # --------------------------------- #
     sfv = "set -x FOUNDRY_VERBOSITY";
+    ft = "forge test";
+    ftmt = "forge test -vvvv --match-test";
+    ftmc = "forge test -vvvv --match-contract";
+    ftfs = "forge test --fail-fast --show-progress";
+    fs = "forge snapshot";
+    fb = "forge build";
+    fd = "forge script scripts/deploy/Deploy.s.sol:Deploy -vvv";
+    lft = "FOUNDRY_PROFILE=lite forge test";
+    lfb = "FOUNDRY_PROFILE=lite forge build";
+
     L = {
       position = "anywhere";
       setCursor = "%";
