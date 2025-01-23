@@ -19,7 +19,6 @@
     just
     jq
     kustomize
-    mise
     neovim
     nodejs_22
     nixfmt-rfc-style
@@ -47,6 +46,7 @@
 
     brews = [
       "rg"
+      "mise"
     ];
 
     casks = [ "jordanbaird-ice" "nikitabobko/tap/aerospace" ];

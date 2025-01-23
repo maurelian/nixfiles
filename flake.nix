@@ -77,6 +77,14 @@
         ];
       };
 
+      darwinConfigurations."MacBook-Pro" = nix-darwin.lib.darwinSystem {
+        inherit system;
+        modules = [
+          configuration
+        ];
+      };
+
       darwinPackages = self.darwinConfigurations."MacBook-Pro-13".pkgs;
+      darwinPackages = self.darwinConfigurations."MacBook-Pro".pkgs;
     };
 }
