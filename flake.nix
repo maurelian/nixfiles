@@ -85,6 +85,5 @@
       };
 
       darwinPackages = self.darwinConfigurations."MacBook-Pro-13".pkgs;
-      darwinPackages = self.darwinConfigurations."MacBook-Pro".pkgs;
     };
 }
