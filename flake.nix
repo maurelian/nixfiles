@@ -73,10 +73,6 @@
               ShowStatusBar = false;
               _FXShowPosixPathInTitle = true;
               FXPreferredViewStyle = "Nlsv";  # List view
-              ShowExternalHardDrivesOnDesktop = true;
-              ShowHardDrivesOnDesktop = false;
-              ShowMountedServersOnDesktop = false;
-              ShowRemovableMediaOnDesktop = true;
             };
 
             NSGlobalDomain = {
@@ -100,8 +96,6 @@
               location = "~/Downloads";
               type = "png";
             };
-
-            menuExtraClockFormat = "HH:mm";  # 24-hour time format
 
             # Trackpad settings
             trackpad = {
