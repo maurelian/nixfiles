@@ -60,15 +60,54 @@
 
           security.pam.enableSudoTouchIdAuth = true;
           system.defaults = {
-            dock.autohide = true;
-            finder.AppleShowAllExtensions = true;
+            dock = {
+              autohide = true;
+              show-recents = false;
+              mru-spaces = false;
+              minimize-to-application = true;
+            };
+
+            finder = {
+              AppleShowAllExtensions = true;
+              ShowPathbar = true;
+              ShowStatusBar = false;
+              _FXShowPosixPathInTitle = true;
+              FXPreferredViewStyle = "Nlsv";  # List view
+              ShowExternalHardDrivesOnDesktop = true;
+              ShowHardDrivesOnDesktop = false;
+              ShowMountedServersOnDesktop = false;
+              ShowRemovableMediaOnDesktop = true;
+            };
+
             NSGlobalDomain = {
-              # allow key repeat
+              # Allow key repeat
               ApplePressAndHoldEnabled = false;
-              # delay before repeating keystrokes
+              # Delay before repeating keystrokes
               InitialKeyRepeat = 20;
-              # delay between repeated keystrokes upon holding a key
+              # Delay between repeated keystrokes upon holding a key
               KeyRepeat = 2;
+              # Expand save panel by default
+              NSNavPanelExpandedStateForSaveMode = true;
+              NSNavPanelExpandedStateForSaveMode2 = true;
+              # Expand print panel by default
+              PMPrintingExpandedStateForPrint = true;
+              PMPrintingExpandedStateForPrint2 = true;
+              # Save to disk (not iCloud) by default
+              NSDocumentSaveNewDocumentsToCloud = false;
+            };
+
+            screencapture = {
+              location = "~/Downloads";
+              type = "png";
+            };
+
+            menuExtraClockFormat = "HH:mm";  # 24-hour time format
+
+            # Trackpad settings
+            trackpad = {
+              Clicking = true;
+              TrackpadRightClick = true;
+              TrackpadThreeFingerDrag = true;
             };
           };
 
