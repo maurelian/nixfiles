@@ -42,6 +42,8 @@
     };
 
     taps = [
+      "homebrew/cask"
+      "homebrew/cask-versions"
     ];
 
     brews = [
@@ -49,6 +51,36 @@
       "mise"
     ];
 
-    casks = [ "jordanbaird-ice" "nikitabobko/tap/aerospace" ];
+    casks = [
+      "1password"
+      "arc"
+      "brave-browser"
+      "cleanshot"
+      "cursor"
+      "discord"
+      "docker"
+      "fantastical"
+      "firefox"
+      "gpg-suite"
+      "hazeover"
+      "keybase"
+      "logseq"
+      "notion"
+      "obsidian"
+      "orbstack"
+      "protonvpn"
+      "protonmail-bridge"
+      "raycast"
+      "rectangle"
+      "signal"
+      "slack"
+      "spotify"
+      "telegram"
+      "visual-studio-code"
+      "warp"
+      "whatsapp"
+      "balenaetcher"
+      "iterm2"
+    ];
   };
 }
