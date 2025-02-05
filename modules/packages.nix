@@ -41,10 +41,7 @@
       cleanup = "none";
     };
 
-    taps = [
-      "homebrew/cask"
-      "homebrew/cask-versions"
-    ];
+    taps = [];
 
     brews = [
       "rg"
@@ -63,6 +60,7 @@
       "firefox"
       "gpg-suite"
       "hazeover"
+      "jordanbaird-ice"
       "keybase"
       "logseq"
       "notion"
@@ -78,6 +76,7 @@
       "telegram"
       "visual-studio-code"
       "warp"
+      "watch"
       "whatsapp"
       "balenaetcher"
       "iterm2"
