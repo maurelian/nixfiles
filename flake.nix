@@ -126,7 +126,7 @@
         ];
       };
 
-      darwinConfigurations."MacBook-Pro" = nix-darwin.lib.darwinSystem {
+      darwinConfigurations."MacBook-Pro-16" = nix-darwin.lib.darwinSystem {
         inherit system;
         modules = [
           configuration
