@@ -22,6 +22,7 @@ fi
 nonce=$(cast call "$safe" "nonce()(uint256)" "$@")
 threshold=$(cast call "$safe" "getThreshold()(uint256)" "$@")
 owners=$(cast call "$safe" "getOwners()(address[])" "$@" | tr -d '[]' | tr ',' '\n')
+modules=$(cast call "$safe" "getModulesPaginated(address,uint)(address[])" 0x0000000000000000000000000000000000000001 5)
 
 # Convert string to array.
 # This works in both bash and zsh without needing to change IFS.
@@ -30,10 +31,15 @@ while IFS= read -r line; do
   ownersArray+=("$line")
 done <<< "$owners"
 
+local modulesArray=()
+while IFS= read -r line; do
+  modulesArray+=("$line")
+done <<< "$modules"
+
 echo "Current Nonce:    $nonce"
 echo "Threshold:        $threshold"
 echo "Number of Owners: ${#ownersArray[@]}"
-
+echo "Number of Modules: ${#modulesArray[@]}"
 # Lookup each owner address
 for address in "${ownersArray[@]}"; do
   address="${address#"${address%%[![:space:]]*}"}"  # remove leading whitespace
