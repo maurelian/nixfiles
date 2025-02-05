@@ -103,6 +103,7 @@ in
     gdd = "git restore --worktree -- $(git rev-parse --show-toplevel) && git restore --staged -- $(git rev-parse --show-toplevel) && git clean -fd -- $(git rev-parse --show-toplevel)";
     gnuke = "git reset --hard HEAD && git clean -fd";
 
+    fpl = "FOUNDRY_PROFILE=lite";
     lgl = "lg log";
     lgs = "lg status";
     lgd = "lg diff";
