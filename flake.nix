@@ -45,7 +45,6 @@
           packages = import ./modules/packages.nix { inherit pkgs; };
         in
         {
-          services.nix-daemon.enable = true;
           nixpkgs.hostPlatform = system;
           users.users.maurelian = {
             name = "maurelian";
@@ -54,6 +53,9 @@
           };
           system.stateVersion = 5;
           nix.settings.experimental-features = "nix-command flakes";
+
+          # https://determinate.systems/posts/nix-darwin-updates/
+          nix.enable = false;
 
           environment.systemPackages = packages.nixPackages;
           environment.shells = [ pkgs.fish ];
