@@ -54,8 +54,7 @@ alias stripxterm='perl -pe s/e([^[]]|[.*?[a-zA-Z]|].*?a)//g | col -b'
 
 # putting things into the clipboard
 alias cpwd='pwd | pbcopy'
-alias cplast='fc -ln -1 | pbcopy'
-alias cpl='cplast'
+alias cplast='history | head -n1 | string replace -r "^\\s*\\d+\\s+" "" | pbcopy'
 
 # ls things
 alias al="ls -al"

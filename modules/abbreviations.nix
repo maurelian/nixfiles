@@ -128,6 +128,9 @@ in
     lft = "FOUNDRY_PROFILE=lite forge test";
     lfb = "FOUNDRY_PROFILE=lite forge build";
 
+    jb = "just build-dev";
+    jt = "just test-dev";
+
     L = {
       position = "anywhere";
       setCursor = "%";

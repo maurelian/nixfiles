@@ -1,6 +1,6 @@
 { pkgs }:
 {
-  # Nix packages
+  # Nix packages (installed via home-manager)
   nixPackages = with pkgs; [
     ack
     bat
@@ -10,6 +10,7 @@
     difftastic
     diff-so-fancy
     gh
+    gitui
     gnupg
     grc
     go
@@ -33,7 +34,7 @@
     yq
   ];
 
-  # Homebrew configuration
+  # Homebrew configuration (installed via nix-darwin)
   homebrew = {
     enable = true;
     onActivation = {
