@@ -77,7 +77,7 @@
       "telegram"
       "visual-studio-code"
       "warp"
-      "watch"
+      # "watch"
       "whatsapp"
       "balenaetcher"
       "iterm2"

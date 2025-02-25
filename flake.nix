@@ -56,11 +56,16 @@
 
           # https://determinate.systems/posts/nix-darwin-updates/
           nix.enable = false;
+          nix.registry.nixpkgs.flake = nixpkgs;
 
           environment.systemPackages = packages.nixPackages;
           environment.shells = [ pkgs.fish ];
 
           security.pam.enableSudoTouchIdAuth = true;
+          system.keyboard = {
+            enableKeyMapping = true;
+            remapCapsLockToEscape = true;
+          };
           system.defaults = {
             dock = {
               autohide = true;
@@ -121,20 +126,13 @@
         ];
       };
 
-      darwinConfigurations."MacBook-Pro-13" = nix-darwin.lib.darwinSystem {
+      darwinConfigurations."MacBook-Pro" = nix-darwin.lib.darwinSystem {
         inherit system;
         modules = [
           configuration
         ];
       };
 
-      darwinConfigurations."MacBook-Pro-16" = nix-darwin.lib.darwinSystem {
-        inherit system;
-        modules = [
-          configuration
-        ];
-      };
-
-      darwinPackages = self.darwinConfigurations."MacBook-Pro-13".pkgs;
+      darwinPackages = self.darwinConfigurations."MacBook-Pro".pkgs;
     };
 }
