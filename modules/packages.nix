@@ -9,6 +9,7 @@
     cowsay
     difftastic
     diff-so-fancy
+    delta
     gh
     gitui
     gnupg

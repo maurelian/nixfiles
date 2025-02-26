@@ -3,7 +3,9 @@
   # hooksPath = ~/.githooks
 	ignorecase = false
 	editor = vi
-	pager = diff-so-fancy | less --tabs=4 -RFX
+	pager = delta | less --tabs=4 -RFX
+	fsmonitor = true
+	untrackedCache = true
 [user]
 	name = Maurelian
 	email = maurelian@protonmail.ch
@@ -12,10 +14,15 @@
 	rebase = true
 [diff]
     tool = vscode
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
 [difftool "vscode"]
     cmd = code --wait --diff $LOCAL $REMOTE
 [merge]
 	tool = vscode
+	conflictstyle = zdiff3
 [mergetool "vscode"]
     cmd = code --wait --diff $LOCAL $REMOTE
 [url "git@github.com:"]
@@ -53,3 +60,17 @@
 	gpgsign = true
 [gpg]
 	program = /usr/local/bin/gpg
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[tag]
+	sort = version:refname
+[push]
+	default = simple
+	autoSetupRemote = true
+	followTags = true
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
