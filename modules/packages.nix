@@ -43,7 +43,7 @@
       cleanup = "none";
     };
 
-    taps = [];
+    taps = [ ];
 
     brews = [
       "rg"

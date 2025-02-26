@@ -79,7 +79,7 @@
               ShowPathbar = true;
               ShowStatusBar = false;
               _FXShowPosixPathInTitle = true;
-              FXPreferredViewStyle = "Nlsv";  # List view
+              FXPreferredViewStyle = "Nlsv"; # List view
             };
 
             NSGlobalDomain = {

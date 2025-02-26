@@ -10,6 +10,7 @@ local safe=$1
 shift # Shift the first argument off so "$@" contains any additional arguments
 
 local threshold owners nonce
+# local modules
 
 # Ensure compatibility with both bash and zsh for arrays.
 # In zsh, arrays start at 1 by default and it handles word splitting differently.
@@ -22,7 +23,7 @@ fi
 nonce=$(cast call "$safe" "nonce()(uint256)" "$@")
 threshold=$(cast call "$safe" "getThreshold()(uint256)" "$@")
 owners=$(cast call "$safe" "getOwners()(address[])" "$@" | tr -d '[]' | tr ',' '\n')
-modules=$(cast call "$safe" "getModulesPaginated(address,uint)(address[])" 0x0000000000000000000000000000000000000001 5)
+Modules=$(cast call "$safe" "getModulesPaginated(address,uint)(address[])" 0x0000000000000000000000000000000000000001 5)
 
 # Convert string to array.
 # This works in both bash and zsh without needing to change IFS.
@@ -34,12 +35,12 @@ done <<< "$owners"
 local modulesArray=()
 while IFS= read -r line; do
   modulesArray+=("$line")
-done <<< "$modules"
+done <<< "$Modules"
 
 echo "Current Nonce:    $nonce"
 echo "Threshold:        $threshold"
 echo "Number of Owners: ${#ownersArray[@]}"
-echo "Number of Modules: ${#modulesArray[@]}"
+
 # Lookup each owner address
 for address in "${ownersArray[@]}"; do
   address="${address#"${address%%[![:space:]]*}"}"  # remove leading whitespace
@@ -56,3 +57,7 @@ if [[ -n "$ZSH_VERSION" ]]; then
   unsetopt ksharrays
 fi
 
+echo "Number of Modules: ${#modulesArray[@]}"
+for address in "${modulesArray[@]}"; do
+  echo "  $address"
+done

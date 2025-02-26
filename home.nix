@@ -43,28 +43,31 @@ in
     };
   };
 
-  home.packages = packages.nixPackages ++ [
-    # Additional packages can be added here
-    pkgs.fishPlugins.foreign-env
-    pkgs.zsh-history-to-fish
-    pkgs.starship
+  home.packages =
+    packages.nixPackages
+    ++ [
+      # Additional packages can be added here
+      pkgs.fishPlugins.foreign-env
+      pkgs.zsh-history-to-fish
+      pkgs.starship
 
-    # Fish plugins that this guy uses: https://github.com/r17x/universe/blob/45595dda71df5c34b8110827a044e487ad52f7af/nix/home/shells.nix#L161
-    pkgs.babelfish
-    pkgs.fishPlugins.colored-man-pages
-    # https://github.com/franciscolourenco/done - get notified when a long running command finishes
-    pkgs.fishPlugins.done
-    # use babelfish than foreign-env
-    pkgs.fishPlugins.foreign-env
-    # Paired symbols in the command line
-    pkgs.fishPlugins.pisces
-    pkgs.fishPlugins.puffer
-    pkgs.fishPlugins.fifc
-    pkgs.fishPlugins.bass
-    pkgs.fishPlugins.git-abbr
-    pkgs.fishPlugins.z
-    pkgs.fishPlugins.grc
-  ] ++ gitConfig.home.packages;
+      # Fish plugins that this guy uses: https://github.com/r17x/universe/blob/45595dda71df5c34b8110827a044e487ad52f7af/nix/home/shells.nix#L161
+      pkgs.babelfish
+      pkgs.fishPlugins.colored-man-pages
+      # https://github.com/franciscolourenco/done - get notified when a long running command finishes
+      pkgs.fishPlugins.done
+      # use babelfish than foreign-env
+      pkgs.fishPlugins.foreign-env
+      # Paired symbols in the command line
+      pkgs.fishPlugins.pisces
+      pkgs.fishPlugins.puffer
+      pkgs.fishPlugins.fifc
+      pkgs.fishPlugins.bass
+      pkgs.fishPlugins.git-abbr
+      pkgs.fishPlugins.z
+      pkgs.fishPlugins.grc
+    ]
+    ++ gitConfig.home.packages;
 
   imports = [ ./modules/git.nix ];
 
