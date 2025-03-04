@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# Check if system config address is provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <system_config_address>"
+    exit 1
+fi
+
+# Check if RPC URL is set
+if [ -z "$ETH_RPC_URL" ]; then
+    echo "Error: ETH_RPC_URL environment variable is not set"
+    exit 1
+fi
+
+SYSTEM_CONFIG_ADDRESS=$1
+
+# Function to format address output
+format_address() {
+    local name=$1
+    local address=$2
+    printf "%-40s %s\n" "$name:" "$address"
+}
+
+# Function to make a cast call and check for errors
+make_call() {
+    local contract=$1
+    local function=$2
+    local args=$3
+    local result
+
+    # echo "Calling $function on $contract..." >&2
+    result=$(cast call "$contract" "$function" $args --rpc-url $ETH_RPC_URL 2>&1)
+    local status=$?
+
+    if [ $status -ne 0 ]; then
+        echo "Error calling $function on $contract:" >&2
+        echo "$result" >&2
+        return 1
+    fi
+
+    echo "$result"
+    return 0
+}
+
+echo "Reading SystemConfig addresses from $SYSTEM_CONFIG_ADDRESS..."
+echo "----------------------------------------"
+
+# Read each address using its specific getter function
+L1_CDM=$(make_call $SYSTEM_CONFIG_ADDRESS "l1CrossDomainMessenger()(address)" "") || exit 1
+L1_ERC721=$(make_call $SYSTEM_CONFIG_ADDRESS "l1ERC721Bridge()(address)" "") || exit 1
+L1_STANDARD=$(make_call $SYSTEM_CONFIG_ADDRESS "l1StandardBridge()(address)" "") || exit 1
+DISPUTE_GAME_FACTORY=$(make_call $SYSTEM_CONFIG_ADDRESS "disputeGameFactory()(address)" "") || exit 1
+PORTAL=$(make_call $SYSTEM_CONFIG_ADDRESS "optimismPortal()(address)" "") || exit 1
+ERC20_FACTORY=$(make_call $SYSTEM_CONFIG_ADDRESS "optimismMintableERC20Factory()(address)" "") || exit 1
+PERMISSIONED_GAME=$(make_call $DISPUTE_GAME_FACTORY "gameImpls(uint32)(address)" 1) || exit 1
+FAULT_GAME=$(make_call $DISPUTE_GAME_FACTORY "gameImpls(uint32)(address)" 0) || exit 1
+ANCHOR_STATE_REGISTRY=$(make_call $PERMISSIONED_GAME "anchorStateRegistry()(address)" "") || exit 1
+DELAYED_WETH_PERMISSIONED=$(make_call $PERMISSIONED_GAME "weth()(address)" "") || exit 1
+VM=$(make_call $PERMISSIONED_GAME "vm()(address)" "") || exit 1
+PREIMAGE_ORACLE=$(make_call $VM "oracle()(address)" "") || exit 1
+
+if [ "$FAULT_GAME" != "0x0000000000000000000000000000000000000000" ]; then
+    DELAYED_WETH_PERMISSIONLESS=$(make_call $FAULT_GAME "weth()(address)" "") || exit 1
+fi
+
+# Format and display the addresses
+format_address "L1CrossDomainMessenger" "$L1_CDM"
+format_address "L1ERC721Bridge" "$L1_ERC721"
+format_address "L1StandardBridge" "$L1_STANDARD"
+format_address "DisputeGameFactory" "$DISPUTE_GAME_FACTORY"
+format_address "OptimismPortal" "$PORTAL"
+format_address "OptimismMintableERC20Factory" "$ERC20_FACTORY"
+format_address "PermissionedGame" "$PERMISSIONED_GAME"
+format_address "FaultGame" "$FAULT_GAME"
+format_address "AnchorStateRegistry" "$ANCHOR_STATE_REGISTRY"
+format_address "DelayedWETHPermissioned" "$DELAYED_WETH_PERMISSIONED"
+format_address "DelayedWETHPermissionless" "$DELAYED_WETH_PERMISSIONLESS"
+format_address "VM" "$VM"
+format_address "PreimageOracle" "$PREIMAGE_ORACLE"
+
