@@ -74,7 +74,7 @@ alias thistory='history | grep -v \*' # only history in this session
 # make common files easier to read
 alias rdme='bat README.md'
 alias rdpj='bat package.json'
-alias grip='grip -b --quiet --theme=dark'
+alias gb='grip -b --quiet --theme=dark'
 alias opendot='dot -Tpng | open -fa /Applications/Preview.app'
 
 # find files excluding node_modules

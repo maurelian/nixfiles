@@ -14,6 +14,7 @@
     gitui
     gnupg
     grc
+    python312Packages.grip
     go
     gotestsum
     lazygit
