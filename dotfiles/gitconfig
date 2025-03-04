@@ -39,7 +39,7 @@
 	amend-to = "!f() { SHA=`git rev-parse \"$1\"`; git commit --fixup \"$SHA\" && GIT_SEQUENCE_EDITOR=true git rebase --interactive --autosquash \"$SHA^\"; }; f"
 	drop = "!f() { for c in \"$@\"; do sha1=$(git rev-parse --short $1); [ -n \"$sha1\" ] && git -c rebase.abbreviateCommands=false -c sequence.editor=\"printf \\\"%s\\n\\\" \\\"g/^pick $sha1 /s//drop $sha1 /\\\" w \\\"g/^#/d\\\" \\\"g/^$/d\\\" \\\"%p\\\" Q | ed -s\" rebase -i --autostash; done }; f"
 [interactive]
-	diffFilter = diff-so-fancy --patch
+	diffFilter = delta --patch
 [color]
 	ui = true
 [color "diff-highlight"]
@@ -71,7 +71,3 @@
 	default = simple
 	autoSetupRemote = true
 	followTags = true
-[fetch]
-	prune = true
-	pruneTags = true
-	all = true
