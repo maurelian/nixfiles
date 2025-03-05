@@ -18,6 +18,7 @@
     go
     gotestsum
     lazygit
+    (python3.withPackages (ps: [ ps.llm ps.llm-anthropic ]))
     fzf
     just
     jq

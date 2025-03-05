@@ -1,0 +1,8 @@
+  #!/bin/bash
+  PROMPT="You are the best at writing shell commands! Assume the OS is MacOS and the shell is fish. I want you to respond with only the shell commands separated by semi colons, no new lines, and no commentary. Here is what I want to do: $@"
+  RESULT=$(llm -m claude-3.7-sonnet "$PROMPT")
+  echo $RESULT
+  read -rp "Execute? [y/n/c(opy)]: " input_var
+  input_var=${input_var:-y}
+  [ "$input_var" = "y" ] && bash -c "$RESULT"
+  [ "$input_var" = "c" ] && echo "$RESULT" | tr -d '\n' | pbcopy
