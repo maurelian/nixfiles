@@ -31,9 +31,13 @@
     ripgrep
     rustup
     tree
-    tailscale
+    # Use a tailscale overlay to skip the failing tests due to not finding netstat
+    (tailscale.overrideAttrs (oldAttrs: {
+      doCheck = false;  # Skip running tests during build
+    }))
     tig
     vim
+    uv
     yq
   ];
 
