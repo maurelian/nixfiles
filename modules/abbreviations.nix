@@ -68,6 +68,7 @@ in
     b20 = "echo 0x0000000000000000000000000000000000000000";
     b32 = "echo 0x0000000000000000000000000000000000000000000000000000000000000000";
     lg = "lazygit --ucd ~/.config/lazygit/";
+    clm = "llm -m claude-3.7-sonnet";
   };
 
   abbreviations = {
@@ -88,6 +89,7 @@ in
     gcuru = "git rev-parse --abbrev-ref @{upstream}";
     gfo = "git fetch origin";
     gfodd = "git fetch origin develop:develop";
+    ghu = "gh pr view --json url --jq .url | pbcopy";
     grmain = "git rebase $gmain";
     gra = "git rebase --abort";
     gfm = "git pull ";
