@@ -20,6 +20,7 @@ in
     was = "which -as";
     brewup = "brew update && brew upgrade";
     nv = "nvim";
+    vi = "nvim";
     f = "forge";
     ghu = "gh pr view --json url -q .url | pbcopy";
 
@@ -137,6 +138,12 @@ in
       position = "anywhere";
       setCursor = "%";
       expansion = "% | less";
+    };
+
+    cdcw = {
+      position = "anywhere";
+      setCursor = "%";
+      expansion = "cd % && cw && cd -";
     };
   };
 
