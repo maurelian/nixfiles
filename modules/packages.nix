@@ -1,4 +1,5 @@
 { pkgs }:
+
 {
   # Nix packages (installed via home-manager)
   nixPackages = with pkgs; [
@@ -18,7 +19,15 @@
     go
     gotestsum
     lazygit
-    (python3.withPackages (ps: [ ps.llm ps.llm-anthropic ]))
+    # Python environment with packages
+    (python3.withPackages (ps: [
+      ps.llm
+      ps.llm-anthropic
+    ]))
+
+    # Add pipx for installing Python applications
+    pipx
+
     fzf
     just
     jq
@@ -38,7 +47,8 @@
     tig
     vim
     uv
-    yq
+    yarn
+    yq-go
   ];
 
   # Homebrew configuration (installed via nix-darwin)

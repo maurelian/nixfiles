@@ -83,7 +83,7 @@ in
       set -x FOUNDRY_DISABLE_NIGHTLY_WARNING true
       set -x TENDERLY_USERNAME oplabs; set -x TENDERLY_PROJECT op-mainnet
       set GPG_TTY $(tty)
-      fish_add_path $HOME/bin /usr/bin /usr/local/bin $HOME/go/bin $HOME/.scripts $HOME/bin
+      fish_add_path $HOME/bin /usr/bin /usr/local/bin $HOME/go/bin $HOME/.scripts $HOME/bin $HOME/.local/bin
       fish_add_path --append /opt/homebrew/bin /bin /usr/sbin /sbin /etc/paths.d $GOPATH/bin $HOME/.nvm $HOME/.foundry/bin $HOME/.cargo/bin $HOME/.local/bin
       abbr -e gt
     '';
@@ -106,6 +106,10 @@ in
 
       # set RPC URLs
       rpu eth > /dev/null
+
+      if test -f $HOME/.secrets
+        source $HOME/.secrets
+      end
 
       if not set -q NIX_PROFILES
         echo "Warning: Nix environment doesn't seem to be properly sourced"
