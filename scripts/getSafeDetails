@@ -24,6 +24,7 @@ nonce=$(cast call "$safe" "nonce()(uint256)" "$@")
 threshold=$(cast call "$safe" "getThreshold()(uint256)" "$@")
 owners=$(cast call "$safe" "getOwners()(address[])" "$@" | tr -d '[]' | tr ',' '\n')
 Modules=$(cast call "$safe" "getModulesPaginated(address,uint)(address[])" 0x0000000000000000000000000000000000000001 5)
+domainSeparator=$(cast call "$safe" "domainSeparator()(bytes32)")
 
 # Convert string to array.
 # This works in both bash and zsh without needing to change IFS.
@@ -39,8 +40,17 @@ done <<< "$Modules"
 
 echo "Current Nonce:    $nonce"
 echo "Threshold:        $threshold"
-echo "Number of Owners: ${#ownersArray[@]}"
+echo "Domain Separator: $domainSeparator"
+# the modules array always includes at least the 0x01 address
+echo "Number of Modules: $((${#modulesArray[@]} - 1))"
+if [ ${#modulesArray[@]} -gt 1 ]; then
+  for address in "${modulesArray[@]}"; do
+    echo "  $address"
+  done
+fi
 
+
+echo "Number of Owners: ${#ownersArray[@]}"
 # Lookup each owner address
 for address in "${ownersArray[@]}"; do
   address="${address#"${address%%[![:space:]]*}"}"  # remove leading whitespace
@@ -57,7 +67,3 @@ if [[ -n "$ZSH_VERSION" ]]; then
   unsetopt ksharrays
 fi
 
-echo "Number of Modules: ${#modulesArray[@]}"
-for address in "${modulesArray[@]}"; do
-  echo "  $address"
-done

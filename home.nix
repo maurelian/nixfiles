@@ -101,11 +101,18 @@ in
       babelfish < /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
       source $HOME/.iterm2_shell_integration.fish
 
-      set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/O" "$HOME/Projects/Hunting" "$HOME/Projects/Tools" "$HOME/Projects/Scoping" "$HOME/Projects/RefCodebases" "$HOME/Projects/Miscellaneous" "$HOME/Projects/various-repos"
+      set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/" "$HOME/Projects/O" "$HOME/Projects/Tools" "$HOME/Projects/Scoping" "$HOME/Projects/References" "$HOME/Projects/Miscellaneous" "$HOME/Projects/various-repos"
       set -U pisces_only_insert_at_eol 1 # quote/bracket completion setting
 
       # set RPC URLs
       rpu eth > /dev/null
+
+      # Run msa function when entering a git repo with mise.toml
+      function __check_and_run_msa --on-variable PWD
+        if test -e (git rev-parse --show-toplevel 2>/dev/null)/mise.toml
+          mise activate | source
+        end
+      end
 
       if test -f $HOME/.secrets
         source $HOME/.secrets

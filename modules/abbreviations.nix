@@ -145,10 +145,18 @@ in
       setCursor = "%";
       expansion = "cd % && cw && cd -";
     };
+    qbc = "quick-branch-commit";
   };
 
   functions = ethUtils // {
     fish_greeting = "";
+    quick-branch-commit = ''
+      set -l msg $argv
+      set -l branch (string lower (string join '-' (string split ' ' $msg)))
+      git checkout -b $branch
+      git add .
+      git commit -m "$msg"
+    '';
     glau = ''
       set -l upstream (git rev-parse --abbrev-ref @{upstream})
       echo "upstream: $upstream"
@@ -294,6 +302,7 @@ in
     gb-clean = ''
       git branch --merged | egrep -v "(^\\*|master|main|dev)" | xargs git branch -d
     '';
+    msa = "mise activate | source";
   };
 
   abbreviations.nconf = "code ~/.config/nix";
