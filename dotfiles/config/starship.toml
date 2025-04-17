@@ -27,4 +27,4 @@ fish_style_pwd_dir_length = 3
 
 [cmd_duration]
 show_notifications = true
-min_time_to_show = 20_000
+min_time_to_notify = 20_000
