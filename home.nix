@@ -101,6 +101,7 @@ in
       babelfish < /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
       source $HOME/.iterm2_shell_integration.fish
 
+
       set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/" "$HOME/Projects/O" "$HOME/Projects/Tools" "$HOME/Projects/Scoping" "$HOME/Projects/References" "$HOME/Projects/Miscellaneous" "$HOME/Projects/various-repos"
       set -U pisces_only_insert_at_eol 1 # quote/bracket completion setting
 
@@ -116,6 +117,10 @@ in
 
       if test -f $HOME/.secrets
         source $HOME/.secrets
+      end
+
+      if test -f $HOME/.config.fish
+        source $HOME/.config.fish
       end
 
       if not set -q NIX_PROFILES

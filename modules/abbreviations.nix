@@ -93,7 +93,7 @@ in
     ghu = "gh pr view --json url --jq .url | pbcopy";
     grmain = "git rebase $gmain";
     gra = "git rebase --abort";
-    gfm = "git pull ";
+    gfm = "git pull";
     gfmoc = "git pull origin";
     gfmod = "git pull origin develop:develop";
     gfmom = "git fetch origin $gmain:$gmain";
@@ -306,5 +306,6 @@ in
   };
 
   abbreviations.nconf = "code ~/.config/nix";
+  abbreviations.lconf = "code ~/.config.fish";
   abbreviations.vc = "viewci";
 }
