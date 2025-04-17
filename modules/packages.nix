@@ -8,6 +8,7 @@
     btop
     cloc
     cowsay
+    dasel
     difftastic
     diff-so-fancy
     delta
