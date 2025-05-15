@@ -20,6 +20,14 @@ if [[ -n "$ZSH_VERSION" ]]; then
   setopt localoptions ksharrays
 fi
 
+# Check if address has code
+local code=$(cast code "$safe" "$@")
+if [[ -z "$code" || "$code" == "0x" ]]; then
+  echo "Error: No code found at address $safe, are you using the correct rpc?"
+  exit 1
+fi
+
+
 nonce=$(cast call "$safe" "nonce()(uint256)" "$@")
 threshold=$(cast call "$safe" "getThreshold()(uint256)" "$@")
 owners=$(cast call "$safe" "getOwners()(address[])" "$@" | tr -d '[]' | tr ',' '\n')
@@ -43,11 +51,10 @@ echo "Threshold:        $threshold"
 echo "Domain Separator: $domainSeparator"
 # the modules array always includes at least the 0x01 address
 echo "Number of Modules: $((${#modulesArray[@]}))"
-if [ ${#modulesArray[@]} -ge 1 ]; then
   for address in "${modulesArray[@]}"; do
+    address="${address#"${address%%[![:space:]]*}"}"  # remove leading whitespace
     echo "  $address"
   done
-fi
 
 
 echo "Number of Owners: ${#ownersArray[@]}"
