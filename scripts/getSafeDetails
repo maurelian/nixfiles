@@ -42,8 +42,8 @@ echo "Current Nonce:    $nonce"
 echo "Threshold:        $threshold"
 echo "Domain Separator: $domainSeparator"
 # the modules array always includes at least the 0x01 address
-echo "Number of Modules: $((${#modulesArray[@]} - 1))"
-if [ ${#modulesArray[@]} -gt 1 ]; then
+echo "Number of Modules: $((${#modulesArray[@]}))"
+if [ ${#modulesArray[@]} -ge 1 ]; then
   for address in "${modulesArray[@]}"; do
     echo "  $address"
   done
