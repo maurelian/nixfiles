@@ -26,8 +26,8 @@
 	conflictstyle = zdiff3
 [mergetool "vscode"]
     cmd = code --wait --diff $LOCAL $REMOTE
-[url "git@github.com:"]
-    insteadOf = https://github.com/
+# [url "git@github.com:"]
+#     insteadOf = https://github.com/
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
