@@ -84,4 +84,3 @@ alias fxnm='find . -path **/node_modules -prune -false -o -name'
 # python aliases
 # --------------------------------- #
 # alias init-pyenv=`eval "$(pyenv init -)"` # && eval "$(pyenv virtualenv-init -)"
-alias sba='source venv/bin/activate'

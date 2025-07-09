@@ -57,6 +57,7 @@ in
     gwk = "git worktree";
     gwkl = "git worktree list";
     gch = "git rev-parse HEAD";
+    gcb = "git rev-parse --abbrev-ref HEAD";
     gia = "git add --all";
     giu = "git add --update";
     gtst = "gt pr --stack";
@@ -70,9 +71,13 @@ in
     b32 = "echo 0x0000000000000000000000000000000000000000000000000000000000000000";
     lg = "lazygit --ucd ~/.config/lazygit/";
     clm = "llm -m claude-3.7-sonnet";
+
   };
 
   abbreviations = {
+    venv-new = "python3 -m venv venv";
+    venv-activate = "source venv/bin/activate.fish";
+
     g = "git status";
     gcap = "git commit --all --amend --no-edit && git push --force-with-lease origin $gcur";
     gcs = "git show";
@@ -303,6 +308,8 @@ in
       git branch --merged | egrep -v "(^\\*|master|main|dev)" | xargs git branch -d
     '';
     msa = "mise activate | source";
+
+    pk = "cast wallet dk $argv | awk '{print $NF}'";
   };
 
   abbreviations.nconf = "code ~/.config/nix";
