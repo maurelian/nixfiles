@@ -115,7 +115,7 @@ in
       set -U pisces_only_insert_at_eol 1 # quote/bracket completion setting
 
       # set RPC URLs
-      rpu eth > /dev/null
+      source ~/.rpc-urls > /dev/null
 
       # Run msa function when entering a git repo with mise.toml
       function __check_and_run_msa --on-variable PWD

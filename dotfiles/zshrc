@@ -153,7 +153,7 @@ if [ -f '/Users/maurelian/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '/U
 source <(kubectl completion zsh)
 
 # set the rpc url to mainnet
-rpu main > /dev/null 2>&1
+source ~/.rpc-urls eth > /dev/null 2>&1
 export TENDERLY_USERNAME=oplabs; export TENDERLY_PROJECT=op-mainnet
 
 # monorepo requirement

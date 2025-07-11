@@ -65,6 +65,7 @@
     brews = [
       "rg"
       "mise"
+      "git"
     ];
 
     casks = [
