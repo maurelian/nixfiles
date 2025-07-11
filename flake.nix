@@ -52,6 +52,7 @@
             shell = pkgs.fish;
           };
           system.stateVersion = 5;
+          system.primaryUser = "maurelian";
           nix.settings.experimental-features = "nix-command flakes";
 
           # https://determinate.systems/posts/nix-darwin-updates/
