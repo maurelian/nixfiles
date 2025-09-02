@@ -145,11 +145,6 @@ in
       expansion = "% | less";
     };
 
-    cdcw = {
-      position = "anywhere";
-      setCursor = "%";
-      expansion = "cd % && cw && cd -";
-    };
     qbc = "quick-branch-commit";
   };
 
@@ -235,6 +230,23 @@ in
         # if we're not in a git repo, set DIR to cwd
         $L_EDITOR -n (pwd)
       end
+    '';
+    cdcw = ''
+      complete -c cdcw -f
+      complete -c cdcw -a '(__path_complete)'
+      if test (count $argv) -lt 1
+        echo "Usage: cdcw <directory>"
+        return 1
+      end
+      set -l target $argv[1]
+      set -l prev (pwd)
+      # Use cd to leverage CDPATH resolution
+      if not cd "$target"
+        echo "cdcw: cannot cd to '$target'"
+        return 1
+      end
+      cw
+      cd "$prev"
     '';
     nw = ''
       complete -c nw -f
