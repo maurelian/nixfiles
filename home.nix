@@ -119,10 +119,16 @@ in
 
       # Run msa function when entering a git repo with mise.toml
       function __check_and_run_msa --on-variable PWD
-        if test -e (git rev-parse --show-toplevel 2>/dev/null)/mise.toml
-          mise activate | source
+        if git rev-parse --show-toplevel >/dev/null 2>&1
+            set repo (git rev-parse --show-toplevel)
+            if test -e "$repo/mise.toml"
+                mise activate | source
+            end
         end
       end
+
+      # Call once at shell startup
+      __check_and_run_msa
 
       if test -f $HOME/.secrets
         source $HOME/.secrets
