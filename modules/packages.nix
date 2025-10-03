@@ -12,6 +12,7 @@
     difftastic
     diff-so-fancy
     delta
+    foundry
     gh
     gitui
     gnupg
@@ -63,9 +64,13 @@
     taps = [ ];
 
     brews = [
-      "rg"
+      "circleci"
       "mise"
       "git"
+      "rg"
+      # "rotki"
+      "watch"
+      "xan"
     ];
 
     casks = [
@@ -94,9 +99,6 @@
       "slack"
       "spotify"
       "telegram"
-      "visual-studio-code"
-      "warp"
-      # "watch"
       "whatsapp"
       "balenaetcher"
       "iterm2"
