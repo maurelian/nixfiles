@@ -75,13 +75,13 @@
 
     casks = [
       "1password"
+      "1password-cli"
       "arc"
       "brave-browser"
       "cleanshot"
       "cursor"
       "discord"
       "docker"
-      "fantastical"
       "firefox"
       "gpg-suite"
       "hazeover"
