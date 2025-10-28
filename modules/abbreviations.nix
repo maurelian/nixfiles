@@ -8,6 +8,12 @@ in
     # --------------------------------- #
     cdpb = "cd packages/contracts-bedrock";
 
+    # run globally installed foundry tools
+    forgeg = "~/.foundry/bin/forge";
+    castg = "~/.foundry/bin/cast";
+    anvilg = "~/.foundry/bin/anvil";
+    chiselg = "~/.foundry/bin/chisel";
+
     # run locally built foundry tools
     forgel = "~/Projects/Tools/foundry/target/debug/forge";
     castl = "~/Projects/Tools/foundry/target/debug/cast";
