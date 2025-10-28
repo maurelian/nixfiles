@@ -1,0 +1,2 @@
+--line-number # aka -n → print the line number of each match.
+--with-filename # aka -H → always print the filename (even if you’re searching a single file or reading from stdin).

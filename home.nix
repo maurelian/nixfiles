@@ -20,6 +20,7 @@ in
       # source dotfiles into home directory
       ".vimrc".source = ./dotfiles/vimrc;
       ".ackrc".source = ./dotfiles/ackrc;
+      ".ripgreprc".source = ./dotfiles/ripgreprc;
       ".aliases".source = ./dotfiles/aliases;
       ".iterm2_shell_integration.zsh".source = ./dotfiles/iterm2_shell_integrations.zsh;
       ".iterm2_shell_integration.fish".source = ./dotfiles/iterm2_shell_integrations.fish;
@@ -82,6 +83,7 @@ in
       set -x GIT_EDITOR nvim
       set -x FOUNDRY_DISABLE_NIGHTLY_WARNING true
       set -x TENDERLY_USERNAME oplabs; set -x TENDERLY_PROJECT op-mainnet
+      set -x RIPGREP_CONFIG_PATH $HOME/.config/ripgreprc
       set GPG_TTY $(tty)
 
       # Set up npm global directory outside of Nix management
