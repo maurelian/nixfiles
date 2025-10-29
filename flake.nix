@@ -73,6 +73,15 @@
               show-recents = false;
               mru-spaces = false;
               minimize-to-application = true;
+              # Additional dock settings
+              orientation = "bottom";
+              tilesize = 48;
+              magnification = false;
+              show-process-indicators = true;
+              wvous-tl-corner = 1; # Top-left corner: disabled
+              wvous-tr-corner = 1; # Top-right corner: disabled
+              wvous-bl-corner = 1; # Bottom-left corner: disabled
+              wvous-br-corner = 1; # Bottom-right corner: disabled
             };
 
             finder = {
@@ -81,6 +90,12 @@
               ShowStatusBar = false;
               _FXShowPosixPathInTitle = true;
               FXPreferredViewStyle = "Nlsv"; # List view
+              # Additional finder settings
+              FXEnableExtensionChangeWarning = false;
+              CreateDesktop = true; # Show icons on desktop
+              QuitMenuItem = true; # Allow quitting Finder
+              AppleShowAllFiles = true; # Don't show hidden files by default
+              FXDefaultSearchScope = "SCcf"; # Search current folder by default
             };
 
             NSGlobalDomain = {
@@ -98,11 +113,30 @@
               PMPrintingExpandedStateForPrint2 = true;
               # Save to disk (not iCloud) by default
               NSDocumentSaveNewDocumentsToCloud = false;
+
+              # Additional system-wide settings
+              AppleShowScrollBars = "Automatic"; # Automatic, Always, WhenScrolling
+              AppleScrollerPagingBehavior = true; # Jump to spot clicked on scroll bar
+              NSWindowResizeTime = 0.001; # Faster window resize animations
+              NSAutomaticWindowAnimationsEnabled = true;
+              NSQuitAlwaysKeepsWindows = false; # Don't restore windows when re-opening apps
+              AppleEnableSwipeNavigateWithScrolls = true;
+              AppleEnableMenuBarTransparency = false;
+              _HIHideMenuBar = false;
+
+              # Text and input settings
+              NSAutomaticCapitalizationEnabled = false;
+              NSAutomaticDashSubstitutionEnabled = false;
+              NSAutomaticPeriodSubstitutionEnabled = false;
+              NSAutomaticQuoteSubstitutionEnabled = false;
+              NSAutomaticSpellingCorrectionEnabled = false;
             };
 
             screencapture = {
               location = "~/Downloads";
               type = "png";
+              show-thumbnail = true;
+              disable-shadow = false;
             };
 
             # Trackpad settings
@@ -110,6 +144,19 @@
               Clicking = true;
               TrackpadRightClick = true;
               TrackpadThreeFingerDrag = true;
+            };
+
+            # Menu bar and system UI
+            menuExtraClock = {
+              ShowSeconds = false;
+              ShowDate = 1; # Show date
+            };
+
+            # Universal Access / Accessibility
+            universalaccess = {
+              closeViewScrollWheelToggle = false;
+              HIDScrollZoomModifierMask = 262144; # Ctrl key for zoom
+              closeViewZoomFollowsFocus = true;
             };
           };
 
