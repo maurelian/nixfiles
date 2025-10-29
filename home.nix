@@ -41,6 +41,13 @@ in
         recursive = true;
         executable = true;
       };
+
+      # Auto-create CDPATH directories
+      "Projects/.keep".text = "";
+      "Projects/O/.keep".text = "";
+      "Projects/Tools/.keep".text = "";
+      "Projects/reference-codebases/.keep".text = "";
+      "Projects/misc/.keep".text = "";
     };
   };
 
@@ -113,7 +120,7 @@ in
       source $HOME/.iterm2_shell_integration.fish
 
 
-      set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/" "$HOME/Projects/O" "$HOME/Projects/Tools" "$HOME/Projects/Scoping" "$HOME/Projects/References" "$HOME/Projects/Miscellaneous" "$HOME/Projects/various-repos"
+      set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/" "$HOME/Projects/O" "$HOME/Projects/Tools" "$HOME/Projects/reference-codebases" "$HOME/Projects/misc"
       set -U pisces_only_insert_at_eol 1 # quote/bracket completion setting
 
       # set RPC URLs
