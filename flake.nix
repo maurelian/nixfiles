@@ -78,7 +78,7 @@
               mru-spaces = false;
               minimize-to-application = true;
               # Additional dock settings
-              orientation = "bottom";
+              orientation = "left";
               tilesize = 48;
               magnification = false;
               show-process-indicators = true;
