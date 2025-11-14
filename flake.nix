@@ -119,9 +119,7 @@
               AppleScrollerPagingBehavior = true; # Jump to spot clicked on scroll bar
               NSWindowResizeTime = 0.001; # Faster window resize animations
               NSAutomaticWindowAnimationsEnabled = true;
-              NSQuitAlwaysKeepsWindows = false; # Don't restore windows when re-opening apps
               AppleEnableSwipeNavigateWithScrolls = true;
-              AppleEnableMenuBarTransparency = false;
               _HIHideMenuBar = false;
 
               # Text and input settings
@@ -150,13 +148,6 @@
             menuExtraClock = {
               ShowSeconds = false;
               ShowDate = 1; # Show date
-            };
-
-            # Universal Access / Accessibility
-            universalaccess = {
-              closeViewScrollWheelToggle = false;
-              HIDScrollZoomModifierMask = 262144; # Ctrl key for zoom
-              closeViewZoomFollowsFocus = true;
             };
           };
 
