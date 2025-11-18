@@ -78,6 +78,8 @@ in
     lg = "lazygit --ucd ~/.config/lazygit/";
     clm = "llm -m claude-3.7-sonnet";
 
+    rab = "ring a bell";
+
   };
 
   abbreviations = {
@@ -328,6 +330,13 @@ in
     msa = "mise activate | source";
 
     pk = "cast wallet dk $argv | awk '{print $NF}'";
+
+    # print the path with newlines
+    ppup = ''
+      for dir in $PATH
+        echo $dir
+      end
+    '';
   };
 
   abbreviations.nconf = "code ~/.config/nix";
