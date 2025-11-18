@@ -11,6 +11,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixvim = {
+      url = "github:nix-community/nixvim";
+    };
+
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
 
     # Optional: Declarative tap management
@@ -162,6 +166,7 @@
         inherit pkgs;
         modules = [
           ./home.nix
+          inputs.nixvim.homeManagerModules.nixvim
         ];
       };
 

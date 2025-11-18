@@ -77,7 +77,10 @@ in
     ]
     ++ gitConfig.home.packages;
 
-  imports = [ ./modules/git.nix ];
+  imports = [
+    ./modules/git.nix
+    ./modules/nixvim.nix
+  ];
 
   programs.fish = {
     enable = true;

@@ -34,7 +34,6 @@
     just
     jq
     kustomize
-    neovim
     nodejs_22
     nixfmt-rfc-style
     peco
@@ -76,6 +75,7 @@
     casks = [
       "1password"
       "1password-cli"
+      "alt-tab"
       "arc"
       "brave-browser"
       "cleanshot"
