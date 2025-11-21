@@ -78,6 +78,7 @@
       "alt-tab"
       "arc"
       "brave-browser"
+      "brainfm"
       "cleanshot"
       "cursor"
       "discord"
