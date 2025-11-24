@@ -67,6 +67,7 @@ in
     gia = "git add --all";
     giu = "git add --update";
     gtst = "gt pr --stack";
+    alert = "osascript -e 'display notification \"$1\" with title \"$2\"'";
     beep2 = "echo \"ring a bell\"";
     dsf = "diff-so-fancy";
 
