@@ -42,6 +42,25 @@ in
         executable = true;
       };
 
+      # Claude Code statusline script
+      ".claude/statusline-command.sh" = {
+        source = ./scripts/statusline-command.sh;
+        executable = true;
+      };
+
+      # Claude Code hooks
+      ".claude/hooks/idle-prompt.sh" = {
+        source = ./scripts/claude-hooks/idle-prompt.sh;
+        executable = true;
+      };
+      ".claude/hooks/permission-prompt.sh" = {
+        source = ./scripts/claude-hooks/permission-prompt.sh;
+        executable = true;
+      };
+
+      # Claude Code settings
+      ".claude/settings.json".source = ./dotfiles/claude/settings.json;
+
       # Auto-create CDPATH directories
       "Projects/.keep".text = "";
       "Projects/O/.keep".text = "";

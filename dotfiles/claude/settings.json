@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Bash(gh pr view:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git branch:*)",
+      "Bash(git show:*)",
+      "Bash(git add:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh issue list:*)",
+      "Bash(forge build:*)",
+      "Bash(forge test:*)",
+      "Bash(forge coverage:*)",
+      "Bash(forge snapshot:*)",
+      "Bash(forge fmt:*)",
+      "Bash(forge fmt --check:*)",
+      "Bash(forge tree:*)",
+      "Bash(slither .:*)",
+      "Bash(ls:*)",
+      "Bash(pwd:*)",
+      "Bash(tree:*)",
+      "Bash(just build-dev:*)",
+      "Bash(just test-dev:*)",
+      "Bash(just pre-pr)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  },
+  "alwaysThinkingEnabled": true,
+  "hooks": {
+    "IdlePrompt": {
+      "command": "bash ~/.claude/hooks/idle-prompt.sh"
+    },
+    "PermissionRequest": {
+      "command": "bash ~/.claude/hooks/permission-prompt.sh"
+    }
+  }
+}
