@@ -34,15 +34,30 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bash ~/.claude/statusline-command.sh"
+    "command": "~/.claude/statusline-command.sh",
+    "padding": 0
   },
   "alwaysThinkingEnabled": true,
   "hooks": {
-    "IdlePrompt": {
-      "command": "bash ~/.claude/hooks/idle-prompt.sh"
-    },
-    "PermissionRequest": {
-      "command": "bash ~/.claude/hooks/permission-prompt.sh"
-    }
+  "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/permission-prompt.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/idle-prompt.sh"
+          }
+        ]
+      }
+    ]
   }
 }
