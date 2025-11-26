@@ -66,3 +66,4 @@ This is a personal Nix configuration repository using Nix Darwin and Home Manage
 - Ethereum development focus with Foundry, Cast, and related tooling
 - Custom path management for npm global packages and pipx installations
 - TouchID authentication enabled for sudo operations
+- remember this is a nix repo. The files and settings found here are moved to different locations based on the config defined in the .nix files. For example, if there is a file in dotfiles, it should be mirrored by a file somewhere in ~/.
