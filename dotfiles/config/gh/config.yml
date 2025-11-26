@@ -16,8 +16,10 @@ aliases:
     clone: repo clone
     web: repo view --web
     a: alias list
-    pc: pr create --web
+    pc: pr create --web --fill-verbose
     pm: pr list --author @me
+    prm: pr merge
+    prR: pr review
     p: pr view
     rw: run watch --exit-status
     h: help
