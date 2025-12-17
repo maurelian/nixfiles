@@ -1,6 +1,6 @@
 # Uses some suggestions from https://blog.gitbutler.com/how-git-core-devs-configure-git/
 [core]
-	excludesfile = /Users/maurelian/.gitignore_global
+	excludesfile = ~/.gitignore_global
   # hooksPath = ~/.githooks
 	ignorecase = false
 	editor = vi

@@ -1,3 +1,5 @@
+{ username ? builtins.getEnv "USER" }:
+
 let
   ethUtils = import ./ethUtils.nix;
 in
@@ -128,7 +130,7 @@ in
     p = "echo $PATH | tr \":\" \"\n\"";
     srf = "source ~/.config/fish/config.fish";
     histm = "history merge";
-    hm = "home-manager switch --flake $HOME/.config/nix#maurelian";
+    hm = "home-manager switch --flake $HOME/.config/nix#${username}";
     nds = "nix run nix-darwin -- switch --flake ~/.config/nix";
 
     # --------------------------------- #

@@ -43,6 +43,8 @@
     let
       system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
+      # Get username from environment, fallback to "maurelian"
+      username = builtins.getEnv "USER";
       configuration =
         { pkgs, ... }:
         let
@@ -50,13 +52,13 @@
         in
         {
           nixpkgs.hostPlatform = system;
-          users.users.maurelian = {
-            name = "maurelian";
-            home = "/Users/maurelian";
+          users.users.${username} = {
+            name = username;
+            home = "/Users/${username}";
             shell = pkgs.fish;
           };
           system.stateVersion = 5;
-          system.primaryUser = "maurelian";
+          system.primaryUser = username;
           nix.settings.experimental-features = "nix-command flakes";
 
           # https://determinate.systems/posts/nix-darwin-updates/
@@ -162,11 +164,15 @@
         };
     in
     {
-      homeConfigurations.maurelian = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
           ./home.nix
           inputs.nixvim.homeManagerModules.nixvim
+          {
+            home.username = username;
+            home.homeDirectory = "/Users/${username}";
+          }
         ];
       };
 

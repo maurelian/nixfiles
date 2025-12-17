@@ -1,7 +1,9 @@
 { config, pkgs, ... }:
 
 let
-  aliasesAndAbbreviations = import ./modules/abbreviations.nix;
+  # Get username from config (passed from flake.nix) or fall back to environment
+  username = config.home.username or (builtins.getEnv "USER");
+  aliasesAndAbbreviations = import ./modules/abbreviations.nix { inherit username; };
   aliases = aliasesAndAbbreviations.aliases;
   abbreviations = aliasesAndAbbreviations.abbreviations;
   functions = aliasesAndAbbreviations.functions;
@@ -9,8 +11,7 @@ let
   packages = import ./modules/packages.nix { inherit pkgs; };
 in
 {
-  home.username = "maurelian";
-  home.homeDirectory = "/Users/maurelian";
+  # username and homeDirectory now set in flake.nix
   home.stateVersion = "23.11";
 
   programs.home-manager.enable = true;
@@ -129,12 +130,9 @@ in
     '';
 
     shellInitLast = ''
-      # only run this on my optimism machine.
-      # it makes homebrew work with Apple Silicon somehow.
+      # makes homebrew work with Apple Silicon somehow.
       set -x HOMEBREW_PREFIX /opt/homebrew
-      if test -d "/Users/maurelian"
-        eval $(/opt/homebrew/bin/brew shellenv)
-      end
+      eval $(/opt/homebrew/bin/brew shellenv)
 
       babelfish < $HOME/.aliases | source
       starship init fish | source
