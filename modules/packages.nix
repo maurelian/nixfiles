@@ -6,6 +6,7 @@
     ack
     bat
     btop
+    bun
     cloc
     cowsay
     dasel
@@ -46,6 +47,7 @@
       doCheck = false;  # Skip running tests during build
     }))
     tig
+    tmux
     vim
     uv
     yarn
