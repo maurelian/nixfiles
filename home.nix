@@ -146,28 +146,6 @@ in
       # set RPC URLs
       source ~/.rpc-urls > /dev/null
 
-      # Run msa function when entering a git repo with mise.toml
-      # Only runs when directory actually changes (not after every command)
-      function __check_and_run_msa --on-variable PWD
-        # Store current directory
-        set -l current_dir $PWD
-        
-        # Check if directory actually changed
-        if test -z "$__msa_last_dir"; or test "$__msa_last_dir" != "$current_dir"
-          set -g __msa_last_dir "$current_dir"
-          
-          if git rev-parse --show-toplevel >/dev/null 2>&1
-              set repo (git rev-parse --show-toplevel)
-              if test -e "$repo/mise.toml"
-                  mise activate | source
-              end
-          end
-        end
-      end
-
-      # Call once at shell startup
-      __check_and_run_msa
-
       if test -f $HOME/.secrets
         source $HOME/.secrets
       end
