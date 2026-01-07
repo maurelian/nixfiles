@@ -10,7 +10,7 @@ This is a personal Nix configuration repository using Nix Darwin and Home Manage
 
 ### Nix Configuration Management
 - `nds` - Apply Darwin (system) configuration: `nix run nix-darwin -- switch --flake ~/.config/nix`
-- `hm` - Apply Home Manager configuration: `home-manager switch --flake $HOME/.config/nix#maurelian`
+- `hm` - Apply Home Manager configuration: `home-manager switch --impure --flake $HOME/.config/nix#${username}` (uses current username)
 
 ### Development Tools
 - `nixfmt-rfc-style` - Format Nix files using the RFC style formatter
