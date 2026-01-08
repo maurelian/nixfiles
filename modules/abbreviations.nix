@@ -160,6 +160,11 @@ in
   };
 
   functions = ethUtils // {
+    is-ancestor = ''
+      set -l parent $argv[1]
+      set -l child (git rev-parse --abbrev-ref HEAD)
+      git merge-base $parent $child | grep -q $parent
+    '';
     fish_greeting = "";
     quick-branch-commit = ''
       set -l msg $argv

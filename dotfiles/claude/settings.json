@@ -39,25 +39,6 @@
   },
   "alwaysThinkingEnabled": true,
   "hooks": {
-  "Notification": [
-      {
-        "matcher": "permission_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/permission-prompt.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "idle_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/idle-prompt.sh"
-          }
-        ]
-      }
-    ]
+  "Notification": []
   }
 }
