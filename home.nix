@@ -113,7 +113,7 @@ in
       set -x GIT_EDITOR nvim
       set -x FOUNDRY_DISABLE_NIGHTLY_WARNING true
       set -x TENDERLY_USERNAME oplabs; set -x TENDERLY_PROJECT op-mainnet
-      set -x RIPGREP_CONFIG_PATH $HOME/.config/ripgreprc
+      set -x RIPGREP_CONFIG_PATH $HOME/.ripgreprc
       set GPG_TTY $(tty)
 
       # Set up npm global directory outside of Nix management
