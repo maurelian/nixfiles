@@ -66,12 +66,20 @@
 
     brews = [
       "circleci"
-      "mise"
+      "gettext"
       "git"
+      "libiconv"
+      "libunistring"
+      "mise"
+      "ncurses"
+      "pcre2"
       "rg"
       # "rotki"
+      "usage"
       "watch"
+      "wt"
       "xan"
+      "xsv"
     ];
 
     casks = [
@@ -84,7 +92,7 @@
       "cleanshot"
       "cursor"
       "discord"
-      "docker"
+      "docker-desktop"
       "firefox"
       "gpg-suite"
       "hazeover"
@@ -95,7 +103,7 @@
       "obsidian"
       "orbstack"
       "protonvpn"
-      "protonmail-bridge"
+      "proton-mail-bridge"
       "raycast"
       "rectangle"
       "signal"

@@ -60,7 +60,7 @@ in
       };
 
       # Claude Code settings
-      ".claude/settings.json".source = ./dotfiles/claude/settings.json;
+      # ".claude/settings.json".source = ./dotfiles/claude/settings.json;
 
       # Auto-create CDPATH directories
       "Projects/.keep".text = "";

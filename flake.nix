@@ -177,7 +177,7 @@
         pkgs = homePkgs;
         modules = [
           ./home.nix
-          inputs.nixvim.homeManagerModules.nixvim
+          inputs.nixvim.homeModules.nixvim
           {
             home.username = username;
             home.homeDirectory = homeDirectory;
