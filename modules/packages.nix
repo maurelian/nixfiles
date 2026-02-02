@@ -26,6 +26,8 @@
     (python3.withPackages (ps: [
       ps.llm
       ps.llm-anthropic
+      ps.jupyter
+      ps.jupyterlab
     ]))
 
     # Add pipx for installing Python applications
