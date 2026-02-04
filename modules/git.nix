@@ -4,8 +4,10 @@
   programs.git = {
     enable = true;
     # Add any other Git-related configurations here
-    difftastic.enable = true;
   };
+  programs.difftastic.enable = true;
+  # apparently we need to do this too?
+  programs.difftastic.git.enable = true;
 
   # Add the custom Git script
   home.packages = [
