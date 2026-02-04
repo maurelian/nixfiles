@@ -45,6 +45,7 @@ in
     gors = "git restore --staged";
     gor = "git restore";
     gbc = "git branch --show-current";
+    gbp = "git rev-parse --abbrev-ref @{-1}";
     gbM = "git branch --merged | egrep -v \"(^\\*|master|main|dev)\"";
     gbl = "git describe --all $(git rev-parse @{-1})";
     gwip = "git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign -m \"--wip--\"";
