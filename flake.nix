@@ -41,17 +41,38 @@
       ...
     }:
     let
-      system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.${system};
+      darwinSystem = "aarch64-darwin";
+      linuxSystem = "x86_64-linux";
+      darwinPkgs = nixpkgs.legacyPackages.${darwinSystem};
+      linuxPkgs = nixpkgs.legacyPackages.${linuxSystem};
       # Get username from environment, fallback to "maurelian"
       username = builtins.getEnv "USER";
+
+      mkHome =
+        {
+          pkgs,
+          username,
+          homeDirectory,
+        }:
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./home.nix
+            inputs.nixvim.homeModules.nixvim
+            {
+              home.username = username;
+              home.homeDirectory = homeDirectory;
+            }
+          ];
+        };
+
       configuration =
         { pkgs, ... }:
         let
           packages = import ./modules/packages.nix { inherit pkgs; };
         in
         {
-          nixpkgs.hostPlatform = system;
+          nixpkgs.hostPlatform = darwinSystem;
           users.users.${username} = {
             name = username;
             home = "/Users/${username}";
@@ -164,20 +185,22 @@
         };
     in
     {
-      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          ./home.nix
-          inputs.nixvim.homeModules.nixvim
-          {
-            home.username = username;
-            home.homeDirectory = "/Users/${username}";
-          }
-        ];
+      # macOS home config (used by `hm` abbreviation which passes --impure)
+      homeConfigurations.${username} = mkHome {
+        pkgs = darwinPkgs;
+        inherit username;
+        homeDirectory = "/Users/${username}";
+      };
+
+      # Linux home config: home-manager switch --flake ~/.config/nix#root
+      homeConfigurations."root" = mkHome {
+        pkgs = linuxPkgs;
+        username = "root";
+        homeDirectory = "/root";
       };
 
       darwinConfigurations."MacBook-Pro" = nix-darwin.lib.darwinSystem {
-        inherit system;
+        system = darwinSystem;
         modules = [
           configuration
         ];

@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   # Get username from config (passed from flake.nix) or fall back to environment
@@ -23,14 +28,19 @@ in
       ".ackrc".source = ./dotfiles/ackrc;
       ".ripgreprc".source = ./dotfiles/ripgreprc;
       ".aliases".source = ./dotfiles/aliases;
-      ".iterm2_shell_integration.zsh".source = ./dotfiles/iterm2_shell_integrations.zsh;
-      ".iterm2_shell_integration.fish".source = ./dotfiles/iterm2_shell_integrations.fish;
       ".functions".source = ./dotfiles/functions;
       ".gitconfig".source = ./dotfiles/gitconfig;
+    }
+    // lib.optionalAttrs pkgs.stdenv.isDarwin {
+      # macOS-only dotfiles
+      ".iterm2_shell_integration.zsh".source = ./dotfiles/iterm2_shell_integrations.zsh;
+      ".iterm2_shell_integration.fish".source = ./dotfiles/iterm2_shell_integrations.fish;
       ".nix-fish-wrapper.zsh" = {
         source = ./dotfiles/nix-fish-wrapper.zsh;
         executable = true;
       };
+    }
+    // {
 
       # source dotfiles $home/.config/
       ".config" = {
@@ -132,14 +142,19 @@ in
     '';
 
     shellInitLast = ''
-      # makes homebrew work with Apple Silicon somehow.
-      set -x HOMEBREW_PREFIX /opt/homebrew
-      eval $(/opt/homebrew/bin/brew shellenv)
+      ${lib.optionalString pkgs.stdenv.isDarwin ''
+        # makes homebrew work with Apple Silicon somehow.
+        set -x HOMEBREW_PREFIX /opt/homebrew
+        eval $(/opt/homebrew/bin/brew shellenv)
+      ''}
 
       babelfish < $HOME/.aliases | source
       starship init fish | source
       babelfish < /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
-      source $HOME/.iterm2_shell_integration.fish
+
+      ${lib.optionalString pkgs.stdenv.isDarwin ''
+        source $HOME/.iterm2_shell_integration.fish
+      ''}
 
 
       set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/" "$HOME/Projects/O" "$HOME/Projects/Tools" "$HOME/Projects/reference-codebases" "$HOME/Projects/misc"

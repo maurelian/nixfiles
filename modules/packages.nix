@@ -15,6 +15,7 @@
     delta
     foundry
     gh
+    git
     gitui
     gnupg
     grc
@@ -52,6 +53,8 @@
     tmux
     vim
     uv
+    watch
+    xsv
     yarn
     yq-go
   ];
