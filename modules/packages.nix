@@ -54,7 +54,6 @@
     vim
     uv
     watch
-    xsv
     yarn
     yq-go
   ];
