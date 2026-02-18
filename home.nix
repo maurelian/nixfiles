@@ -124,6 +124,8 @@ in
       set -x PIPX_HOME $HOME/.pipx
       set -x PIPX_BIN_DIR $PIPX_HOME/bin
 
+      # Note: fish_add_path only adds directories that actually exist on the filesystem
+      # Non-existent paths (like ~/bin, ~/.pipx/bin, ~/.nvm) are silently skipped
       fish_add_path $HOME/bin /usr/bin /usr/local/bin $HOME/go/bin $HOME/.scripts $HOME/bin $HOME/.local/bin $NPM_GLOBAL/bin $PIPX_BIN_DIR
       fish_add_path --append $HOME/.foundry/bin /opt/homebrew/bin /bin /usr/sbin /sbin /etc/paths.d $GOPATH/bin $HOME/.nvm $HOME/.foundry/bin $HOME/.cargo/bin $HOME/.local/bin
       abbr -e gt
