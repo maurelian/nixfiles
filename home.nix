@@ -125,7 +125,7 @@ in
       set -x TENDERLY_USERNAME oplabs; set -x TENDERLY_PROJECT op-mainnet
       set -x RIPGREP_CONFIG_PATH $HOME/.ripgreprc
       set GPG_TTY $(tty)
-      set -x XDG_CONFIG_HOME $HOME
+      set -x XDG_CONFIG_HOME $HOME/.config
 
       # Set up npm global directory outside of Nix management
       set -x NPM_GLOBAL $HOME/.npm-global
