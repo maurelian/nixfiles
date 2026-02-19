@@ -44,11 +44,8 @@
     pinentry-tty
     ripgrep
     rustup
+    tailscale
     tree
-    # Use a tailscale overlay to skip the failing tests due to not finding netstat
-    (tailscale.overrideAttrs (oldAttrs: {
-      doCheck = false;  # Skip running tests during build
-    }))
     tig
     tmux
     vim
