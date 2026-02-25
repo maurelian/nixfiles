@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   # Get username from config (passed from flake.nix) or fall back to environment
@@ -130,9 +130,11 @@ in
     '';
 
     shellInitLast = ''
+      ${lib.optionalString pkgs.stdenv.isDarwin ''
       # makes homebrew work with Apple Silicon somehow.
       set -x HOMEBREW_PREFIX /opt/homebrew
       eval $(/opt/homebrew/bin/brew shellenv)
+      ''}
 
       babelfish < $HOME/.aliases | source
       starship init fish | source

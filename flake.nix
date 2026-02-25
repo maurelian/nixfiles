@@ -44,7 +44,16 @@
       system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
       # Get username from environment, fallback to "maurelian"
-      username = builtins.getEnv "USER";
+      username =
+        let
+          u = builtins.getEnv "USER";
+        in
+        if u == "" then "maurelian" else u;
+      # Detect current system for home-manager (works on both Darwin and Linux)
+      homeSystem = builtins.currentSystem;
+      homePkgs = nixpkgs.legacyPackages.${homeSystem};
+      isDarwin = builtins.match ".*-darwin" homeSystem != null;
+      homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
       configuration =
         { pkgs, ... }:
         let
@@ -165,13 +174,13 @@
     in
     {
       homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+        pkgs = homePkgs;
         modules = [
           ./home.nix
           inputs.nixvim.homeManagerModules.nixvim
           {
             home.username = username;
-            home.homeDirectory = "/Users/${username}";
+            home.homeDirectory = homeDirectory;
           }
         ];
       };
