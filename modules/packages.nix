@@ -53,6 +53,12 @@
     watch
     yarn
     yq-go
+
+    # CLI tools (moved from Homebrew)
+    circleci-cli
+    mise
+    opencode
+    usage
   ];
 
   # Homebrew configuration (installed via nix-darwin)
@@ -66,18 +72,6 @@
     taps = [ ];
 
     brews = [
-      "circleci"
-      "gettext"
-      "git"
-      "libiconv"
-      "libunistring"
-      "mise"
-      "ncurses"
-      "pcre2"
-      "rg"
-      # "rotki"
-      "usage"
-      "watch"
       "wt"
       "xan"
       "xsv"
