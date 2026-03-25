@@ -108,6 +108,9 @@ in
     shellAbbrs = abbreviations;
     functions = functions;
     shellInit = ''
+      # Nix profile paths must be set first so nix-installed tools are available
+      fish_add_path $HOME/.nix-profile/bin /nix/var/nix/profiles/default/bin
+
       set -x EDITOR code
       set -x VISUAL nvim
       set -x GIT_EDITOR nvim
@@ -138,9 +141,9 @@ in
       eval $(/opt/homebrew/bin/brew shellenv)
       ''}
 
+      babelfish < /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
       babelfish < $HOME/.aliases | source
       starship init fish | source
-      babelfish < /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
       source $HOME/.iterm2_shell_integration.fish
 
 

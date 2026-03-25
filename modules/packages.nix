@@ -46,75 +46,25 @@
     tree
     # Use a tailscale overlay to skip the failing tests due to not finding netstat
     (tailscale.overrideAttrs (oldAttrs: {
-      doCheck = false;  # Skip running tests during build
+      doCheck = false; # Skip running tests during build
     }))
     tig
     tmux
     vim
     uv
+    xan
     yarn
     yq-go
   ];
 
-  # Homebrew configuration (installed via nix-darwin)
-  homebrew = {
-    enable = true;
-    onActivation = {
-      autoUpdate = true;
-      cleanup = "none";
-    };
-
-    taps = [ ];
-
-    brews = [
-      "circleci"
-      "gettext"
-      "git"
-      "libiconv"
-      "libunistring"
-      "mise"
-      "ncurses"
-      "pcre2"
-      "rg"
-      # "rotki"
-      "usage"
-      "watch"
-      "wt"
-      "xan"
-      "xsv"
-    ];
-
-    casks = [
-      "1password"
-      "1password-cli"
-      "alt-tab"
-      "arc"
-      "brave-browser"
-      "brainfm"
-      "cleanshot"
-      "cursor"
-      "discord"
-      "docker-desktop"
-      "firefox"
-      "gpg-suite"
-      "hazeover"
-      "jordanbaird-ice"
-      "keybase"
-      "logseq"
-      "notion"
-      "obsidian"
-      "orbstack"
-      "protonvpn"
-      "proton-mail-bridge"
-      "raycast"
-      "rectangle"
-      "signal"
-      "slack"
-      "spotify"
-      "telegram"
-      "whatsapp"
-      "balenaetcher"
-      "iterm2"
-    ];
-  };
+  # Homebrew packages that need manual installation (not available in nixpkgs):
+  #   brew tap max-sixty/worktrunk && brew install wt
+  #   brew install circleci gettext git libiconv libunistring mise ncurses pcre2 rg usage watch xsv
+  #
+  # Homebrew casks (GUI apps) - install manually with `brew install --cask`:
+  #   1password 1password-cli alt-tab arc brave-browser brainfm cleanshot
+  #   cursor discord docker-desktop firefox gpg-suite hazeover
+  #   jordanbaird-ice keybase logseq notion obsidian orbstack protonvpn
+  #   proton-mail-bridge raycast rectangle signal slack spotify telegram
+  #   whatsapp balenaetcher iterm2
 }

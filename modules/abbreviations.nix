@@ -134,7 +134,6 @@ in
     srf = "source ~/.config/fish/config.fish";
     histm = "history merge";
     hm = "home-manager switch --impure --flake $HOME/.config/nix#${username}";
-    nds = "nix run nix-darwin -- switch --flake ~/.config/nix";
 
     # --------------------------------- #
     # Foundry stuff
