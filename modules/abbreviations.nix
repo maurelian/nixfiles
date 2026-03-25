@@ -34,6 +34,8 @@ in
 
     # Git stuff
     g = "git status";
+    gco = "git checkout";
+    gcam = "git commit --all --message";
     glog = "git log --oneline --decorate --graph";
     glv = "git log";
     glob = "glog --pretty=format:$_git_log_brief_format";
