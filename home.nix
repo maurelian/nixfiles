@@ -92,7 +92,7 @@ in
       pkgs.fishPlugins.fifc
       pkgs.fishPlugins.bass
       pkgs.fishPlugins.git-abbr
-      pkgs.fishPlugins.z
+
       pkgs.fishPlugins.grc
     ]
     ++ gitConfig.home.packages;
@@ -107,6 +107,9 @@ in
     shellAliases = aliases;
     shellAbbrs = abbreviations;
     functions = functions;
+    plugins = [
+      { name = "z"; src = pkgs.fishPlugins.z.src; }
+    ];
     shellInit = ''
       # Nix profile paths must be set first so nix-installed tools are available
       fish_add_path $HOME/.nix-profile/bin /nix/var/nix/profiles/default/bin
