@@ -23,3 +23,4 @@ session_name_escaped=$(echo "$session_name" | sed 's/\\/\\\\/g; s/"/\\"/g')
 
 # Send macOS notification when Claude is waiting for input
 osascript -e "display notification \"Ready for your input\" with title \"$session_name_escaped\"" || true
+echo "ring a bell"
