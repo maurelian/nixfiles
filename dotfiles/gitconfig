@@ -10,7 +10,7 @@
 [user]
 	name = Maurelian
 	email = maurelian@protonmail.ch
-	signingkey = DC750394B04ED68D
+	signingkey = ~/.ssh/id_ed25519.pub
 [pull]
 	rebase = true
 [diff]
@@ -61,12 +61,14 @@
 	gpgsign = true
 [gpg]
 	program = /usr/local/bin/gpg
+	format = ssh
 [column]
 	ui = auto
 [branch]
 	sort = -committerdate
 [tag]
 	sort = version:refname
+	gpgsign = true
 [push]
 	default = simple
 	autoSetupRemote = true
