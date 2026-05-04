@@ -35,6 +35,7 @@
 
     fzf
     just
+    jujutsu
     jq
     kustomize
     nodejs_22
