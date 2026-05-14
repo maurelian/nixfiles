@@ -37,6 +37,8 @@
     just
     jujutsu
     jq
+    kubectl
+    kubie
     kustomize
     nodejs_22
     nixfmt-rfc-style
