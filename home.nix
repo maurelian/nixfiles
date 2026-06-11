@@ -8,6 +8,8 @@ let
   functions = aliasesAndAbbreviations.functions;
   gitConfig = import ./modules/git.nix { inherit pkgs; };
   packages = import ./modules/packages.nix { inherit pkgs; };
+  repoDir = "${config.home.homeDirectory}/Projects/Tools/nixfiles";
+  link = path: config.lib.file.mkOutOfStoreSymlink "${repoDir}/${path}";
 in
 {
   # username and homeDirectory now set in flake.nix
@@ -17,49 +19,36 @@ in
 
   home = {
     file = {
-      # source dotfiles into home directory
-      ".vimrc".source = ./dotfiles/vimrc;
-      ".ackrc".source = ./dotfiles/ackrc;
-      ".ripgreprc".source = ./dotfiles/ripgreprc;
-      ".aliases".source = ./dotfiles/aliases;
-      ".iterm2_shell_integration.zsh".source = ./dotfiles/iterm2_shell_integrations.zsh;
-      ".iterm2_shell_integration.fish".source = ./dotfiles/iterm2_shell_integrations.fish;
-      ".functions".source = ./dotfiles/functions;
-      ".gitconfig".source = ./dotfiles/gitconfig;
-      ".nix-fish-wrapper.zsh" = {
-        source = ./dotfiles/nix-fish-wrapper.zsh;
-        executable = true;
-      };
+      # live symlinks into the repo working copy — edits apply instantly
+      ".vimrc".source = link "dotfiles/vimrc";
+      ".ackrc".source = link "dotfiles/ackrc";
+      ".ripgreprc".source = link "dotfiles/ripgreprc";
+      ".aliases".source = link "dotfiles/aliases";
+      ".functions".source = link "dotfiles/functions";
+      ".gitconfig".source = link "dotfiles/gitconfig";
+      ".iterm2_shell_integration.zsh".source = link "dotfiles/iterm2_shell_integrations.zsh";
+      ".iterm2_shell_integration.fish".source = link "dotfiles/iterm2_shell_integrations.fish";
+      ".nix-fish-wrapper.zsh".source = link "dotfiles/nix-fish-wrapper.zsh";
 
-      # source dotfiles $home/.config/
-      ".config" = {
-        source = ./dotfiles/config;
-        recursive = true;
-      };
-      ".scripts" = {
-        source = ./scripts;
-        recursive = true;
-        executable = true;
-      };
+      # directory-level links: adding a file inside needs no rebuild
+      ".config/ghostty".source = link "dotfiles/config/ghostty";
+      ".config/tmux".source = link "dotfiles/config/tmux";
+      ".config/starship.toml".source = link "dotfiles/config/starship.toml";
+      # config-only links: the dir also holds machine-local runtime state
+      # (lazygit's state.yml, gh's hosts.yml/state.yml) that must stay out of the repo
+      ".config/lazygit/config.yml".source = link "dotfiles/config/lazygit/config.yml";
+      ".config/gh/config.yml".source = link "dotfiles/config/gh/config.yml";
 
-      # Claude Code statusline script
-      ".claude/statusline-command.sh" = {
-        source = ./scripts/statusline-command.sh;
-        executable = true;
-      };
-
-      # Claude Code hooks
-      ".claude/hooks/idle-prompt.sh" = {
-        source = ./scripts/claude-hooks/idle-prompt.sh;
-        executable = true;
-      };
-      ".claude/hooks/permission-prompt.sh" = {
-        source = ./scripts/claude-hooks/permission-prompt.sh;
-        executable = true;
-      };
-
-      # Claude Code settings
-      # ".claude/settings.json".source = ./dotfiles/claude/settings.json;
+      # ~/.scripts stays a real dir so machine-local bins (be-*, claude-tmux) survive
+      ".scripts/apply-macos-defaults.sh".source = link "scripts/apply-macos-defaults.sh";
+      ".scripts/getSafeDetails".source = link "scripts/getSafeDetails";
+      ".scripts/qq".source = link "scripts/qq";
+      ".scripts/readSystemConfig".source = link "scripts/readSystemConfig";
+      ".scripts/statusline-command.sh".source = link "scripts/statusline-command.sh";
+      ".scripts/claude-hooks".source = link "scripts/claude-hooks";
+      ".claude/statusline-command.sh".source = link "scripts/statusline-command.sh";
+      ".claude/hooks/idle-prompt.sh".source = link "scripts/claude-hooks/idle-prompt.sh";
+      ".claude/hooks/permission-prompt.sh".source = link "scripts/claude-hooks/permission-prompt.sh";
 
       # Auto-create CDPATH directories
       "Projects/.keep".text = "";
