@@ -1,8 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  # Get username from config (passed from flake.nix) or fall back to environment
-  username = config.home.username or (builtins.getEnv "USER");
+  username = config.home.username;
   aliasesAndAbbreviations = import ./modules/abbreviations.nix { inherit username; };
   aliases = aliasesAndAbbreviations.aliases;
   abbreviations = aliasesAndAbbreviations.abbreviations;

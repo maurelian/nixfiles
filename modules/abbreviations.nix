@@ -133,7 +133,7 @@ in
     p = "echo $PATH | tr \":\" \"\n\"";
     srf = "source ~/.config/fish/config.fish";
     histm = "history merge";
-    hm = "home-manager switch --impure --flake $HOME/.config/nix#${username}";
+    hm = "home-manager switch --flake $HOME/Projects/Tools/nixfiles#$USER";
 
     # --------------------------------- #
     # Foundry stuff

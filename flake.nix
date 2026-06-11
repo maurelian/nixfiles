@@ -26,8 +26,6 @@
       linuxSystem = "x86_64-linux";
       darwinPkgs = nixpkgs.legacyPackages.${darwinSystem};
       linuxPkgs = nixpkgs.legacyPackages.${linuxSystem};
-      # Get username from environment, fallback to "maurelian"
-      username = builtins.getEnv "USER";
 
       mkHome =
         {
@@ -48,18 +46,20 @@
         };
     in
     {
-      # macOS home config (used by `hm` abbreviation which passes --impure)
-      homeConfigurations.${username} = mkHome {
-        pkgs = darwinPkgs;
-        inherit username;
-        homeDirectory = "/Users/${username}";
-      };
-
-      # Linux home config: home-manager switch --flake ~/.config/nix#root
-      homeConfigurations."root" = mkHome {
-        pkgs = linuxPkgs;
-        username = "root";
-        homeDirectory = "/root";
+      # One entry per machine/user; add a line here for a new machine.
+      # Selected at runtime by the `hm` abbreviation via $USER.
+      homeConfigurations = {
+        john = mkHome {
+          pkgs = darwinPkgs;
+          username = "john";
+          homeDirectory = "/Users/john";
+        };
+        # Linux box: home-manager switch --flake ~/Projects/Tools/nixfiles#root
+        root = mkHome {
+          pkgs = linuxPkgs;
+          username = "root";
+          homeDirectory = "/root";
+        };
       };
     };
 }
