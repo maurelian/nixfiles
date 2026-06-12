@@ -65,6 +65,19 @@
     xan
     yarn
     yq-go
+
+    # Neovim + LSP servers for the native lazy.nvim config (dotfiles/config/nvim).
+    # Servers are installed via nix (no mason) to keep one package manager.
+    neovim
+    bash-language-server
+    gopls
+    lua-language-server
+    nil # nix LSP
+    pyright
+    # rust_analyzer comes from rustup (above), not a separate package
+    typescript-language-server
+    vscode-langservers-extracted # jsonls
+    yaml-language-server
   ];
 
   # GUI apps (casks) and brew-only tools (taps, large builds like qemu/llama.cpp,

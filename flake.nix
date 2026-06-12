@@ -8,10 +8,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nixvim = {
-      url = "github:nix-community/nixvim";
-    };
   };
 
   outputs =
@@ -37,7 +33,6 @@
           inherit pkgs;
           modules = [
             ./home.nix
-            inputs.nixvim.homeModules.nixvim
             {
               home.username = username;
               home.homeDirectory = homeDirectory;

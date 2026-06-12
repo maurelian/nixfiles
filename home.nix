@@ -55,6 +55,10 @@ in
       ".config/fish/conf.d/00-nix-env.fish".source = link "dotfiles/config/fish/conf.d/00-nix-env.fish";
       ".config/fish/functions".source = link "dotfiles/config/fish/functions";
 
+      # Native neovim config (lazy.nvim). lazy writes lazy-lock.json back into
+      # this dir — that's the version lockfile and is tracked in the repo.
+      ".config/nvim".source = link "dotfiles/config/nvim";
+
       # Auto-create CDPATH directories
       "Projects/.keep".text = "";
       "Projects/O/.keep".text = "";
@@ -95,7 +99,6 @@ in
 
   imports = [
     ./modules/git.nix
-    ./modules/nixvim.nix
   ];
 
   # Fish config is now native files in dotfiles/config/fish/ (symlinked above),
