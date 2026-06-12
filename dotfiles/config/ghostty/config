@@ -1,41 +1,66 @@
-# Font
+# Ghostty config — live-edited via the nixfiles repo (this file is a symlink).
+# Reload after editing: Cmd+Shift+, (or quit + reopen). No `hm` rebuild needed.
+
+# ── Font ─────────────────────────────────────────────────────────────────────
 font-family = "JetBrains Mono"
 font-size = 13
+# disable ligatures / contextual alternates (good for code)
 font-feature = -calt
 font-feature = -liga
+# crisper glyphs on macOS retina
+font-thicken = true
 
-# Theme
-theme = GruvboxDarkHard
+# ── Theme / transparency ──────────────────────────────────────────────────────
+# `ghostty +list-themes` to browse; swap this line and reload to see it live.
+theme = Gruvbox Dark Hard
 background-opacity = 0.95
 background-blur-radius = 20
 
-# Window
+# ── Window ─────────────────────────────────────────────────────────────────────
 window-padding-x = 12
 window-padding-y = 12
 window-decoration = true
 window-save-state = always
 macos-titlebar-style = transparent
 macos-option-as-alt = true
+# open new windows at the size of the focused one
+window-inherit-font-size = true
 
-# Cursor
+# ── Cursor ─────────────────────────────────────────────────────────────────────
 cursor-style = block
 cursor-style-blink = false
+mouse-hide-while-typing = true
 shell-integration-features = cursor,sudo,title
 
-# Scrollback
+# ── Scrollback / clipboard ──────────────────────────────────────────────────────
 scrollback-limit = 100000
 copy-on-select = clipboard
+clipboard-trim-trailing-spaces = true
+# confirm before pasting text containing newlines
+clipboard-paste-protection = true
 
-# Tabs / splits (iTerm-like bindings)
+# ── Tabs / splits (iTerm-like bindings) ─────────────────────────────────────────
 keybind = cmd+d=new_split:right
 keybind = cmd+shift+d=new_split:down
 keybind = cmd+w=close_surface
 keybind = cmd+t=new_tab
 keybind = cmd+]=goto_split:next
 keybind = cmd+[=goto_split:previous
+# resize the focused split
+keybind = cmd+shift+h=resize_split:left,40
+keybind = cmd+shift+l=resize_split:right,40
+keybind = cmd+shift+k=resize_split:up,40
+keybind = cmd+shift+j=resize_split:down,40
+# jump straight to a tab
+keybind = cmd+1=goto_tab:1
+keybind = cmd+2=goto_tab:2
+keybind = cmd+3=goto_tab:3
 
-# Quake-style dropdown (optional, like iTerm hotkey window)
+# Quake-style dropdown (global hotkey terminal). Uncomment to try:
 # keybind = global:cmd+grave_accent=toggle_quick_terminal
 
-# Shell
-command = /opt/homebrew/bin/fish
+# ── Shell ────────────────────────────────────────────────────────────────────
+# Launch via the nix-fish wrapper: it sources nix-daemon.sh (sets PATH and
+# XDG_DATA_DIRS so fish's vendor plugins load) then `exec fish`. Same mechanism
+# iTerm uses. Do NOT point this straight at fish — plugins won't load.
+command = /bin/zsh /Users/john/.nix-fish-wrapper.zsh
