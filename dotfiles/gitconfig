@@ -14,6 +14,9 @@
 [pull]
 	rebase = true
 [diff]
+    # difftastic for `git diff` (difft is on PATH via nix). Was previously set
+    # by home-manager's programs.difftastic.git.enable in modules/git.nix.
+    external = difft
     tool = vscode
     algorithm = histogram
     colorMoved = plain

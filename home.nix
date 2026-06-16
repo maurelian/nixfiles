@@ -35,9 +35,11 @@ in
       ".config/tmux".source = link "dotfiles/config/tmux";
       ".config/starship.toml".source = link "dotfiles/config/starship.toml";
       # config-only links: the dir also holds machine-local runtime state
-      # (lazygit's state.yml, gh's hosts.yml/state.yml) that must stay out of the repo
+      # (lazygit's state.yml, gh's hosts.yml/state.yml, jj's repos/) that must
+      # stay out of the repo
       ".config/lazygit/config.yml".source = link "dotfiles/config/lazygit/config.yml";
       ".config/gh/config.yml".source = link "dotfiles/config/gh/config.yml";
+      ".config/jj/config.toml".source = link "dotfiles/config/jj/config.toml";
 
       # ~/.scripts stays a real dir so machine-local bins (be-*, claude-tmux) survive
       ".scripts/apply-macos-defaults.sh".source = link "scripts/apply-macos-defaults.sh";

@@ -1,0 +1,10 @@
+#:schema https://docs.jj-vcs.dev/latest/config-schema.json
+
+[user]
+name = "maurelian"
+email = "maurelian@protonmail.ch"
+
+[signing]
+backend = "ssh"
+key = "~/.ssh/id_ed25519.pub"
+behavior = "own"

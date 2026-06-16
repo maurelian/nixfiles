@@ -1,14 +1,9 @@
 { pkgs, ... }:
 
+# Git config itself is the live file dotfiles/gitconfig (linked to ~/.gitconfig
+# in home.nix), not home-manager-generated. This module only ships a helper
+# script; difftastic (`difft`, used by diff.external) comes from packages.nix.
 {
-  programs.git = {
-    enable = true;
-    # Add any other Git-related configurations here
-  };
-  programs.difftastic.enable = true;
-  # apparently we need to do this too?
-  programs.difftastic.git.enable = true;
-
   # Add the custom Git script
   home.packages = [
     (pkgs.stdenv.mkDerivation {
