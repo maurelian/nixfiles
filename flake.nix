@@ -55,6 +55,12 @@
           username = "root";
           homeDirectory = "/root";
         };
+        # Linux box (user maurelian): hm → ...#maurelian (no --impure)
+        maurelian = mkHome {
+          pkgs = linuxPkgs;
+          username = "maurelian";
+          homeDirectory = "/home/maurelian";
+        };
       };
     };
 }
