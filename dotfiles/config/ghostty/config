@@ -64,3 +64,13 @@ keybind = cmd+3=goto_tab:3
 # XDG_DATA_DIRS so fish's vendor plugins load) then `exec fish`. Same mechanism
 # iTerm uses. Do NOT point this straight at fish — plugins won't load.
 command = /bin/zsh /Users/john/.nix-fish-wrapper.zsh
+# Force the fish injection method (XDG_DATA_DIRS). Auto-detect sees zsh in
+# `command` above and sets up zsh, which the wrapper's `exec fish` discards —
+# losing cursor/sudo/path. Change this if `command` stops ending in fish.
+shell-integration = fish
+
+# ── Prompt navigation ─────────────────────────────────────────────────────────
+# Marks come from OSC 133, emitted natively by fish 4.x (`mark-prompt`).
+# cmd+up / cmd+down do the same thing by default.
+keybind = ctrl+shift+up=jump_to_prompt:-1
+keybind = ctrl+shift+down=jump_to_prompt:1
