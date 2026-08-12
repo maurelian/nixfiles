@@ -1,5 +1,12 @@
 # https://starship.rs/config/
 
+# A dim full-width rule opens every prompt: a visible boundary for the prompt
+# Ghostty parks at the top of the viewport on jump_to_prompt (ctrl+shift+up).
+# Replaces the blank line add_newline would draw, so it costs no extra row.
+format = """$fill
+$all"""
+add_newline = false
+
 command_timeout = 750
 
 [character]
@@ -31,3 +38,7 @@ fish_style_pwd_dir_length = 3
 [cmd_duration]
 show_notifications = true
 min_time_to_notify = 20_000
+
+[fill]
+symbol = '─'
+style = 'bright-black'

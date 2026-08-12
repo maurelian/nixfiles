@@ -71,6 +71,16 @@ shell-integration = fish
 
 # ── Prompt navigation ─────────────────────────────────────────────────────────
 # Marks come from OSC 133, emitted natively by fish 4.x (`mark-prompt`).
-# cmd+up / cmd+down do the same thing by default.
+# The shipped cmd+up/cmd+down defaults are dead on macOS: AppKit claims those
+# keys for moveToBeginningOfDocument:/moveToEndOfDocument:, which Ghostty also
+# implements, so they scroll to top/bottom instead. cmd+shift+arrows survive.
 keybind = ctrl+shift+up=jump_to_prompt:-1
 keybind = ctrl+shift+down=jump_to_prompt:1
+
+# ── Scrolling ─────────────────────────────────────────────────────────────────
+# Line and half-page granularity; cmd+page_up/down (page) and cmd+home/end
+# (top/bottom) are already defaults.
+keybind = ctrl+alt+up=scroll_page_lines:-3
+keybind = ctrl+alt+down=scroll_page_lines:3
+keybind = ctrl+alt+shift+up=scroll_page_fractional:-0.5
+keybind = ctrl+alt+shift+down=scroll_page_fractional:0.5
