@@ -1,3 +1,5 @@
+# Generated: herdr completion fish > dotfiles/config/fish/completions/herdr.fish
+# Regenerate after a herdr upgrade.
 # Print an optspec for argparse to handle cmd's options that are independent of any subcommand.
 function __fish_herdr_global_optspecs
 	string join \n h/help no-session session= remote= remote-keybindings= handoff default-config V/version

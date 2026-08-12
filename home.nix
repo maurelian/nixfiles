@@ -61,6 +61,9 @@ in
       ".config/fish/aliases.fish".source = link "dotfiles/config/fish/aliases.fish";
       ".config/fish/conf.d/00-nix-env.fish".source = link "dotfiles/config/fish/conf.d/00-nix-env.fish";
       ".config/fish/functions".source = link "dotfiles/config/fish/functions";
+      # Per-file so installers that drop their own completions into
+      # ~/.config/fish/completions don't land in the repo.
+      ".config/fish/completions/herdr.fish".source = link "dotfiles/config/fish/completions/herdr.fish";
 
       # Native neovim config (lazy.nvim). lazy writes lazy-lock.json back into
       # this dir — that's the version lockfile and is tracked in the repo.
