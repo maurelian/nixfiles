@@ -13,7 +13,7 @@ set GPG_TTY $(tty)
 
 # Set up npm global directory outside of Nix management
 set -x NPM_GLOBAL $HOME/.npm-global
-npm config set prefix $NPM_GLOBAL 2>/dev/null
+set -x npm_config_prefix $NPM_GLOBAL
 
 # Set up pipx to install outside of Nix management
 set -x PIPX_HOME $HOME/.pipx
