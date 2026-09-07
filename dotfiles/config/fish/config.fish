@@ -32,11 +32,11 @@ end
 
 babelfish < /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
 babelfish < $HOME/.aliases | source
-starship init fish | source
+source $HOME/.config/fish/generated/starship.fish
 source $HOME/.iterm2_shell_integration.fish
 
 if status is-interactive
-    fzf --fish | source
+    source $HOME/.config/fish/generated/fzf.fish
     # Sourced here (last) so custom abbrs/aliases override vendor plugins
     # like git-abbr, whose conf.d loads after all user conf.d files.
     source $HOME/.config/fish/abbreviations.fish
