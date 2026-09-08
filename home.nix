@@ -13,6 +13,15 @@ let
   fzfFishInit = pkgs.runCommand "fzf-init.fish" { } ''
     ${pkgs.fzf}/bin/fzf --fish > "$out"
   '';
+  grcFishPlugin = pkgs.runCommand "fishplugin-grc-lazy" { } ''
+    functions_dir="$out/share/fish/vendor_functions.d"
+    mkdir -p "$functions_dir"
+    cp ${pkgs.fishPlugins.grc}/share/fish/vendor_functions.d/grc.wrap.fish "$functions_dir/grc.wrap.fish"
+    while IFS= read -r executable; do
+      printf 'function %s --wraps=%s\n    grc.wrap %s $argv\nend\n' \
+        "$executable" "$executable" "$executable" > "$functions_dir/$executable.fish"
+    done < ${pkgs.fishPlugins.grc}/share/fish/vendor_conf.d/executables
+  '';
   starshipFishInit = pkgs.runCommand "starship-init.fish" { } ''
     ${pkgs.starship}/bin/starship init fish --print-full-init > "$out"
   '';
@@ -110,8 +119,7 @@ in
       pkgs.fishPlugins.fifc
       pkgs.fishPlugins.bass
       pkgs.fishPlugins.git-abbr
-
-      pkgs.fishPlugins.grc
+      grcFishPlugin
     ]
     ++ gitConfig.home.packages;
 
