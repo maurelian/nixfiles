@@ -25,9 +25,17 @@ fish_add_path --append $HOME/.foundry/bin /opt/homebrew/bin /bin /usr/sbin /sbin
 abbr -e gt 2>/dev/null
 
 if test (uname) = Darwin
-    # makes homebrew work with Apple Silicon
-    set -x HOMEBREW_PREFIX /opt/homebrew
-    eval $(/opt/homebrew/bin/brew shellenv)
+    set -gx HOMEBREW_PREFIX /opt/homebrew
+    set -gx HOMEBREW_CELLAR /opt/homebrew/Cellar
+    set -gx HOMEBREW_REPOSITORY /opt/homebrew
+    fish_add_path --global --move --path /opt/homebrew/bin /opt/homebrew/sbin
+    if test -n "$MANPATH[1]"
+        set -gx MANPATH '' $MANPATH
+    end
+    set -q INFOPATH; or set INFOPATH ''
+    if not contains /opt/homebrew/share/info $INFOPATH
+        set -gx INFOPATH /opt/homebrew/share/info $INFOPATH
+    end
 end
 
 babelfish < /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
