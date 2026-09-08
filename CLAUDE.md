@@ -62,6 +62,7 @@ hops through the store are normal — only the final target matters.)
 - New CLI tool / LSP server → `modules/packages.nix`, then `hm`.
 - New GUI app → `Brewfile`, then `brew bundle`.
 - Shell aliases/abbrs/functions → edit files in `dotfiles/config/fish/` (live).
+- Shared aliases in `dotfiles/aliases` → edit, then run `hm` to regenerate Fish aliases.
 - Neovim → edit `dotfiles/config/nvim/` (applies on nvim restart; `:Lazy` for plugins).
 - Adding a brand-new managed file → add it under `dotfiles/`, declare a `link`
   in `home.nix`, `git add` it, then `hm`.

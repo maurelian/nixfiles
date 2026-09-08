@@ -10,6 +10,9 @@ let
   packages = import ./modules/packages.nix { inherit pkgs; };
   repoDir = "${config.home.homeDirectory}/Projects/Tools/nixfiles";
   link = path: config.lib.file.mkOutOfStoreSymlink "${repoDir}/${path}";
+  aliasesFish = pkgs.runCommand "aliases.fish" { } ''
+    ${pkgs.babelfish}/bin/babelfish < ${./dotfiles/aliases} > "$out"
+  '';
   fzfFishInit = pkgs.runCommand "fzf-init.fish" { } ''
     ${pkgs.fzf}/bin/fzf --fish > "$out"
   '';
@@ -76,6 +79,7 @@ in
       ".config/fish/aliases.fish".source = link "dotfiles/config/fish/aliases.fish";
       ".config/fish/conf.d/00-nix-env.fish".source = link "dotfiles/config/fish/conf.d/00-nix-env.fish";
       ".config/fish/functions".source = link "dotfiles/config/fish/functions";
+      ".config/fish/generated/aliases.fish".source = aliasesFish;
       ".config/fish/generated/fzf.fish".source = fzfFishInit;
       ".config/fish/generated/starship.fish".source = starshipFishInit;
       # Per-file so installers that drop their own completions into
@@ -102,14 +106,11 @@ in
       pkgs.fish
       # z plugin (was programs.fish.plugins); loads natively from vendor_conf.d
       pkgs.fishPlugins.z
-      pkgs.fishPlugins.foreign-env
       pkgs.zsh-history-to-fish
       pkgs.starship
 
       # Fish plugins that this guy uses: https://github.com/r17x/universe/blob/45595dda71df5c34b8110827a044e487ad52f7af/nix/home/shells.nix#L161
-      pkgs.babelfish
       pkgs.fishPlugins.colored-man-pages
-      # use babelfish than foreign-env
       pkgs.fishPlugins.foreign-env
       # Paired symbols in the command line
       pkgs.fishPlugins.pisces

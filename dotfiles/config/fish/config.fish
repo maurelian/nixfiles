@@ -38,8 +38,7 @@ if test (uname) = Darwin
     end
 end
 
-babelfish < /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
-babelfish < $HOME/.aliases | source
+source $HOME/.config/fish/generated/aliases.fish
 source $HOME/.config/fish/generated/starship.fish
 source $HOME/.iterm2_shell_integration.fish
 
