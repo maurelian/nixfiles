@@ -109,8 +109,6 @@ in
       # Fish plugins that this guy uses: https://github.com/r17x/universe/blob/45595dda71df5c34b8110827a044e487ad52f7af/nix/home/shells.nix#L161
       pkgs.babelfish
       pkgs.fishPlugins.colored-man-pages
-      # https://github.com/franciscolourenco/done - get notified when a long running command finishes
-      pkgs.fishPlugins.done
       # use babelfish than foreign-env
       pkgs.fishPlugins.foreign-env
       # Paired symbols in the command line
