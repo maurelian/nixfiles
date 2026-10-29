@@ -50,6 +50,13 @@ if status is-interactive
     source $HOME/.config/fish/aliases.fish
 end
 
+if status is-interactive; and test (uname) = Darwin
+    fix-ssh-agent
+    function _fix_ssh_agent_preexec --on-event fish_preexec
+        string match -qr '^\s*(ssh|ssh-add|scp|sftp|rsync|git)\b' -- $argv[1]; and fix-ssh-agent
+    end
+end
+
 set -x CDPATH "$HOME" "$HOME/.config" "$HOME/Projects/" "$HOME/Projects/O" "$HOME/Projects/Tools" "$HOME/Projects/reference-codebases" "$HOME/Projects/misc"
 set -U pisces_only_insert_at_eol 1 # quote/bracket completion setting
 
