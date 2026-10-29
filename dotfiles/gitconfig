@@ -75,7 +75,6 @@
 [push]
 	default = simple
 	autoSetupRemote = true
-	followTags = true
 [credential "https://github.com"]
 	helper = 
 	helper = !/Users/john/.nix-profile/bin/gh auth git-credential
