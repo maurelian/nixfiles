@@ -67,5 +67,6 @@ alias rab 'ring a bell'
 alias rpu 'source ~/.rpc-urls'
 alias secret 'source ~/.secrets'
 alias strip-escapes 'sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,3})*)?[mGK]//g"'
+alias t tuicr
 alias vi nvim
 alias was 'which -as'
