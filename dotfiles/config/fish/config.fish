@@ -22,6 +22,7 @@ set -x PIPX_BIN_DIR $PIPX_HOME/bin
 # fish_add_path only adds directories that actually exist on the filesystem
 fish_add_path $HOME/bin /usr/bin /usr/local/bin $HOME/go/bin $HOME/.scripts $HOME/.local/bin $NPM_GLOBAL/bin $PIPX_BIN_DIR
 fish_add_path --append $HOME/.foundry/bin /opt/homebrew/bin /bin /usr/sbin /sbin /etc/paths.d $GOPATH/bin $HOME/.nvm $HOME/.cargo/bin
+fish_add_path --append /opt/homebrew/opt/gnu-tar/libexec/gnubin/
 abbr -e gt 2>/dev/null
 
 if test (uname) = Darwin
