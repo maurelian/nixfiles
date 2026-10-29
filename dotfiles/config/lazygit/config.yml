@@ -74,9 +74,9 @@ gui:
 #   diffContextSize: 3 # how many lines of context are shown around a change in diffs
 os:
   editInTerminal: true
-  edit: "nvim -g {{filename}}" # see 'Configuring File Editing' section
-  open: "nvim -g {{filename}}"
-  editAtLine: "nvim -g {{filename}}:{{line}}"
+  edit: "nvim {{filename}}" # see 'Configuring File Editing' section
+  open: "code {{filename}}"
+  editAtLine: "nvim {{filename}} +{{line}}"
 refresher:
   refreshInterval: 5 # file/submodule refresh interval in seconds
 #   fetchInterval: 60 # re-fetch interval in seconds
