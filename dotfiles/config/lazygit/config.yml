@@ -1,12 +1,12 @@
 git:
-  pagers:
+  diffRenderers:
     # FWIW, custom pagers only works with the default view, not the interactive patch mode.
     # Feels like a bug, but it's not.
     # https://github.com/jesseduffield/lazygit/discussions/1335
     - colorArg: always
-    - pager: difftastic
-    # - pager: delta --dark --paging=never
-
+      type: rawGit
+    - command: difftastic
+  # - pager: delta --dark --paging=never
 ## Defaults:
 # https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
 gui:
@@ -74,9 +74,9 @@ gui:
 #   diffContextSize: 3 # how many lines of context are shown around a change in diffs
 os:
   editInTerminal: true
-  edit: "code -g {{filename}}" # see 'Configuring File Editing' section
-  open: "code -g {{filename}}"
-  editAtLine: "code -g {{filename}}:{{line}}"
+  edit: "nvim {{filename}}" # see 'Configuring File Editing' section
+  open: "code {{filename}}"
+  editAtLine: "nvim {{filename}} +{{line}}"
 refresher:
   refreshInterval: 5 # file/submodule refresh interval in seconds
 #   fetchInterval: 60 # re-fetch interval in seconds
@@ -94,26 +94,26 @@ keybinding:
     quit: "q"
     quit-alt1: "<c-c>" # alternative/alias of quit
     appendNewline: "<c-j>"
-#     return: '<esc>' # return to previous menu, will quit if there's nowhere to return
-#     quitWithoutChangingDirectory: 'Q'
-#     togglePanel: '<tab>' # goto the next panel
-#     prevItem: '<up>' # go one line up
-#     nextItem: '<down>' # go one line down
-#     prevItem-alt: 'k' # go one line up
-#     nextItem-alt: 'j' # go one line down
-#     prevPage: ',' # go to next page in list
-#     nextPage: '.' # go to previous page in list
-#     gotoTop: '<' # go to top of list
-#     gotoBottom: '>' # go to bottom of list
-#     scrollLeft: 'H' # scroll left within list view
-#     scrollRight: 'L' # scroll right within list view
-#     prevBlock: '<left>' # goto the previous block / panel
-#     nextBlock: '<right>' # goto the next block / panel
-#     prevBlock-alt: 'h' # goto the previous block / panel
-#     nextBlock-alt: 'l' # goto the next block / panel
-#     jumpToBlock: ['1', '2', '3', '4', '5'] # goto the Nth block / panel
-#     nextMatch: 'n'
-#     prevMatch: 'N'
+    #     return: '<esc>' # return to previous menu, will quit if there's nowhere to return
+    #     quitWithoutChangingDirectory: 'Q'
+    #     togglePanel: '<tab>' # goto the next panel
+    #     prevItem: '<up>' # go one line up
+    #     nextItem: '<down>' # go one line down
+    #     prevItem-alt: 'k' # go one line up
+    #     nextItem-alt: 'j' # go one line down
+    #     prevPage: ',' # go to next page in list
+    #     nextPage: '.' # go to previous page in list
+    #     gotoTop: '<' # go to top of list
+    #     gotoBottom: '>' # go to bottom of list
+    #     scrollLeft: 'H' # scroll left within list view
+    #     scrollRight: 'L' # scroll right within list view
+    #     prevBlock: '<left>' # goto the previous block / panel
+    #     nextBlock: '<right>' # goto the next block / panel
+    #     prevBlock-alt: 'h' # goto the previous block / panel
+    #     nextBlock-alt: 'l' # goto the next block / panel
+    #     jumpToBlock: ['1', '2', '3', '4', '5'] # goto the Nth block / panel
+    #     nextMatch: 'n'
+    #     prevMatch: 'N'
     optionMenu: 'x' # show help menu
 #     optionMenu-alt1: '?' # show help menu
 #     select: '<space>'

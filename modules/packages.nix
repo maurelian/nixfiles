@@ -7,6 +7,7 @@
     bat
     btop
     bun
+    circleci-cli
     cloc
     cowsay
     dasel
@@ -16,12 +17,16 @@
     foundry
     gh
     gitui
+    glow
     gnupg
     grc
     python312Packages.grip
     go
     gotestsum
     lazygit
+    miller
+    mise
+    mosh
     # Python environment with packages
     (python3.withPackages (ps: [
       ps.llm
@@ -53,21 +58,28 @@
     }))
     tig
     tmux
+    usage
     vim
     uv
+    watch
     xan
     yarn
     yq-go
+
+    # Neovim + LSP servers for the native lazy.nvim config (dotfiles/config/nvim).
+    # Servers are installed via nix (no mason) to keep one package manager.
+    neovim
+    bash-language-server
+    gopls
+    lua-language-server
+    nil # nix LSP
+    pyright
+    # rust_analyzer comes from rustup (above), not a separate package
+    typescript-language-server
+    vscode-langservers-extracted # jsonls
+    yaml-language-server
   ];
 
-  # Homebrew packages that need manual installation (not available in nixpkgs):
-  #   brew tap max-sixty/worktrunk && brew install wt
-  #   brew install circleci gettext git libiconv libunistring mise ncurses pcre2 rg usage watch xsv
-  #
-  # Homebrew casks (GUI apps) - install manually with `brew install --cask`:
-  #   1password 1password-cli alt-tab arc brave-browser brainfm cleanshot
-  #   cursor discord docker-desktop firefox gpg-suite hazeover
-  #   jordanbaird-ice keybase logseq notion obsidian orbstack protonvpn
-  #   proton-mail-bridge raycast rectangle signal slack spotify telegram
-  #   whatsapp balenaetcher iterm2
+  # GUI apps (casks) and brew-only tools (taps, large builds like qemu/llama.cpp,
+  # things not in nixpkgs): see the Brewfile. Install with `brew bundle`.
 }

@@ -14,6 +14,9 @@
 [pull]
 	rebase = true
 [diff]
+    # difftastic for `git diff` (difft is on PATH via nix). Was previously set
+    # by home-manager's programs.difftastic.git.enable in modules/git.nix.
+    external = difft
     tool = vscode
     algorithm = histogram
     colorMoved = plain
@@ -72,4 +75,9 @@
 [push]
 	default = simple
 	autoSetupRemote = true
-	followTags = true
+[credential "https://github.com"]
+	helper = 
+	helper = !/Users/john/.nix-profile/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/Users/john/.nix-profile/bin/gh auth git-credential

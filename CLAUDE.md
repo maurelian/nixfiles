@@ -1,69 +1,77 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code (claude.ai/code) when working in this repository.
 
 ## Overview
 
-This is a personal Nix configuration repository using Nix Darwin and Home Manager to manage macOS system configuration and dotfiles. The configuration is structured as a flake with modular components for packages, git settings, shell abbreviations, and system preferences.
+Personal Nix configuration: a Home Manager flake that manages macOS (and a Linux
+`root` profile) user environments. It installs CLI packages via nix and links all
+config files **live** into the home directory, so editing a config applies
+immediately with no rebuild.
 
-## Key Commands
+The repo lives at `~/Projects/Tools/nixfiles` (this path is hardcoded in
+`home.nix` as the symlink target — see Bootstrap in `README.md` for relocating).
 
-### Nix Configuration Management
-- `nds` - Apply Darwin (system) configuration: `nix run nix-darwin -- switch --flake ~/.config/nix`
-- `hm` - Apply Home Manager configuration: `home-manager switch --impure --flake $HOME/.config/nix#${username}` (uses current username)
+## The model: live symlinks, nix for packages
 
-### Development Tools
-- `nixfmt-rfc-style` - Format Nix files using the RFC style formatter
-- `mise` - Runtime version manager (installed via Homebrew)
-- `just` - Command runner (available but no justfile present)
+`home.file` entries use `config.lib.file.mkOutOfStoreSymlink` (the `link` helper
+in `home.nix`), so `~/.vimrc`, `~/.config/fish/*`, `~/.config/nvim`, `~/.scripts/*`,
+etc. are symlinks **into this repo's working copy**. Editing the file in
+`dotfiles/` (or `scripts/`, `dotfiles/config/{fish,nvim}/`) takes effect on the
+next shell/app launch — no `hm` needed.
 
-### Shell Environment
-- Fish shell is the primary shell with extensive abbreviations and functions
-- Starship prompt for git-aware shell prompt
-- Lazygit for git TUI operations
+Run a Home Manager switch (`hm`) **only** when you change the set of packages or
+the set of managed files/symlinks (anything in a `.nix` file).
 
-## Architecture
+- `hm` → `home-manager switch --flake $HOME/Projects/Tools/nixfiles#$USER`
+  (no `--impure`; the flake is pure so eval-caching works).
+- `nixfmt-rfc-style` formats `.nix` files.
 
-### Core Files
-- `flake.nix` - Main flake configuration defining system and home-manager outputs
-- `home.nix` - Home Manager configuration for user environment
-- `modules/` - Modular configuration components
+To verify a managed file is live, resolve it fully: `readlink -f ~/.vimrc` should
+land under `~/Projects/Tools/nixfiles/`, not `/nix/store/`. (One/two intermediate
+hops through the store are normal — only the final target matters.)
 
-### Module Structure
-- `modules/packages.nix` - Package definitions for both Nix and Homebrew
-- `modules/git.nix` - Git configuration and custom git scripts
-- `modules/abbreviations.nix` - Shell aliases, abbreviations, and functions
-- `modules/ethUtils.nix` - Ethereum/blockchain development utilities
+## Layout
 
-### Package Management
-- **Nix packages**: Development tools, CLI utilities, programming languages
-- **Homebrew casks**: GUI applications like browsers, editors, communication tools
-- **Homebrew brews**: Additional CLI tools (rg, mise)
+- `flake.nix` — Home Manager flake. `homeConfigurations` has one entry per
+  machine/user (`john`, `root`); add a line for a new machine. Selected at
+  runtime by `$USER`.
+- `home.nix` — packages list + the `home.file` symlink declarations (the `link`
+  helper points at `repoDir`).
+- `modules/packages.nix` — nix CLI packages and LSP servers.
+- `modules/git.nix` — git config and helper scripts.
+- `dotfiles/` — all config files, symlinked into `~`.
+  - `dotfiles/config/fish/` — native fish config: `config.fish`, `abbreviations.fish`,
+    `aliases.fish` (sourced from `config.fish` so they override vendor plugins like
+    git-abbr), `conf.d/`, `functions/`.
+  - `dotfiles/config/nvim/` — native Neovim config (lazy.nvim); `lua/plugins/*.lua`
+    one file per plugin group. `lazy-lock.json` pins versions.
+  - `dotfiles/config/{ghostty,tmux,lazygit,starship.toml,gh}` — app configs.
+- `scripts/` — utility scripts, linked into `~/.scripts` (per-file, so machine-local
+  bins like `be-*` coexist there).
+- `Brewfile` — GUI casks, third-party taps, and brew-only/large tools
+  (qemu, llama.cpp, etc.). Applied with `brew bundle`.
 
-### Custom Scripts
-- `scripts/getSafeDetails` - Utility script (executable)
-- `scripts/qq` - Utility script (executable)  
-- `scripts/readSystemConfig` - Utility script (executable)
+## Package management
 
-## Development Workflow
+- **CLI tools & LSP servers** → nix, in `modules/packages.nix`.
+- **GUI apps, taps, brew-only tools** → `Brewfile` (`brew bundle --file Brewfile`).
 
-### Making Changes
-1. Edit the appropriate module file in `modules/`
-2. Test changes with `nds` for system config or `hm` for home config
-3. Format Nix files with `nixfmt-rfc-style`
-4. Commit changes to git
+## Common tasks
 
-### Common Tasks
-- Adding new packages: Edit `modules/packages.nix`
-- Modifying shell config: Edit `modules/abbreviations.nix`
-- Updating git settings: Edit `modules/git.nix`
-- System preferences: Edit the configuration block in `flake.nix`
+- New CLI tool / LSP server → `modules/packages.nix`, then `hm`.
+- New GUI app → `Brewfile`, then `brew bundle`.
+- Shell aliases/abbrs/functions → edit files in `dotfiles/config/fish/` (live).
+- Shared aliases in `dotfiles/aliases` → edit, then run `hm` to regenerate Fish aliases.
+- Neovim → edit `dotfiles/config/nvim/` (applies on nvim restart; `:Lazy` for plugins).
+- Adding a brand-new managed file → add it under `dotfiles/`, declare a `link`
+  in `home.nix`, `git add` it, then `hm`.
 
-## Important Notes
+## Notes
 
-- The configuration targets `aarch64-darwin` (Apple Silicon Macs)
-- Fish shell integration with extensive abbreviations for git, foundry, and development workflows
-- Ethereum development focus with Foundry, Cast, and related tooling
-- Custom path management for npm global packages and pipx installations
-- TouchID authentication enabled for sudo operations
-- remember this is a nix repo. The files and settings found here are moved to different locations based on the config defined in the .nix files. For example, if there is a file in dotfiles, it should be mirrored by a file somewhere in ~/.
+- Targets `aarch64-darwin` (Apple Silicon); a Linux `root` profile exists too.
+- Fish is the interactive shell (launched via `dotfiles/nix-fish-wrapper.zsh`,
+  which sources nix-daemon.sh then `exec fish`); plugins load natively from the
+  nix profile's `vendor_conf.d` via `XDG_DATA_DIRS`.
+- gh/lazygit runtime state (`hosts.yml`, `state.yml`) is intentionally NOT managed
+  (per-file links only) so it stays machine-local and out of git.

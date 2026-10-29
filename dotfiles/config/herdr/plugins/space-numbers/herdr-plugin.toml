@@ -1,0 +1,27 @@
+id = "space-numbers"
+name = "Space Numbers"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "Show each space's picker index in the sidebar as a $num token"
+platforms = ["macos"]
+
+# Resident: the interval catches renumbering that fires no event hook.
+[[startup]]
+command = ["./sync.py", "--watch", "10"]
+
+# Event hooks that renumber the space list.
+[[events]]
+on = "workspace.created"
+command = ["./sync.py"]
+
+[[events]]
+on = "workspace.closed"
+command = ["./sync.py"]
+
+[[events]]
+on = "workspace.moved"
+command = ["./sync.py"]
+
+[[events]]
+on = "workspace.reordered"
+command = ["./sync.py"]

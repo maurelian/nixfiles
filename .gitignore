@@ -1,2 +1,4 @@
 result
 .vscode/settings.json
+dotfiles/config/gh/hosts.yml
+dotfiles/config/gh/state.yml
