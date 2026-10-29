@@ -58,6 +58,16 @@ in
       ".config/lazygit/config.yml".source = link "dotfiles/config/lazygit/config.yml";
       ".config/gh/config.yml".source = link "dotfiles/config/gh/config.yml";
       ".config/jj/config.toml".source = link "dotfiles/config/jj/config.toml";
+      # herdr: config + helper scripts + local plugins only. The dir also holds
+      # sockets, logs, session*.json, sessions/, plugins.json (herdr's plugin
+      # registry) and release-notes.json, all machine-local runtime state.
+      # config.toml calls the scripts by their ~/.config/herdr path.
+      ".config/herdr/config.toml".source = link "dotfiles/config/herdr/config.toml";
+      ".config/herdr/copy-last-output.py".source = link "dotfiles/config/herdr/copy-last-output.py";
+      ".config/herdr/move-space.py".source = link "dotfiles/config/herdr/move-space.py";
+      ".config/herdr/scrollback-jump.sh".source = link "dotfiles/config/herdr/scrollback-jump.sh";
+      ".config/herdr/status-workspace.py".source = link "dotfiles/config/herdr/status-workspace.py";
+      ".config/herdr/plugins/space-numbers".source = link "dotfiles/config/herdr/plugins/space-numbers";
 
       # ~/.scripts stays a real dir so machine-local bins (be-*, claude-tmux) survive
       ".scripts/apply-macos-defaults.sh".source = link "scripts/apply-macos-defaults.sh";
