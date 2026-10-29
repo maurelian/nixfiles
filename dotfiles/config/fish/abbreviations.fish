@@ -1,6 +1,7 @@
 # Abbreviations — edit live, no rebuild. Sourced from config.fish AFTER
 # vendor plugins (e.g. git-abbr) so these custom values win on conflicts.
 abbr --add --position anywhere '--set-cursor=%' -- L '% | less'
+abbr --add -- cwd 'cw /Users/john/Projects/O/op-claude/worktrees/optimism/develop'
 abbr --add -- fb 'forge build'
 abbr --add -- fd 'forge script scripts/deploy/Deploy.s.sol:Deploy -vvv'
 abbr --add -- fpl 'FOUNDRY_PROFILE=lite'

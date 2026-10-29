@@ -4,14 +4,17 @@ alias anvilg '~/.foundry/bin/anvil'
 alias anvill '~/Projects/Tools/foundry/target/debug/anvil'
 alias b20 'echo 0x0000000000000000000000000000000000000000'
 alias b32 'echo 0x0000000000000000000000000000000000000000000000000000000000000000'
+alias bcd 'be-claude --dangerously-skip-permissions'
 alias beep2 'echo "ring a bell"'
 alias brewup 'brew update && brew upgrade'
 alias castg '~/.foundry/bin/cast'
 alias castl '~/Projects/Tools/foundry/target/debug/cast'
+alias cdop 'cd ~/Projects/O/op-claude/'
 alias cdpb 'cd packages/contracts-bedrock'
 alias chiselg '~/.foundry/bin/chisel'
 alias chisell '~/Projects/Tools/foundry/target/debug/chisel'
 alias clm 'llm -m claude-3.7-sonnet'
+alias cpa 'claude --permission-mode auto'
 alias dsf diff-so-fancy
 alias f forge
 alias forgeg '~/.foundry/bin/forge'
@@ -56,7 +59,9 @@ alias gwS 'git status --ignore-submodules=$_git_status_ignore_submodules --show-
 alias gwip 'git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign -m "--wip--"'
 alias gwk 'git worktree'
 alias gwkl 'git worktree list'
+alias h herdr
 alias lg 'lazygit --ucd ~/.config/lazygit/'
+alias mta 'mise trust && mise activate | source'
 alias nv nvim
 alias rab 'ring a bell'
 alias rpu 'source ~/.rpc-urls'
